@@ -22,6 +22,10 @@ const navigationRootMenuItem = defineStyle({
   width: "full",
 });
 
+const paginationButton = defineStyle({
+  bg: "transparent",
+});
+
 export const buttonTheme = defineStyleConfig({
   variants: { dropdownMenuItem, navigationRootMenuItem },
 });

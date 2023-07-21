@@ -4,6 +4,8 @@ import mockServer from "mock";
 import appConfig from "configs/app.config";
 import { ChakraBaseProvider } from "@chakra-ui/react";
 import { theme } from "configs/chakra.config";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 /**
  * Set enableMock(Default false) to true at configs/app.config.js
@@ -14,13 +16,18 @@ if (appConfig.runtime !== "production" && appConfig.enableMock) {
   mockServer({ environment: appConfig.runtime });
 }
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <ChakraBaseProvider theme={theme}>
-      <BrowserRouter>
-        <Layout />
-      </BrowserRouter>
-    </ChakraBaseProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraBaseProvider theme={theme}>
+        <BrowserRouter>
+          <Layout />
+        </BrowserRouter>
+      </ChakraBaseProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 

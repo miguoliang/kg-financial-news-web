@@ -17,6 +17,10 @@ module.exports = {
   extends: [
     "plugin:@typescript-eslint/base",
     "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
   ],
-  plugins: ["@typescript-eslint"],
+  plugins: [
+    "@typescript-eslint",
+    "@tanstack/query",
+  ],
 };

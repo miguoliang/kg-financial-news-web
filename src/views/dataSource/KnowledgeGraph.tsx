@@ -1,14 +1,11 @@
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import { Loading } from "components/shared";
 import { Graph } from "models/echarts";
-import {
-  apiGetDataSourceVertices,
-  makeGraph,
-} from "services/DataSourceService";
+import { apiGetDataSourceVertices, makeGraph } from "services/DataSourceService";
 import { useParams } from "react-router-dom";
 import { apiGetEdgesByVertices } from "services/EdgeService";
 import { Button, useBoolean } from "@chakra-ui/react";
+import Loading from "components/ui/Loading";
 
 const KnowledgeGraph = () => {
   const [loading, setLoading] = useBoolean();
@@ -53,7 +50,7 @@ function updateGraph(chart: echarts.ECharts, graph: Graph) {
     },
     legend: [
       {
-        data: graph.categories?.map(function (a) {
+        data: graph.categories?.map(function(a) {
           return a.name;
         }),
         orient: "vertical",

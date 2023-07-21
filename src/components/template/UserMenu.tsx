@@ -3,6 +3,7 @@ import {
   Avatar,
   Flex,
   HStack,
+  Icon,
   Menu,
   MenuButton,
   MenuDivider,
@@ -11,20 +12,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { HiOutlineClock, HiOutlineCog, HiOutlineLogout } from "react-icons/hi";
-import { APP_PREFIX_PATH } from "../../constants/route.constant";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "hooks/useAuth";
+import { HiOutlineCog, HiOutlineLogout } from "react-icons/hi";
 
 const menuList = [
   {
-    label: "Password",
-    path: `${APP_PREFIX_PATH}/account/settings/password`,
-    icon: <HiOutlineCog />,
-  },
-  {
-    label: "Subscription",
-    path: `${APP_PREFIX_PATH}/account/settings/subscription`,
-    icon: <HiOutlineClock />,
+    label: "Dashboard",
+    path: `/dashboard`,
+    icon: <Icon as={HiOutlineCog} fontSize={2} color={"gray.500"} />,
   },
 ];
 
@@ -32,7 +27,7 @@ export const UserMenu = () => {
   const auth = useAuth();
 
   const UserAvatar = (
-    <HStack gap={2}>
+    <HStack gap={2} px={2}>
       <Avatar size="sm" src="/img/avatars/thumb-1.jpg" />
       <Flex direction={"column"} alignItems={"start"}>
         <Text fontSize={"sm"} casing={"capitalize"}>
@@ -48,17 +43,15 @@ export const UserMenu = () => {
       <MenuButton>{UserAvatar}</MenuButton>
       <MenuList>
         {menuList.map((item) => (
-          <MenuItem
-            as={Link}
-            to={item.path}
-            key={item.label}
-            icon={<HiOutlineCog />}
-          >
+          <MenuItem as={Link} to={item.path} key={item.label} icon={item.icon}>
             {item.label}
           </MenuItem>
         ))}
         <MenuDivider />
-        <MenuItem icon={<HiOutlineLogout />} onClick={() => auth.signOut()}>
+        <MenuItem
+          icon={<Icon as={HiOutlineLogout} fontSize={2} color={"gray.500"} />}
+          onClick={() => auth.signOut()}
+        >
           Sign Out
         </MenuItem>
       </MenuList>

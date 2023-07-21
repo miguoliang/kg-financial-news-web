@@ -10,10 +10,3 @@ export type Route = {
 };
 
 export type Routes = Route[];
-
-export type NavGroup = {
-  groupName?: string;
-  nav: Routes;
-};
-
-export type Nav = NavGroup[];

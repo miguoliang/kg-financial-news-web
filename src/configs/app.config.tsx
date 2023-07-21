@@ -1,12 +1,10 @@
-import { API_URL } from "../constants/api.constant";
-
-const appConfig = {
-  apiPrefix: API_URL,
-  authenticatedEntryPath: "/account/kyc-form",
-  unAuthenticatedEntryPath: "/",
-  tourPath: "/",
-  locale: "en",
-  enableMock: false,
+const runtime = import.meta.env.NODE_ENV ?? "development";
+export default {
+    appName: "KG Financial News",
+    apiPrefix: window.location.origin + "/api",
+    locale: "en",
+    authenticatedEntryPath: "/dashboard",
+    unAuthenticatedEntryPath: "/",
+    enableMock: true,
+    runtime,
 };
-
-export default appConfig;

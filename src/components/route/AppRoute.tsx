@@ -1,6 +1,6 @@
 import React, { LazyExoticComponent, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useTheme } from "../../hooks/useTheme";
+import useCurrentRoute from "../../hooks/useCurrentRoute";
 
 type AppRouteProps = {
   component: LazyExoticComponent<(props: Record<string, any>) => JSX.Element>;
@@ -13,9 +13,9 @@ const AppRoute = ({
   ...props
 }: AppRouteProps) => {
   const location = useLocation();
-  const themeStore = useTheme();
+  const themeStore = useCurrentRoute();
   useEffect(() => {
-    themeStore.setCurrentRouteKey(routeKey);
+    themeStore.setKey(routeKey);
   }, [location]);
   return <Component {...props} />;
 };

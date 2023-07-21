@@ -1,26 +1,19 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import svgrPlugin from "vite-plugin-svgr";
-import checker from "vite-plugin-checker";
 import { resolve } from "path";
+import react from "@vitejs/plugin-react";
+import macrosPlugin from "vite-plugin-babel-macros";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "./",
   plugins: [
+    macrosPlugin(),
     react({
-      babel: {
-        plugins: ["babel-plugin-macros", "babel-plugin-styled-components"],
-      },
-      fastRefresh: process.env.NODE_ENV !== "test",
+      fastRefresh: true,
     }),
-    checker({ typescript: true }),
-    svgrPlugin(),
   ],
   build: {
-    dynamicImportVarsOptions: {
-      include: ["**/*.md"],
-    },
+    outDir: "build",
   },
   server: { open: true, port: 3000 },
   define: {

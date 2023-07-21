@@ -1,13 +1,19 @@
 import React from "react";
 import UserMenu from "components/template/UserMenu";
-import LanguageSelector from "components/template/LanguageSelector";
-import SideNavToggle from "components/template/SideNavToggle";
-import MobileNav from "components/template/MobileNav";
-import Search from "components/template/Search";
 import SideNav from "components/template/SideNav";
 import View from "views";
 import { useAuth } from "hooks/useAuth";
-import { Box, Button, Flex, HStack, Spacer } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Icon,
+  IconButton,
+  Spacer,
+} from "@chakra-ui/react";
+import { useSideNav } from "../../hooks/useSideNav";
+import { HiOutlineMenu } from "react-icons/hi";
 
 export const SignInAndSignUp = () => {
   const auth = useAuth();
@@ -41,12 +47,16 @@ export const SignInAndSignUp = () => {
 };
 
 const HeaderActionsStart = () => {
+  const sideNav = useSideNav();
   return (
-    <>
-      <MobileNav />
-      <SideNavToggle />
-      <Search />
-    </>
+    <IconButton
+      bg={"transparent"}
+      isRound={true}
+      aria-label={"menu"}
+      fontSize={4}
+      icon={<Icon as={HiOutlineMenu} />}
+      onClick={() => sideNav.setCollapsed(!sideNav.collapsed)}
+    />
   );
 };
 
@@ -54,7 +64,6 @@ const HeaderActionsEnd = () => {
   const isAuthenticated = useAuth((state) => state.isAuthenticated);
   return (
     <HStack spacing={2}>
-      <LanguageSelector />
       {isAuthenticated ? <UserMenu /> : <SignInAndSignUp />}
     </HStack>
   );

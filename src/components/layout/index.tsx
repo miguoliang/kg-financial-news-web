@@ -1,17 +1,16 @@
 import React, { lazy, memo, Suspense, useEffect, useMemo } from "react";
-import { Loading } from "components/shared";
-import CookieConsent from "react-cookie-consent";
 import { useLocation } from "react-router-dom";
-import { APP_PREFIX_PATH } from "constants/route.constant";
 import { useAuth } from "hooks/useAuth";
+import Loading from "components/ui/Loading";
 
 const Layout = () => {
   const location = useLocation();
+
   const AppLayout = useMemo(() => {
-    return location.pathname.startsWith(APP_PREFIX_PATH)
+    return location.pathname.startsWith("/dashboard")
       ? lazy(() => import("./ModernLayout"))
       : lazy(() => import("./SimpleLayout"));
-  }, [location.pathname]);
+  }, [location.pathname.startsWith("/dashboard")]);
 
   const auth = useAuth();
   useEffect(() => {
@@ -45,9 +44,6 @@ const Layout = () => {
       }
     >
       <AppLayout />
-      <CookieConsent enableDeclineButton flipButtons>
-        This website uses cookies to enhance the user experience.
-      </CookieConsent>
     </Suspense>
   );
 };

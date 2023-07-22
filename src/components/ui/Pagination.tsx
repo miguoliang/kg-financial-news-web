@@ -42,6 +42,8 @@ function getPagerArray(showPrevMore: boolean, showNextMore: boolean, pageIndex: 
     for (let i = 2; i < pageCount; i++) {
       pagerArray.push(i - 1);
     }
+
+
   }
   if (pagerArray.length > PAGER_COUNT - 2) {
     return [];
@@ -79,23 +81,27 @@ function Pagination<TData extends RowData>({ table }: PaginationProps<TData>) {
   return <HStack gap={2} justifyContent={"center"} py={5}>
     <IconButton
       variant={"paginationButton"}
+      size={"sm"}
       icon={<Icon as={HiOutlineChevronLeft} />}
       onClick={() => table.previousPage()}
       disabled={!table.getCanPreviousPage()} aria-label={"previous page"} />
-    <Button onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>1</Button>
+    <Button variant={"paginationButton"} size={"sm"} onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}>1</Button>
     {showPrevMore &&
       <IconButton icon={<Icon as={isHoverShowPrevMore ? HiOutlineChevronDoubleLeft : HiOutlineEllipsisHorizontal} />}
+                  size={"sm"}
                   onClick={() => table.setPageIndex(pageIndex - 5)}
                   onMouseOver={setIsHoverShowPrevMore.on}
                   onMouseOut={setIsHoverShowPrevMore.off}
                   aria-label={"show previous more"} />}
     {pagerArray.map((page) =>
-      <Button variant={"paginationButton"} key={page} onClick={() => table.setPageIndex(page)}>
+      <Button variant={"paginationButton"} size={"sm"} key={page} onClick={() => table.setPageIndex(page)}>
         {page + 1}
       </Button>,
     )}
     {showNextMore &&
       <IconButton variant={"paginationButton"}
+                  size={"sm"}
                   icon={<Icon as={isHoverShowNextMore ? HiOutlineChevronDoubleRight : HiOutlineEllipsisHorizontal} />}
                   onClick={() => table.setPageIndex(pageIndex + 5)}
                   onMouseOver={setIsHoverShowNextMore.on}
@@ -103,6 +109,7 @@ function Pagination<TData extends RowData>({ table }: PaginationProps<TData>) {
                   aria-label={"show next more"} />}
     <IconButton
       variant={"paginationButton"}
+      size={"sm"}
       icon={<Icon as={HiOutlineChevronRight} />}
       onClick={() => table.nextPage()}
       disabled={!table.getCanNextPage()} aria-label={"next page"} />

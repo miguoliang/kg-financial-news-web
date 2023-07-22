@@ -10,12 +10,12 @@ const protectedRoutes: Routes = [
   {
     key: "dashboard.data-source.list",
     path: `/dashboard/data-source/list`,
-    component: React.lazy(() => import("views/dataSource/List")),
+    component: React.lazy(() => import("views/DataSourceList")),
   },
   {
     key: "dashboard.data-source.knowledge-graph",
     path: `/dashboard/data-source/:id/knowledge-graph`,
-    component: React.lazy(() => import("views/dataSource/KnowledgeGraph")),
+    component: React.lazy(() => import("views/Graph")),
   },
 ];
 

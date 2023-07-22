@@ -24,8 +24,9 @@ const navigationRootMenuItem = defineStyle({
 
 const paginationButton = defineStyle({
   bg: "transparent",
+  _hover: { bg: "gray.50" },
 });
 
 export const buttonTheme = defineStyleConfig({
-  variants: { dropdownMenuItem, navigationRootMenuItem },
+  variants: { dropdownMenuItem, navigationRootMenuItem, paginationButton },
 });

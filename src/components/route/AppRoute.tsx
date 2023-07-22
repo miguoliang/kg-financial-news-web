@@ -1,6 +1,6 @@
 import React, { LazyExoticComponent, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import useCurrentRoute from "../../hooks/useCurrentRoute";
+import useCurrentRoute from "hooks/useCurrentRoute";
 
 type AppRouteProps = {
   component: LazyExoticComponent<(props: Record<string, any>) => JSX.Element>;

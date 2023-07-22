@@ -2,11 +2,10 @@ import { apiGetDataSources } from "services/DataSourceService";
 import { DataSource } from "models/data-source";
 import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { Link } from "react-router-dom";
-import appConfig from "configs/app.config";
 import Loading from "components/ui/Loading";
 import { useQuery } from "@tanstack/react-query";
 import usePagination from "hooks/usePagination";
-import SimpleTable from "../../components/ui/SimpleTable";
+import SimpleTable from "components/ui/SimpleTable";
 
 const columnHelper = createColumnHelper<DataSource>();
 const columns = [
@@ -14,11 +13,10 @@ const columns = [
   columnHelper.accessor("title", { header: "Title" }),
   columnHelper.accessor("createdAt", { header: "Created at" }),
   columnHelper.display({
-    header: "Operations", cell: (row) => (
-      <Link to={`${appConfig.appName}/data-source/${row.cell.getValue()}/knowledge-graph`}>
-        Knowledge Graph
-      </Link>
-    ),
+    header: "Operations",
+    cell: ({ row }) => <Link to={`/dashboard/data-source/${row.original.id}/knowledge-graph`}>
+      Knowledge Graph
+    </Link>,
   }),
 ];
 

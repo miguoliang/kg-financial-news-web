@@ -1,6 +1,6 @@
 import { Server } from "miragejs/server";
 import createPaginationResponse from "../common/createPaginationResponse";
-import { get } from "lodash";
+import { chain, get, random } from "lodash";
 
 export default function dataSource(server: Server, apiPrefix: string) {
   server.get(`${apiPrefix}/data-sources`, (schema, request) => {
@@ -8,4 +8,7 @@ export default function dataSource(server: Server, apiPrefix: string) {
     const size = Number(get(request.queryParams, "size", "10"));
     return createPaginationResponse(schema.db.DataSources, page, size);
   });
+
+  server.get(`${apiPrefix}/data-sources/:id/vertices`, (schema) =>
+    chain(schema.db.Vertices).shuffle().slice(0, random(10, 20)).value());
 }

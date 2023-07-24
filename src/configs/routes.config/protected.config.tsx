@@ -5,17 +5,17 @@ const protectedRoutes: Routes = [
   {
     key: "dashboard",
     path: `/dashboard`,
-    component: React.lazy(() => import("views/Dashboard")),
+    component: React.lazy(() => import("views/Dashboard/Dashboard")),
   },
   {
     key: "dashboard.data-source.list",
     path: `/dashboard/data-source/list`,
-    component: React.lazy(() => import("views/DataSourceList")),
+    component: React.lazy(() => import("views/Dashboard/DataSourceList")),
   },
   {
     key: "dashboard.data-source.knowledge-graph",
     path: `/dashboard/data-source/:id/knowledge-graph`,
-    component: React.lazy(() => import("views/Graph")),
+    component: React.lazy(() => import("views/Dashboard/Graph")),
   },
 ];
 

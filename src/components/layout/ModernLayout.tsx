@@ -53,7 +53,7 @@ const HeaderActionsStart = () => {
       bg={"transparent"}
       isRound={true}
       aria-label={"menu"}
-      fontSize={4}
+      fontSize={"lg"}
       icon={<Icon as={HiOutlineMenu} />}
       onClick={() => sideNav.setCollapsed(!sideNav.collapsed)}
     />

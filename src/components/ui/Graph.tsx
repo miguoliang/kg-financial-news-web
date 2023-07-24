@@ -1,18 +1,34 @@
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
+import { ECharts } from "echarts";
 import { Graph as GraphData } from "models/echarts";
 import { Box } from "@chakra-ui/react";
 
-const GraphComponent = ({ data }: { data: GraphData }) => {
+interface GraphProps {
+  data: GraphData;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+const GraphComponent = ({ data, className, style }: GraphProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const chart = echarts.init(chartRef.current!);
-    updateGraph(chart, data);
+    let chart: ECharts | undefined;
+    if (chartRef.current !== null) {
+      chart = echarts.init(chartRef.current!);
+    }
+    if (chart) {
+      updateGraph(chart, data);
+    }
+    return () => {
+      chart?.dispose();
+    };
   }, [data]);
 
   return (
-    <Box position={"absolute"} top={0} left={0} right={0} bottom={0}
+    <Box className={className}
+         style={style}
          ref={chartRef}>
     </Box>
   );
@@ -21,13 +37,6 @@ const GraphComponent = ({ data }: { data: GraphData }) => {
 function updateGraph(chart: echarts.ECharts, graph: GraphData) {
   const option = {
     tooltip: {},
-    title: {
-      text: "Knowledge Graph",
-      subtext: "Circular layout",
-      top: 0,
-      left: 0,
-      show: true,
-    },
     legend: [
       {
         data: graph.categories?.map(function(a) {

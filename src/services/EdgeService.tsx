@@ -1,7 +1,7 @@
 import ApiService from "./ApiService";
 import { Edge } from "../models/edge";
 
-export async function apiGetEdgesByVertices(vertexIds: string[]) {
+export async function apiPostEdgesByVertices(vertexIds: string[]) {
   return ApiService.fetchData<Edge[]>({
     url: "/edges-by-vertices",
     method: "post",

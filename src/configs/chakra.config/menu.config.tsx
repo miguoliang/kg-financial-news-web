@@ -15,7 +15,6 @@ const baseStyle = definePartsStyle({
   },
   item: {
     borderRadius: "lg",
-    fontSize: 1,
   },
   divider: {
     color: "gray.300",

@@ -11,9 +11,9 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { apiGetSubscriptionList } from "../../../services/AccountServices";
-import { Subscription as SubscriptionModel } from "../../../models/subscription";
-import { Loading } from "../../../components/shared";
+import { apiGetSubscriptionList } from "services/AccountServices";
+import { Subscription as SubscriptionModel } from "models/subscription";
+import Loading from "components/ui/Loading";
 
 const Subscription = () => {
   const [loading, setLoading] = useBoolean();

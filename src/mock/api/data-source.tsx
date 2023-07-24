@@ -10,5 +10,5 @@ export default function dataSource(server: Server, apiPrefix: string) {
   });
 
   server.get(`${apiPrefix}/data-sources/:id/vertices`, (schema) =>
-    chain(schema.db.Vertices).shuffle().slice(0, random(10, 20)).value());
+    chain(schema.db.Vertices).shuffle().splice(0, random(10, 20)).value());
 }

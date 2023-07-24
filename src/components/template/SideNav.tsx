@@ -70,7 +70,7 @@ const NavMenuItem = ({ item }: { item: NavigationMenuItem }) => {
         >
           <IconButton
             as={Link}
-            fontSize={5}
+            fontSize={"2xl"}
             aria-label={item.title}
             icon={item.icon}
             bg={"transparent"}
@@ -95,7 +95,7 @@ const NavMenuItem = ({ item }: { item: NavigationMenuItem }) => {
     case "title":
     default:
       return !sideNav.collapsed ? (
-        <Text px={2} textColor={"gray.500"} fontSize={1}>
+        <Text px={2} textColor={"gray.500"} fontSize={"sm"}>
           {item.title}
         </Text>
       ) : (

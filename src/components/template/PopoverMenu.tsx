@@ -165,7 +165,7 @@ export const MenuComponent = React.forwardRef<
     sideNav.collapsed && !isNested ? (
       <IconButton
         aria-label={menuItem.title}
-        fontSize={5}
+        fontSize={"2xl"}
         icon={menuItem.icon}
         bg={"transparent"}
         onClick={() =>
@@ -176,7 +176,6 @@ export const MenuComponent = React.forwardRef<
     ) : (
       <Button
         {...commonProps}
-        size={"sm"}
         onClick={() =>
           menuItem.type === "item" && menuItem.path && navigate(menuItem.path)
         }
@@ -248,9 +247,9 @@ export const MenuItem = React.forwardRef<
       {...props}
       ref={useMergeRefs([item.ref, forwardedRef])}
       type="button"
+      fontSize={"md"}
       role="menuitem"
       variant={"dropdownMenuItem"}
-      size={"sm"}
       tabIndex={isActive ? 0 : -1}
       disabled={disabled}
       {...menu.getItemProps({

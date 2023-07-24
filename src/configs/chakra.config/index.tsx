@@ -8,7 +8,7 @@ import { cardTheme } from "./card.config";
 import { buttonTheme } from "./button.config";
 import { tooltipTheme } from "./tooltip.config";
 
-import { first, join, map, mapValues } from "lodash";
+import { first, join, mapValues } from "lodash";
 import { theme as twTheme } from "twin.macro";
 
 const tailwindTheme = twTheme`` as Record<string, any>;
@@ -42,7 +42,7 @@ export const theme = extendTheme({
   lineHeights: tailwindTheme.lineHeight,
   fontWeights: tailwindTheme.fontWeight,
   fonts: mapValues(tailwindTheme.fontFamily, (value) => join(value, ",")),
-  fontSizes: map(tailwindTheme.fontSize, first),
+  fontSizes: mapValues(tailwindTheme.fontSize, first),
   zIndices: tailwindTheme.zIndex,
   components: {
     Menu: menuTheme,

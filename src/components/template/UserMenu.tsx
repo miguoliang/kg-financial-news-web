@@ -19,7 +19,7 @@ const menuList = [
   {
     label: "Dashboard",
     path: `/dashboard`,
-    icon: <Icon as={HiOutlineCog} fontSize={2} color={"gray.500"} />,
+    icon: <Icon as={HiOutlineCog} fontSize={"lg"} color={"gray.500"} />,
   },
 ];
 
@@ -30,7 +30,7 @@ export const UserMenu = () => {
     <HStack gap={2} px={2}>
       <Avatar size="sm" src="/img/avatars/thumb-1.jpg" />
       <Flex direction={"column"} alignItems={"start"}>
-        <Text fontSize={"sm"} casing={"capitalize"}>
+        <Text casing={"capitalize"}>
           user
         </Text>
         <Text fontWeight={"bold"}>{auth.user?.profile.email}</Text>
@@ -49,7 +49,7 @@ export const UserMenu = () => {
         ))}
         <MenuDivider />
         <MenuItem
-          icon={<Icon as={HiOutlineLogout} fontSize={2} color={"gray.500"} />}
+          icon={<Icon as={HiOutlineLogout} fontSize={"lg"} color={"gray.500"} />}
           onClick={() => auth.signOut()}
         >
           Sign Out

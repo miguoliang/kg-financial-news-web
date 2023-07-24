@@ -6,10 +6,18 @@ import Loading from "components/ui/Loading";
 import { useQuery } from "@tanstack/react-query";
 import usePagination from "hooks/usePagination";
 import SimpleTable from "components/ui/SimpleTable";
+import { Text } from "@chakra-ui/react";
+import { PageHeader } from "./Common";
 
 const columnHelper = createColumnHelper<DataSource>();
 const columns = [
-  columnHelper.accessor("id", { header: "ID" }),
+  columnHelper.display({
+    header: "Row number",
+    cell: ({ row, table }) => {
+      const { pageIndex, pageSize } = table.getState().pagination;
+      return <Text>{pageIndex * pageSize + row.index + 1}</Text>;
+    },
+  }),
   columnHelper.accessor("title", { header: "Title" }),
   columnHelper.accessor("createdAt", { header: "Created at" }),
   columnHelper.display({
@@ -46,6 +54,7 @@ const DataSourceList = () => {
 
   return (
     <Loading loading={isLoading} type="cover" className="h-full">
+      <PageHeader title={"Data Source List"} />
       <SimpleTable table={table} />
     </Loading>
   );

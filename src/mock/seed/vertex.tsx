@@ -4,7 +4,7 @@ import { times } from "lodash";
 import md5 from "md5";
 
 export const vertices: Vertex[] = times(100, () => {
-  const name = faker.lorem.words(3);
+  const name = faker.lorem.words(2);
   const type = faker.lorem.word();
   const id = md5(name + type);
   return {

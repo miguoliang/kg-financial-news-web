@@ -40,6 +40,7 @@ const DataSourceComponent = () => {
     queryFn: () => apiGetDataSources(new Date(), { page: pagination.pageIndex, size: pagination.pageSize })
       .then((resp) => resp.data),
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
   });
 
   const table = useReactTable({

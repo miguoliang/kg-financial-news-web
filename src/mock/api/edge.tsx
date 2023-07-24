@@ -7,7 +7,6 @@ export default function edges(server: Server, apiPrefix: string) {
     const vertexIds = JSON.parse(request.requestBody);
     const vertices = schema.db.Vertices.filter((v: Vertex) =>
       vertexIds.includes(v.id));
-    console.log("vertices", vertices);
     const pairs = flatMap(vertices, (v, i) =>
       vertices.slice(i + 1).map((v2: Vertex) => [v, v2]));
     return pairs.map(([v1, v2]) => ({

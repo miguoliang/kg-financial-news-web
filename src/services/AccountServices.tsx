@@ -1,5 +1,5 @@
 import ApiService from "./ApiService";
-import { Subscription } from "../models/subscription";
+import { Subscription } from "models";
 
 export async function apiPostChangePassword(
   previousPassword: string,

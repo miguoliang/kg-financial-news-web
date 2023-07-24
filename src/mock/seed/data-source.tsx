@@ -1,4 +1,4 @@
-import { DataSource } from "models/data-source";
+import { DataSource } from "models";
 import { faker } from "@faker-js/faker";
 import { times } from "lodash";
 import md5 from "md5";

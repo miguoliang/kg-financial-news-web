@@ -42,7 +42,7 @@ const DataSourceList = () => {
   const table = useReactTable({
     data: data?.content ?? [],
     columns,
-    pageCount: data?.totalPages ?? 0,
+    pageCount: data?.totalPages ?? 1,
     onPaginationChange: setPagination,
     state: {
       pagination,

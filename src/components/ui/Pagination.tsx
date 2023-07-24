@@ -10,45 +10,19 @@ import {
 } from "react-icons/hi";
 import { useMemo } from "react";
 import { HiOutlineEllipsisHorizontal } from "react-icons/hi2";
+import { range } from "lodash";
 
-const PAGER_COUNT = 7;
+const MIN_ELLIPSE_COUNT = 3;
 
 interface PaginationProps<TData extends RowData> {
   table: Table<TData>;
 }
 
 function getPagerArray(showPrevMore: boolean, showNextMore: boolean, pageIndex: number, pageCount: number) {
-  const pagerArray = [];
-  if (showPrevMore && !showNextMore) {
-    const startPage = pageCount - (PAGER_COUNT - 2);
-    for (let i = startPage; i < pageCount; i++) {
-      pagerArray.push(i - 1);
-    }
-  } else if (!showPrevMore && showNextMore) {
-    for (let i = 2; i < PAGER_COUNT; i++) {
-      pagerArray.push(i - 1);
-    }
-  } else if (showPrevMore && showNextMore) {
-    const offset = Math.floor(PAGER_COUNT / 2) - 1;
-    const maxRange = pageIndex >= pageCount - 2 && pageIndex <= pageCount;
-    for (
-      let i = pageIndex - offset;
-      i <= pageIndex + (maxRange ? 0 : offset);
-      i++
-    ) {
-      pagerArray.push(i - 1);
-    }
-  } else {
-    for (let i = 2; i < pageCount; i++) {
-      pagerArray.push(i - 1);
-    }
 
-
-  }
-  if (pagerArray.length > PAGER_COUNT - 2) {
-    return [];
-  }
-  return pagerArray;
+  const leftBound = showPrevMore ? Math.min(pageIndex + Math.floor(MIN_ELLIPSE_COUNT / 2), pageCount - 2) - MIN_ELLIPSE_COUNT : 1;
+  const rightBound = showNextMore ? Math.max(pageIndex - Math.floor(MIN_ELLIPSE_COUNT / 2), 1) + MIN_ELLIPSE_COUNT : pageCount - 1;
+  return range(leftBound, rightBound);
 }
 
 function Pagination<TData extends RowData>({ table }: PaginationProps<TData>) {
@@ -60,20 +34,16 @@ function Pagination<TData extends RowData>({ table }: PaginationProps<TData>) {
   const { showPrevMore, showNextMore, pagerArray } = useMemo(() => {
     let showPrevMore = false;
     let showNextMore = false;
-    if (pageCount > PAGER_COUNT) {
-      if (pageIndex > PAGER_COUNT - 2) {
-        showPrevMore = true;
-      }
-      if (pageIndex < pageCount - 2) {
-        showNextMore = true;
-      }
-      if (pageIndex >= pageCount - 3 && pageIndex <= pageCount) {
-        showNextMore = false;
-      }
-      if (pageIndex >= 1 && pageIndex <= 4) {
-        showPrevMore = false;
-      }
+    const leadingDistance = pageIndex - 1;
+    const trailingDistance = pageCount - pageIndex - 1;
+    if (leadingDistance > MIN_ELLIPSE_COUNT) {
+      showPrevMore = true;
     }
+    if (trailingDistance > MIN_ELLIPSE_COUNT) {
+      showNextMore = true;
+    }
+    setIsHoverShowNextMore.off();
+    setIsHoverShowPrevMore.off();
     const pagerArray = getPagerArray(showPrevMore, showNextMore, pageIndex, pageCount);
     return { showPrevMore, showNextMore, pagerArray };
   }, [pageIndex, pageSize, pageCount]);
@@ -81,38 +51,43 @@ function Pagination<TData extends RowData>({ table }: PaginationProps<TData>) {
   return <HStack gap={2} justifyContent={"center"} py={5}>
     <IconButton
       variant={"paginationButton"}
-      size={"sm"}
       icon={<Icon as={HiOutlineChevronLeft} />}
       onClick={() => table.previousPage()}
       disabled={!table.getCanPreviousPage()} aria-label={"previous page"} />
     <Button variant={"paginationButton"} size={"sm"} onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}>1</Button>
+            bg={pageIndex === 0 ? "purple.200" : undefined}
+            disabled={pageIndex <= 0}>1</Button>
     {showPrevMore &&
       <IconButton icon={<Icon as={isHoverShowPrevMore ? HiOutlineChevronDoubleLeft : HiOutlineEllipsisHorizontal} />}
-                  size={"sm"}
-                  onClick={() => table.setPageIndex(pageIndex - 5)}
+                  variant={"paginationButton"}
+                  fontSize={"sm"}
+                  onClick={() => table.setPageIndex(pageIndex - MIN_ELLIPSE_COUNT)}
                   onMouseOver={setIsHoverShowPrevMore.on}
                   onMouseOut={setIsHoverShowPrevMore.off}
                   aria-label={"show previous more"} />}
     {pagerArray.map((page) =>
-      <Button variant={"paginationButton"} size={"sm"} key={page} onClick={() => table.setPageIndex(page)}>
+      <Button variant={"paginationButton"} size={"sm"} key={page} onClick={() => table.setPageIndex(page)}
+              bg={pageIndex === page ? "purple.200" : undefined}
+      >
         {page + 1}
       </Button>,
     )}
     {showNextMore &&
       <IconButton variant={"paginationButton"}
-                  size={"sm"}
                   icon={<Icon as={isHoverShowNextMore ? HiOutlineChevronDoubleRight : HiOutlineEllipsisHorizontal} />}
-                  onClick={() => table.setPageIndex(pageIndex + 5)}
+                  fontSize={"sm"}
+                  onClick={() => table.setPageIndex(pageIndex + MIN_ELLIPSE_COUNT)}
                   onMouseOver={setIsHoverShowNextMore.on}
                   onMouseOut={setIsHoverShowNextMore.off}
                   aria-label={"show next more"} />}
+    {pageCount > 1 && <Button variant={"paginationButton"} size={"sm"} onClick={() => table.setPageIndex(pageCount - 1)}
+                              bg={pageIndex === pageCount - 1 ? "purple.200" : undefined}
+                              disabled={pageIndex >= pageCount - 1}>{pageCount}</Button>}
     <IconButton
       variant={"paginationButton"}
-      size={"sm"}
       icon={<Icon as={HiOutlineChevronRight} />}
       onClick={() => table.nextPage()}
-      disabled={!table.getCanNextPage()} aria-label={"next page"} />
+      disabled={pageIndex >= pageCount - 1} aria-label={"next page"} />
     <Spacer />
     <Select
       options={[10, 20, 30, 40, 50].map(pageSize => ({ value: pageSize, label: `${pageSize} / Page` }))}

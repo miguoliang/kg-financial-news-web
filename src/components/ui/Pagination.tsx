@@ -19,7 +19,6 @@ interface PaginationProps<TData extends RowData> {
 }
 
 function getPagerArray(showPrevMore: boolean, showNextMore: boolean, pageIndex: number, pageCount: number) {
-
   const leftBound = showPrevMore ? Math.min(pageIndex + Math.floor(MIN_ELLIPSE_COUNT / 2), pageCount - 2) - MIN_ELLIPSE_COUNT : 1;
   const rightBound = showNextMore ? Math.max(pageIndex - Math.floor(MIN_ELLIPSE_COUNT / 2), 1) + MIN_ELLIPSE_COUNT : pageCount - 1;
   return range(leftBound, rightBound);

@@ -1,8 +1,8 @@
 import React from "react";
-import {USER_SCOPE} from "./oidc.config";
-import {Icon} from "@chakra-ui/react";
-import {HiOutlineComputerDesktop} from "react-icons/hi2";
-import {HiOutlineUsers} from "react-icons/hi";
+import { USER_SCOPE } from "./oidc.config";
+import { Icon } from "@chakra-ui/react";
+import { HiOutlineComputerDesktop } from "react-icons/hi2";
+import { HiOutlineShare, HiOutlineUsers } from "react-icons/hi";
 
 export type NavigationMenuItem = {
   key: string;
@@ -32,21 +32,20 @@ const navigationConfig: NavigationMenuItem[] = [
     authority: [USER_SCOPE],
   },
   {
-    key: "data-source",
+    key: "dashboard.data-source",
+    path: "/dashboard/data-sources",
     title: "Data Source",
     icon: <Icon as={HiOutlineUsers} />,
-    type: "collapse",
+    type: "item",
     authority: [USER_SCOPE],
-    children: [
-      {
-        key: "data-source.list",
-        path: "/dashboard/data-source/list",
-        title: "List",
-        type: "item",
-        authority: [USER_SCOPE],
-        parentKey: "data-source",
-      },
-    ],
+  },
+  {
+    key: "dashboard.graph",
+    path: "/dashboard/graph",
+    title: "Graph",
+    icon: <Icon as={HiOutlineShare} />,
+    type: "item",
+    authority: [USER_SCOPE],
   },
 ];
 

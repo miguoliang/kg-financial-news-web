@@ -5,7 +5,6 @@ import ProtectedRoute from "components/route/ProtectedRoute";
 import PublicRoute from "components/route/PublicRoute";
 import AuthorityGuard from "components/route/AuthorityGuard";
 import AppRoute from "components/route/AppRoute";
-import { Heading } from "@chakra-ui/react";
 import Loading from "components/ui/Loading";
 
 const AllRoutes = () => {
@@ -18,16 +17,6 @@ const AllRoutes = () => {
             path={route.path}
             element={
               <AuthorityGuard authority={route.authority}>
-                {route.meta?.header && (
-                  <Heading
-                    as={"h3"}
-                    size={"1.5rem"}
-                    fontWeight={"semibold"}
-                    marginBottom={4}
-                  >
-                    {route.meta.header}
-                  </Heading>
-                )}
                 <AppRoute
                   routeKey={route.key}
                   component={route.component}
@@ -41,7 +30,7 @@ const AllRoutes = () => {
       <Route path="/" element={<PublicRoute />}>
         {publicRoutes.map((route) => (
           <Route
-            key={route.path}
+            key={route.key}
             path={route.path}
             element={
               <AppRoute

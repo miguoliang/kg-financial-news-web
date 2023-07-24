@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 import { Menu, MenuItem } from "./PopoverMenu";
 import { HiChevronRight } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
+import useCurrentRoute from "../../hooks/useCurrentRoute";
 
 const SideNav = () => {
   const sideNav = useSideNav();
@@ -59,6 +60,8 @@ const SideNav = () => {
 const NavMenuItem = ({ item }: { item: NavigationMenuItem }) => {
   const sideNav = useSideNav();
   const navigate = useNavigate();
+  const currentRoute = useCurrentRoute();
+  console.debug("currentRoute", currentRoute.key)
   switch (item.type) {
     case "item":
       return sideNav.collapsed ? (
@@ -81,6 +84,7 @@ const NavMenuItem = ({ item }: { item: NavigationMenuItem }) => {
         <Button
           variant={"navigationRootMenuItem"}
           leftIcon={item.icon}
+          bg={currentRoute.key === item.key ? "gray.200" : "transparent"}
           onClick={() => item.path && navigate(item.path)}
         >
           {item.title}

@@ -2,7 +2,7 @@ import React from "react";
 import UserMenu from "components/template/UserMenu";
 import View from "views";
 import { SignInAndSignUp } from "./ModernLayout";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "hooks/useAuth";
 import {
   Box,
   Flex,

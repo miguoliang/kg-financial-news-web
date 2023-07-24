@@ -22,13 +22,16 @@ const columns = [
   columnHelper.accessor("createdAt", { header: "Created at" }),
   columnHelper.display({
     header: "Operations",
-    cell: ({ row }) => <Link to={`/dashboard/data-source/${row.original.id}/knowledge-graph`}>
+    cell: ({ row }) => <Link to={{
+      pathname: `/dashboard/graph`,
+      search: "?dataSourceId=" + row.original.id,
+    }}>
       Knowledge Graph
     </Link>,
   }),
 ];
 
-const DataSourceList = () => {
+const DataSourceComponent = () => {
 
   const [pagination, setPagination] = usePagination();
 
@@ -54,10 +57,10 @@ const DataSourceList = () => {
 
   return (
     <Loading loading={isLoading} type="cover" className="h-full">
-      <PageHeader title={"Data Source List"} />
+      <PageHeader title={"Data Sources"} />
       <SimpleTable table={table} />
     </Loading>
   );
 };
 
-export default DataSourceList;
+export default DataSourceComponent;

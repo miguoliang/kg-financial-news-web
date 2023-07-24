@@ -13,9 +13,9 @@ const AppRoute = ({
   ...props
 }: AppRouteProps) => {
   const location = useLocation();
-  const themeStore = useCurrentRoute();
+  const currentRoute = useCurrentRoute();
   useEffect(() => {
-    themeStore.setKey(routeKey);
+    currentRoute.setKey(routeKey);
   }, [location]);
   return <Component {...props} />;
 };

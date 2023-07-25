@@ -1,4 +1,4 @@
-import { HStack, Spacer, Text, VStack } from "@chakra-ui/react";
+import { Heading, HStack, Spacer, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 
 interface PageHeaderProps {
@@ -10,8 +10,8 @@ interface PageHeaderProps {
 const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(({ title, description, children }, ref) => {
   return (
     <HStack pb={4} ref={ref}>
-      <VStack flexShrink={0}>
-        <Text fontWeight={"bold"} fontSize={"xl"} lineHeight={7} fontFamily={"sans-serif"}>{title}</Text>
+      <VStack flexShrink={0} alignItems={"left"}>
+        <Heading fontWeight={"bold"} fontSize={"xl"} lineHeight={7} fontFamily={"sans-serif"}>{title}</Heading>
         {description && <Text color={"gray.500"}>{description}</Text>}
       </VStack>
       <Spacer />

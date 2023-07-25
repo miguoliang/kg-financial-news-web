@@ -1,15 +1,22 @@
 import { Vertex } from "models";
-import { Badge, Box, CloseButton, Divider, Heading, HStack, List, Text } from "@chakra-ui/react";
+import { Box, CloseButton, Divider, Heading, HStack, List, Text } from "@chakra-ui/react";
 import AsyncSelect from "react-select/async";
 import { apiGetVertices } from "services/VertexService";
 import { useQueryClient } from "@tanstack/react-query";
-import { OptionProps } from "react-select";
 import { useContext } from "react";
 import { GraphContext } from "./Graph";
 import { AnimatePresence, motion } from "framer-motion";
+import { SingleValue } from "react-select";
+import { some } from "lodash";
 
 interface NodeListProps {
   onHover?: (vertex: Vertex) => void;
+}
+
+type CustomOption = {
+  value: string;
+  label: string;
+  payload: Vertex;
 }
 
 const NodeList = ({ onHover }: NodeListProps) => {
@@ -25,11 +32,19 @@ const NodeList = ({ onHover }: NodeListProps) => {
     return (res as Vertex[]).map(v => ({
       value: v.id,
       label: v.name,
+      payload: v,
     }));
   };
 
   const handleRemoveVertex = (vertex: Vertex) => {
     setVertices(vertices.filter(v => v !== vertex));
+  };
+
+  const handleOptionSelected = (option: SingleValue<CustomOption>) => {
+    if (!option || some(vertices, it => it.id === option.payload.id)) {
+      return;
+    }
+    setVertices([...vertices, option.payload]);
   };
 
   return (
@@ -38,10 +53,11 @@ const NodeList = ({ onHover }: NodeListProps) => {
         <Heading size={"sm"}>Nodes</Heading>
         <AsyncSelect className={"flex-grow"} placeholder={"Search..."}
                      loadOptions={loadOptions}
+                     value={null}
+                     onChange={handleOptionSelected}
                      components={{
                        DropdownIndicator: () => null,
                        IndicatorSeparator: () => null,
-                       Option: CustomOption,
                      }} />
       </HStack>
       <Divider my={4} color={"gray.400"} />
@@ -63,15 +79,6 @@ const NodeList = ({ onHover }: NodeListProps) => {
         </AnimatePresence>
       </List>
     </Box>
-  );
-};
-
-const CustomOption = ({ innerProps, isDisabled, label, isSelected }: OptionProps) => {
-  return (
-    !isDisabled ? <HStack {...innerProps} lineHeight={7} _hover={{ bg: "gray.300" }}>
-      <Text>{label}</Text>
-      {isSelected && <Badge>Selected</Badge>}
-    </HStack> : null
   );
 };
 

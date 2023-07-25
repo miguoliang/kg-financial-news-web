@@ -1,11 +1,12 @@
 import { Vertex } from "models";
-import { Badge, Box, CloseButton, Divider, Heading, HStack, List, ListItem, Text } from "@chakra-ui/react";
+import { Badge, Box, CloseButton, Divider, Heading, HStack, List, Text } from "@chakra-ui/react";
 import AsyncSelect from "react-select/async";
-import { apiGetVertices } from "../../../services/VertexService";
+import { apiGetVertices } from "services/VertexService";
 import { useQueryClient } from "@tanstack/react-query";
 import { OptionProps } from "react-select";
 import { useContext } from "react";
 import { GraphContext } from "./Graph";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface NodeListProps {
   onHover?: (vertex: Vertex) => void;
@@ -28,7 +29,7 @@ const NodeList = ({ onHover }: NodeListProps) => {
   };
 
   const handleRemoveVertex = (vertex: Vertex) => {
-    setVertices(vertices.filter(v => v.id !== vertex.id));
+    setVertices(vertices.filter(v => v !== vertex));
   };
 
   return (
@@ -44,16 +45,22 @@ const NodeList = ({ onHover }: NodeListProps) => {
                      }} />
       </HStack>
       <Divider my={4} color={"gray.400"} />
-      <List overflowY={"auto"}>
-        {vertices.map((v, i) => <ListItem key={i} lineHeight={10} px={2} borderRadius={"md"}
-                                          _hover={{ bg: "gray.100" }}
-                                          onMouseOver={() => onHover?.(v)}>
-          <HStack>
-            <Text flexShrink={0} flexGrow={1}>{v.name}</Text>
-            <CloseButton size={"sm"} borderRadius={"full"} _hover={{ color: "white", bg: "red.500" }}
-                         onClick={() => handleRemoveVertex(v)} />
-          </HStack>
-        </ListItem>)}
+      <List>
+        <AnimatePresence>
+          {vertices.map((v) => (
+            <motion.li key={v.id} className={"leading-10 px-2 rounded-lg hover:bg-gray-100"}
+                       exit={{ opacity: 0, height: 0 }}
+                       initial={{ opacity: 1, height: "auto" }}
+                       transition={{ duration: 0.2 }}
+                       onMouseOver={() => onHover?.(v)}>
+              <HStack>
+                <Text flexShrink={0} flexGrow={1}>{v.name}</Text>
+                <CloseButton size={"sm"} borderRadius={"full"} _hover={{ color: "white", bg: "red.500" }}
+                             onClick={() => handleRemoveVertex(v)} />
+              </HStack>
+            </motion.li>
+          ))}
+        </AnimatePresence>
       </List>
     </Box>
   );

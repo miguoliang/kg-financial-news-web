@@ -10,6 +10,9 @@ export default defineConfig({
     macrosPlugin(),
     react({
       fastRefresh: true,
+      babel: {
+        exclude: "node_modules/**",
+      }
     }),
   ],
   build: {

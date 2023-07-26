@@ -1,6 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
 import Layout from "components/layout";
-import mockServer from "mock";
 import appConfig from "configs/app.config";
 import { ChakraBaseProvider } from "@chakra-ui/react";
 import { theme } from "configs/chakra.config";
@@ -12,8 +11,10 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
  * If you wish to enable mock api
  */
 if (appConfig.runtime !== "production" && appConfig.enableMock) {
-  console.log("mock server on, environment:", appConfig.runtime);
-  mockServer({ environment: appConfig.runtime });
+  import("mock").then(({ default: mockServer }) => {
+    console.log("mock server on, environment:", appConfig.runtime);
+    mockServer({ environment: appConfig.runtime });
+  });
 }
 
 const queryClient = new QueryClient();

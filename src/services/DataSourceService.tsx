@@ -1,46 +1,32 @@
-import ApiService from "./ApiService";
-import { DataSource } from "../models/data-source";
-import { PaginationRequest, PaginationResponse } from "../models/pagination";
-import { Vertex } from "../models/vertex";
-import { Category, Graph, Link, Node } from "../models/echarts";
-import { Edge } from "../models/edge";
+import { DataSource, PaginationRequest, PaginationResponse, Vertex } from "../models";
+import { createQuery } from "react-query-kit";
+import AxiosFetch from "./AxiosFetch";
 import dayjs from "dayjs";
 
-export async function apiGetDataSources(
-  date?: Date,
-  pageable?: PaginationRequest,
-) {
-  return ApiService.fetchData<PaginationResponse<DataSource>>({
-    url: "/data-sources",
-    method: "get",
-    params: {
-      date: dayjs(date).format("YYYY-MM-DD"),
-      ...pageable,
-    },
-  });
-}
+type GetDataSourcesParams = {
+  date?: Date;
+} & PaginationRequest;
 
-export async function apiGetDataSourceVertices(dataSourceId: string) {
-  return ApiService.fetchData<Vertex[]>({
-    url: `/data-sources/${dataSourceId}/vertices`,
-    method: "get",
-  });
-}
+type GetDataSourcesResponse = PaginationResponse<DataSource>;
 
-export function makeGraph(vertices: Vertex[], edges: Edge[]) {
-  const nodes: Node[] = [];
-  const categories: Category[] = [];
-  vertices.forEach((vertex, index) => {
-    nodes.push({
-      id: vertex.id,
-      name: vertex.name,
-      category: index,
-    });
-    categories.push({ name: vertex.name });
-  });
-  const links: Link[] = edges.map((edge) => ({
-    source: edge.inVertexId,
-    target: edge.outVertexId,
-  }));
-  return { nodes, links, categories } as Graph;
-}
+export const useGetDataSources = createQuery<GetDataSourcesResponse, GetDataSourcesParams>({
+  primaryKey: "get.data-sources",
+  queryFn: ({ queryKey: [, { date, ...rest }] }) =>
+    AxiosFetch({
+      url: "/data-sources",
+      method: "get",
+      params: {
+        date: dayjs(date).format("YYYY-MM-DD"),
+        ...rest,
+      },
+    }).then((resp) => resp.data),
+});
+
+export const useGetVerticesByDataSource = createQuery<Vertex[], string>({
+  primaryKey: "get.data-sources.vertices",
+  queryFn: ({ queryKey: [, id] }) =>
+    AxiosFetch({
+      url: `/data-sources/${id}/vertices`,
+      method: "get",
+    }).then((resp) => resp.data),
+});

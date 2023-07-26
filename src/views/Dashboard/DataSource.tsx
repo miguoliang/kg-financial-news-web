@@ -1,13 +1,12 @@
-import { apiGetDataSources } from "services/DataSourceService";
 import { DataSource } from "models/data-source";
 import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { Link } from "react-router-dom";
 import Loading from "components/ui/Loading";
-import { useQuery } from "@tanstack/react-query";
 import usePagination from "hooks/usePagination";
 import SimpleTable from "components/ui/SimpleTable";
 import { Text } from "@chakra-ui/react";
 import { PageHeader } from "./Common";
+import { useGetDataSources } from "../../services";
 
 const columnHelper = createColumnHelper<DataSource>();
 const columns = [
@@ -35,12 +34,12 @@ const DataSourceComponent = () => {
 
   const [pagination, setPagination] = usePagination();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["dataSourceList", pagination],
-    queryFn: () => apiGetDataSources(new Date(), { page: pagination.pageIndex, size: pagination.pageSize })
-      .then((resp) => resp.data),
-    keepPreviousData: true,
-    refetchOnWindowFocus: false,
+  const { data, isLoading } = useGetDataSources({
+    variables: {
+      date: new Date(),
+      page: pagination.pageIndex,
+      size: pagination.pageSize,
+    },
   });
 
   const table = useReactTable({

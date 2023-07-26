@@ -1,23 +1,25 @@
-import ApiService from "./ApiService";
 import { Subscription } from "models";
+import AxiosFetch from "./AxiosFetch";
+import { createQuery } from "react-query-kit";
 
-export async function apiPostChangePassword(
-  previousPassword: string,
-  proposedPassword: string,
-) {
-  return ApiService.fetchData({
+type PostAccountChangePasswordRequestBody = {
+  previousPassword: string;
+  proposedPassword: string;
+}
+
+export const usePostAccountChangePassword = createQuery<any, PostAccountChangePasswordRequestBody>({
+  primaryKey: "post.account.change-password",
+  queryFn: ({ queryKey: [, data] }) => AxiosFetch({
     url: "/account/change-password",
     method: "post",
-    data: {
-      previousPassword,
-      proposedPassword,
-    },
-  });
-}
+    data,
+  }),
+});
 
-export async function apiGetSubscriptionList() {
-  return ApiService.fetchData<Subscription[]>({
-    url: "/account/subscriptions",
+export const useGetAccountSubscriptions = createQuery({
+  primaryKey: "get.account.subscriptions",
+  queryFn: () => AxiosFetch<Subscription[]>({
+    url: `/account/subscriptions`,
     method: "get",
-  });
-}
+  }).then(resp => resp.data),
+});

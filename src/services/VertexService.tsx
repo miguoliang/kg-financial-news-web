@@ -1,14 +1,18 @@
-import ApiService from "./ApiService";
-import { PaginationResponse, Vertex } from "models";
+import { PaginationRequest, PaginationResponse, Vertex } from "models";
+import { createQuery } from "react-query-kit";
+import AxiosFetch from "./AxiosFetch";
 
-export async function apiGetVertices(q: string, page: number = 0, size: number = 10) {
-  return ApiService.fetchData<PaginationResponse<Vertex>>({
+type GetVerticesResponse = PaginationResponse<Vertex>;
+
+type GetVerticesParams = {
+  q: string;
+} & PaginationRequest;
+
+export const useGetVertices = createQuery<GetVerticesResponse, GetVerticesParams>({
+  primaryKey: "get.vertices",
+  queryFn: ({ queryKey: [, params] }) => AxiosFetch({
     url: "/vertices",
     method: "get",
-    params: {
-      q,
-      page,
-      size,
-    },
-  });
-}
+    params,
+  }),
+});

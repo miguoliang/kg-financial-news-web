@@ -1,13 +1,13 @@
 import { Vertex } from "models";
-import { Box, CloseButton, Divider, Heading, HStack, List, Text } from "@chakra-ui/react";
+import { CloseButton, Divider, Heading, HStack, List, Text, VStack } from "@chakra-ui/react";
 import AsyncSelect from "react-select/async";
-import { apiGetVertices } from "services/VertexService";
 import { useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { GraphContext } from "./Graph";
 import { AnimatePresence, motion } from "framer-motion";
 import { SingleValue } from "react-select";
 import { some } from "lodash";
+import { useGetVertices } from "../../../services";
 
 interface NodeListProps {
   onHover?: (vertex: Vertex) => void;
@@ -24,12 +24,16 @@ const NodeList = ({ onHover }: NodeListProps) => {
   const queryClient = useQueryClient();
   const { vertices, setVertices } = useContext(GraphContext)!;
   const loadOptions = async (inputValue: string) => {
+    if (!inputValue) {
+      return Promise.resolve([]);
+    }
+    const queryKey = useGetVertices.getKey({ q: inputValue, page: 0, size: 10 });
+    const queryFn = useGetVertices.queryFn;
     const res = await queryClient.fetchQuery({
-      queryKey: ["vertices", { q: inputValue, page: 0, size: 10 }],
-      queryFn: () => apiGetVertices(inputValue, 0, 10).then(resp => resp.data.content),
-      initialData: [],
+      queryKey,
+      queryFn,
     });
-    return (res as Vertex[]).map(v => ({
+    return res.content.map(v => ({
       value: v.id,
       label: v.name,
       payload: v,
@@ -48,10 +52,10 @@ const NodeList = ({ onHover }: NodeListProps) => {
   };
 
   return (
-    <Box p={4}>
+    <VStack p={4} position={"relative"} alignItems={"stretch"} h={"full"}>
       <HStack justifyContent={"space-between"} gap={20}>
         <Heading size={"sm"}>Nodes</Heading>
-        <AsyncSelect className={"flex-grow"} placeholder={"Search..."}
+        <AsyncSelect className={"flex-grow"} placeholder={"Search and add a node..."}
                      loadOptions={loadOptions}
                      value={null}
                      onChange={handleOptionSelected}
@@ -61,7 +65,7 @@ const NodeList = ({ onHover }: NodeListProps) => {
                      }} />
       </HStack>
       <Divider my={4} color={"gray.400"} />
-      <List>
+      <List overflowY={"auto"} flexGrow={1}>
         <AnimatePresence>
           {vertices.map((v) => (
             <motion.li key={v.id} className={"leading-10 px-2 rounded-lg hover:bg-gray-100"}
@@ -78,7 +82,7 @@ const NodeList = ({ onHover }: NodeListProps) => {
           ))}
         </AnimatePresence>
       </List>
-    </Box>
+    </VStack>
   );
 };
 

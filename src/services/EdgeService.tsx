@@ -1,10 +1,12 @@
-import ApiService from "./ApiService";
-import { Edge } from "../models/edge";
+import { createQuery } from "react-query-kit";
+import AxiosFetch from "./AxiosFetch";
+import { Edge } from "../models";
 
-export async function apiPostEdgesByVertices(vertexIds: string[]) {
-  return ApiService.fetchData<Edge[]>({
+export const useGetEdgesByVertices = createQuery<Edge[], string[]>({
+  primaryKey: "get.edges-by-vertices",
+  queryFn: ({ queryKey: [, data] }) => AxiosFetch({
     url: "/edges-by-vertices",
     method: "post",
-    data: vertexIds,
-  });
-}
+    data,
+  }),
+});

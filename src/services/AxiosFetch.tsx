@@ -5,12 +5,12 @@ import { toast } from "hooks/useToast";
 
 const unauthorizedCode = [401];
 
-const BaseService = axios.create({
+const AxiosFetch = axios.create({
   timeout: 60000,
   baseURL: appConfig.apiPrefix,
 });
 
-BaseService.interceptors.request.use(
+AxiosFetch.interceptors.request.use(
   async (config) => {
     if (appConfig.runtime !== "production" && appConfig.enableMock) {
       return config;
@@ -30,7 +30,7 @@ BaseService.interceptors.request.use(
   },
 );
 
-BaseService.interceptors.response.use(
+AxiosFetch.interceptors.response.use(
   (response) => response,
   (error) => {
     const { response } = error;
@@ -57,4 +57,4 @@ const toastAndRedirectToLogin = () => {
   });
 };
 
-export default BaseService;
+export default AxiosFetch;

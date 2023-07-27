@@ -5,13 +5,11 @@ import { Vertex } from "models";
 export default function edges(server: Server, apiPrefix: string) {
   server.post(`${apiPrefix}/edges-by-vertices`, (schema, request) => {
     const vertexIds = JSON.parse(request.requestBody);
-    const vertices = schema.db.Vertices.filter((v: Vertex) =>
-      vertexIds.includes(v.id));
-    const pairs = flatMap(vertices, (v, i) =>
-      vertices.slice(i + 1).map((v2: Vertex) => [v, v2]));
+    const pairs = flatMap(vertexIds, (v, i) =>
+      vertexIds.slice(i + 1).map((v2: Vertex) => [v, v2]));
     return pairs.map(([v1, v2]) => ({
-      inVertexId: v1.id,
-      outVertexId: v2.id,
+      inVertexId: v1,
+      outVertexId: v2,
       name: "associated with",
     }));
   });

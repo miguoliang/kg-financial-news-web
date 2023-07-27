@@ -14,5 +14,5 @@ export const useGetVertices = createQuery<GetVerticesResponse, GetVerticesParams
     url: "/vertices",
     method: "get",
     params,
-  }),
+  }).then(res => res.data),
 });

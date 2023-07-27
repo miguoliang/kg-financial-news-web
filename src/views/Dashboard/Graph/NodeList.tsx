@@ -3,11 +3,11 @@ import { CloseButton, Divider, Heading, HStack, List, Text, VStack } from "@chak
 import AsyncSelect from "react-select/async";
 import { useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
-import { GraphContext } from "./Graph";
 import { AnimatePresence, motion } from "framer-motion";
 import { SingleValue } from "react-select";
-import { some } from "lodash";
-import { useGetVertices } from "../../../services";
+import some from "lodash/some";
+import { useGetVertices } from "services";
+import { GraphContext } from "./context";
 
 interface NodeListProps {
   onHover?: (vertex: Vertex) => void;

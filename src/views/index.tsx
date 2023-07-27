@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { protectedRoutes, publicRoutes } from "configs/routes.config";
+import { protectedRoutes, publicRoutes } from "configs/routes";
 import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "components/route/ProtectedRoute";
 import PublicRoute from "components/route/PublicRoute";

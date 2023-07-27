@@ -1,6 +1,6 @@
 import { Server } from "miragejs/server";
 import { Vertex } from "models";
-import { get } from "lodash";
+import get from 'lodash/get';
 import createPaginationResponse from "../common/createPaginationResponse";
 
 export default function vertices(server: Server, apiPrefix: string) {

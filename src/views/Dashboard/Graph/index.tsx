@@ -14,13 +14,7 @@ import { HiOutlineArrowDownTray, HiOutlineArrowUpTray } from "react-icons/hi2";
 import { saveAs } from "file-saver";
 import { useGetEdgesByVertices, useGetVerticesByDataSource } from "services";
 import { useQueryClient } from "@tanstack/react-query";
-
-interface GraphContextProps {
-  vertices: Vertex[];
-  setVertices: (vertices: Vertex[]) => void;
-}
-
-export const GraphContext = React.createContext<GraphContextProps | null>(null);
+import { GraphContext } from "./context";
 
 const Graph = () => {
 

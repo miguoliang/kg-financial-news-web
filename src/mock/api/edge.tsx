@@ -1,6 +1,6 @@
 import { Server } from "miragejs/server";
-import { flatMap } from "lodash";
-import { Vertex } from "../../models/vertex";
+import flatMap from "lodash/flatMap";
+import { Vertex } from "models";
 
 export default function edges(server: Server, apiPrefix: string) {
   server.post(`${apiPrefix}/edges-by-vertices`, (schema, request) => {

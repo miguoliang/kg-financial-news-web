@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { intersection } from "lodash";
+import intersection from "lodash/intersection";
 import { Stack } from "@chakra-ui/react";
 
 export type AuthorityGuardType = PropsWithChildren<{

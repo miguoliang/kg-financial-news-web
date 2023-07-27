@@ -1,6 +1,6 @@
 import { Vertex } from "models";
 import { faker } from "@faker-js/faker";
-import { times } from "lodash";
+import times from "lodash/times";
 import md5 from "md5";
 
 export const vertices: Vertex[] = times(100, () => {

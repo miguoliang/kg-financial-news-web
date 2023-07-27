@@ -1,6 +1,6 @@
 import React, { ForwardedRef, forwardRef, ReactNode } from "react";
-import classNames from "classnames";
 import { Spinner } from "@chakra-ui/react";
+import join from "lodash/join";
 
 const DefaultLoading = forwardRef(
   (props: LoadingProps, ref: ForwardedRef<any>) => {
@@ -18,10 +18,7 @@ const DefaultLoading = forwardRef(
         Component,
         {
           ref,
-          className: classNames(
-            className,
-            !customLoader && "flex items-center justify-center h-full",
-          ),
+          className: `${className} ${!customLoader && "flex items-center justify-center h-full"}`,
         },
         children,
         customLoader ? (
@@ -61,7 +58,7 @@ const CoveredLoading = forwardRef(
       Component,
       {
         ref,
-        className: classNames(loading ? "relative" : "", className),
+        className: join(loading ? "relative" : "", className),
       },
       children,
       loading && (

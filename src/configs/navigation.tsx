@@ -1,5 +1,5 @@
 import React from "react";
-import { USER_SCOPE } from "./oidc.config";
+import { USER_SCOPE } from "./oidc";
 import { Icon } from "@chakra-ui/react";
 import { HiOutlineComputerDesktop } from "react-icons/hi2";
 import { HiOutlineShare, HiOutlineUsers } from "react-icons/hi";
@@ -16,7 +16,7 @@ export type NavigationMenuItem = {
   parentKey?: string;
 };
 
-const navigationConfig: NavigationMenuItem[] = [
+const navigation: NavigationMenuItem[] = [
   {
     key: "apps",
     title: "APPS",
@@ -49,4 +49,4 @@ const navigationConfig: NavigationMenuItem[] = [
   },
 ];
 
-export default navigationConfig;
+export default navigation;

@@ -8,17 +8,37 @@ export default defineConfig({
   base: "./",
   plugins: [
     macrosPlugin(),
-    react({
-      fastRefresh: true,
-      babel: {
-        exclude: "node_modules/**",
-      }
-    }),
+    react(),
   ],
   build: {
     outDir: "build",
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes("node_modules/echarts") || id.includes("node_modules/zrender")) {
+            return "vendors-echarts";
+          } else if (id.includes("node_modules/@chakra-ui") ||
+            id.includes("node_modules/@emotion") ||
+            id.includes("node_modules/framer-motion") ||
+            id.includes("node_modules/@popperjs") ||
+            id.includes("node_modules/lodash.mergewith") ||
+            id.includes("node_modules/@tanstack/react-table") ||
+            id.includes("node_modules/react-select") ||
+            id.includes("node_modules/react-icons")) {
+            return "vendors-ui";
+          } else if (id.includes("node_modules")) {
+            return "vendors-misc";
+          }
+        },
+      },
+    },
   },
-  server: { open: true, port: 3000 },
+  server: {
+    open: true, port: 3000, watch: {
+      usePolling: true,
+    },
+  },
   define: {
     "process.env": `"{}"`,
   },

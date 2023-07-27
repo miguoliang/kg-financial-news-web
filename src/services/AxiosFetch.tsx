@@ -1,5 +1,5 @@
 import axios from "axios";
-import appConfig from "configs/app.config";
+import appConfig from "configs/app";
 import { useAuth } from "hooks/useAuth";
 import { toast } from "hooks/useToast";
 

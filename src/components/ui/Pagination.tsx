@@ -10,7 +10,7 @@ import {
 } from "react-icons/hi";
 import { useMemo } from "react";
 import { HiOutlineEllipsisHorizontal } from "react-icons/hi2";
-import { range } from "lodash";
+import range from "lodash/range";
 
 const MIN_ELLIPSE_COUNT = 3;
 

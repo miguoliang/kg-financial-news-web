@@ -1,14 +1,15 @@
 import { extendTheme } from "@chakra-ui/react";
-import { menuTheme } from "./menu.config";
-import { tableTheme } from "./table.config";
-import { inputTheme } from "./input.config";
-import { formLabelTheme } from "./form-label.config";
-import { formErrorTheme } from "./form-error.config";
-import { cardTheme } from "./card.config";
-import { buttonTheme } from "./button.config";
-import { tooltipTheme } from "./tooltip.config";
-
-import { first, join, mapValues } from "lodash";
+import { menuTheme } from "./menu";
+import { tableTheme } from "./table";
+import { inputTheme } from "./input";
+import { formLabelTheme } from "./form-label";
+import { formErrorTheme } from "./form-error";
+import { cardTheme } from "./card";
+import { buttonTheme } from "./button";
+import { tooltipTheme } from "./tooltip";
+import first from "lodash/first";
+import join from "lodash/join";
+import mapValues from "lodash/mapValues";
 import { theme as twTheme } from "twin.macro";
 
 const tailwindTheme = twTheme`` as Record<string, any>;

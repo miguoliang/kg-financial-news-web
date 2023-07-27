@@ -12,7 +12,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useSideNav } from "hooks/useSideNav";
-import navigationMenu, { NavigationMenuItem } from "configs/navigation.config";
+import navigationMenu, { NavigationMenuItem } from "configs/navigation";
 import { motion } from "framer-motion";
 import { Menu, MenuItem } from "./PopoverMenu";
 import { HiChevronRight } from "react-icons/hi";

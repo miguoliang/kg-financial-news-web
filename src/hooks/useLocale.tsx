@@ -1,4 +1,4 @@
-import appConfig from "configs/app.config";
+import appConfig from "configs/app";
 import { create } from "zustand";
 
 interface LocaleStore {

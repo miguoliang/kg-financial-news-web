@@ -14,9 +14,10 @@ import {
 } from "@chakra-ui/react";
 import { Field, Formik } from "formik";
 import * as Yup from "yup";
-import { apiPostChangePassword } from "../../../services/AccountServices";
-import { useAuth } from "../../../hooks/useAuth";
-import { find } from "lodash";
+import { useAuth } from "hooks/useAuth";
+import find from "lodash/find";
+import { useQueryClient } from "@tanstack/react-query";
+import { usePostAccountChangePassword } from "services";
 
 const ChangePasswordSchema = Yup.object().shape({
   currentPassword: Yup.string().required("Required"),
@@ -28,6 +29,7 @@ const ChangePasswordSchema = Yup.object().shape({
 });
 
 const Password = () => {
+  const queryClient = useQueryClient();
   const user = useAuth((state) => state.user);
   const userPrimaryIdentity = find(
     user?.profile.identities as Array<any>,
@@ -56,12 +58,13 @@ const Password = () => {
           confirmNewPassword: "",
         }}
         validationSchema={ChangePasswordSchema}
-        onSubmit={async (values) => {
-          await apiPostChangePassword(
-            values.currentPassword,
-            values.newPassword,
-          );
-        }}
+        onSubmit={async (values) => await queryClient.fetchQuery({
+          queryKey: usePostAccountChangePassword.getKey({
+            previousPassword: values.currentPassword,
+            proposedPassword: values.newPassword,
+          }),
+          queryFn: usePostAccountChangePassword.queryFn,
+        })}
       >
         {({ handleSubmit, handleReset, errors, touched }) => (
           <form onSubmit={handleSubmit} onReset={handleReset}>

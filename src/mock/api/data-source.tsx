@@ -1,6 +1,8 @@
 import { Server } from "miragejs/server";
 import createPaginationResponse from "../common/createPaginationResponse";
-import { chain, get, random } from "lodash";
+import chain from 'lodash/chain';
+import get from 'lodash/get';
+import random from 'lodash/random';
 
 export default function dataSource(server: Server, apiPrefix: string) {
   server.get(`${apiPrefix}/data-sources`, (schema, request) => {

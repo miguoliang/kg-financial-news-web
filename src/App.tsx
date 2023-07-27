@@ -1,8 +1,8 @@
 import { BrowserRouter } from "react-router-dom";
 import Layout from "components/layout";
-import appConfig from "configs/app.config";
+import appConfig from "configs/app";
 import { ChakraBaseProvider } from "@chakra-ui/react";
-import { theme } from "configs/chakra.config";
+import { theme } from "configs/chakra";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 

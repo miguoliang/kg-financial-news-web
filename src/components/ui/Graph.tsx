@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import * as echarts from "echarts";
-import { ECharts } from "echarts";
+import echarts from "configs/echarts";
 import { Graph as GraphData } from "models/echarts";
 import { Box } from "@chakra-ui/react";
+import { EChartsType } from "echarts/core";
 
 interface GraphProps {
   data: GraphData;
@@ -14,7 +14,7 @@ const GraphComponent = ({ data, className, style }: GraphProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let chart: ECharts | undefined;
+    let chart: EChartsType | undefined;
     if (chartRef.current !== null) {
       chart = echarts.init(chartRef.current!);
     }
@@ -36,7 +36,6 @@ const GraphComponent = ({ data, className, style }: GraphProps) => {
 
 function updateGraph(chart: echarts.ECharts, graph: GraphData) {
   const option = {
-    tooltip: {},
     legend: [
       {
         data: graph.categories?.map(function(a) {
@@ -48,7 +47,7 @@ function updateGraph(chart: echarts.ECharts, graph: GraphData) {
     ],
     series: [
       {
-        name: "Knowledge Graph",
+        name: "Knowledge Index",
         type: "graph",
         layout: "circular",
         data: graph.nodes,

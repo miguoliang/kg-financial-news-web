@@ -23,9 +23,9 @@ import {
   useTypeahead,
 } from "@floating-ui/react";
 import * as React from "react";
-import { noop } from "lodash";
+import noop from "lodash/noop";
 import { Box, Button, HStack, Icon, IconButton, Text } from "@chakra-ui/react";
-import { NavigationMenuItem } from "configs/navigation.config";
+import { NavigationMenuItem } from "configs/navigation";
 import { HiChevronRight } from "react-icons/hi";
 import { useSideNav } from "hooks/useSideNav";
 import { useNavigate } from "react-router-dom";

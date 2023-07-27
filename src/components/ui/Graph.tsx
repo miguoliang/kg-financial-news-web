@@ -5,7 +5,7 @@ import { Box } from "@chakra-ui/react";
 import { EChartsType } from "echarts/core";
 
 interface GraphProps {
-  data: GraphData;
+  data?: GraphData;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -18,7 +18,7 @@ const GraphComponent = ({ data, className, style }: GraphProps) => {
     if (chartRef.current !== null) {
       chart = echarts.init(chartRef.current!);
     }
-    if (chart) {
+    if (chart && data) {
       updateGraph(chart, data);
     }
     return () => {

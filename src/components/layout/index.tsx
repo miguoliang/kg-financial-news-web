@@ -1,7 +1,7 @@
 import React, { lazy, memo, Suspense, useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "hooks/useAuth";
-import Loading from "components/ui/Loading";
+import { Spinner } from "@chakra-ui/react";
 
 const Layout = () => {
   const location = useLocation();
@@ -36,13 +36,7 @@ const Layout = () => {
   }, []);
 
   return (
-    <Suspense
-      fallback={
-        <div className="flex flex-auto flex-col h-[100vh]">
-          <Loading loading={true} />
-        </div>
-      }
-    >
+    <Suspense fallback={<Spinner />}>
       <AppLayout />
     </Suspense>
   );

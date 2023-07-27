@@ -1,11 +1,9 @@
 import GraphComponent from "components/ui/Graph";
 import { useSearchParams } from "react-router-dom";
-import Loading from "components/ui/Loading";
 import React, { useEffect, useRef } from "react";
-import { useSize } from "@chakra-ui/react-use-size";
 import { Category, Edge, Graph as GraphModel, Link, Node, Vertex } from "models";
 import { PageHeader } from "../Common";
-import { Button, Icon, Input, Text, useBoolean, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, Input, Text, useBoolean, useDisclosure } from "@chakra-ui/react";
 import { HiOutlineChevronDoubleLeft, HiOutlineChevronDoubleRight } from "react-icons/hi";
 import NodeList from "./NodeList";
 import { motion } from "framer-motion";
@@ -18,27 +16,27 @@ import { GraphContext } from "./context";
 
 const Graph = () => {
 
-  const pageHeaderRef = useRef<HTMLDivElement>(null);
   const nodeListRef = useRef<HTMLDivElement>(null);
   const uploadRef = useRef<HTMLInputElement>(null);
-  const dimensions = useSize(pageHeaderRef);
   const [managedVertices, setManagedVertices] = React.useState<Vertex[]>([]);
-  const [graph, setGraph] = React.useState<GraphModel | null>(null);
+  const [graph, setGraph] = React.useState<GraphModel>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const [isEdgesLoading, setIsEdgesLoading] = useBoolean(false);
-
-  const { data: verticesByDataSource, isLoading: isVerticesByDataSourceLoading } = useGetVerticesByDataSource({
-    variables: searchParams.get("dataSourceId")!,
-    enabled: searchParams.has("dataSourceId"),
-  });
+  const [isVerticesLoading, setIsVerticesLoading] = useBoolean(false);
 
   useEffect(() => {
-    if (verticesByDataSource?.length) {
-      setManagedVertices(verticesByDataSource);
+    if (!searchParams.has("dataSourceId")) {
+      return;
     }
-  }, [verticesByDataSource]);
+    setIsVerticesLoading.on();
+    queryClient.fetchQuery({
+      queryKey: useGetVerticesByDataSource.getKey(searchParams.get("dataSourceId")!),
+      queryFn: useGetVerticesByDataSource.queryFn,
+    }).then(v => setManagedVertices(v))
+      .finally(() => setIsVerticesLoading.off());
+  }, [searchParams]);
 
   useEffect(() => {
     if (!managedVertices.length) {
@@ -76,11 +74,11 @@ const Graph = () => {
     reader.readAsText(file);
   };
 
-  const isLoading = isEdgesLoading || isVerticesByDataSourceLoading;
+  const isLoading = isEdgesLoading || isVerticesLoading;
 
   return (
-    <Loading loading={isLoading} type="cover" className="h-full relative">
-      <PageHeader title={"Graph"} description={"Knowledge graph"} ref={pageHeaderRef}>
+    <Flex flexDirection={"column"} alignItems={"stretch"} h={"full"}>
+      <PageHeader title={"Graph"} description={"Knowledge graph"}>
         <Button variant={"outline"}
                 bg={isOpen ? "gray.100" : "white"}
                 leftIcon={<Icon as={isOpen ? HiOutlineChevronDoubleRight : HiOutlineChevronDoubleLeft} />}
@@ -95,25 +93,22 @@ const Graph = () => {
           <Input type={"file"} display={"none"} ref={uploadRef} onChange={handleImportGraph} />
         </Button>
       </PageHeader>
-      <GraphContext.Provider value={{ vertices: managedVertices, setVertices: handleManagedVerticesChange }}>
-        {graph && <GraphComponent data={graph} className={"absolute left-0 right-0 bottom-0"} style={{
-          top: `${dimensions?.height}px`,
-        }} />}
-        <motion.div
-          className={"absolute right-0 bottom-0 border border-gray-200 overflow-hidden bg-white rounded-lg shadow-md opacity-0 w-0"}
-          ref={nodeListRef}
-          style={{
-            top: `${dimensions?.height}px`,
-          }}
-          animate={{
-            opacity: isOpen ? 1 : 0,
-            width: isOpen ? theme`minWidth.md` : "0%",
-            borderColor: isOpen ? theme`colors.gray.200` : theme`colors.transparent`,
-          }} transition={{ type: "spring", duration: 0.5, bounce: 0 }}>
-          <NodeList />
-        </motion.div>
-      </GraphContext.Provider>
-    </Loading>
+      <Box className={"flex-grow relative"}>
+        <GraphContext.Provider value={{ vertices: managedVertices, setVertices: handleManagedVerticesChange }}>
+          <GraphComponent data={graph} className={"absolute top-0 bottom-0 left-0 right-0"} />
+          <motion.div
+            className={"absolute right-0 top-0 bottom-0 border border-gray-200 overflow-hidden bg-white rounded-lg shadow-md opacity-0 w-0"}
+            ref={nodeListRef}
+            animate={{
+              opacity: isOpen ? 1 : 0,
+              width: isOpen ? theme`minWidth.md` : "0%",
+              borderColor: isOpen ? theme`colors.gray.200` : theme`colors.transparent`,
+            }} transition={{ type: "spring", duration: 0.5, bounce: 0 }}>
+            <NodeList />
+          </motion.div>
+        </GraphContext.Provider>
+      </Box>
+    </Flex>
   );
 };
 

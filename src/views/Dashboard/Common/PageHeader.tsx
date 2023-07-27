@@ -11,7 +11,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(({ title, d
   return (
     <HStack pb={4} ref={ref}>
       <VStack flexShrink={0} alignItems={"left"}>
-        <Heading fontWeight={"bold"} fontSize={"xl"} lineHeight={7} fontFamily={"sans-serif"}>{title}</Heading>
+        <Heading fontWeight={"bold"} fontSize={"xl"} fontFamily={"sans-serif"}>{title}</Heading>
         {description && <Text color={"gray.500"}>{description}</Text>}
       </VStack>
       <Spacer />

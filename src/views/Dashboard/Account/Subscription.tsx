@@ -1,19 +1,7 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  Circle,
-  Heading,
-  HStack,
-  Spacer,
-  Text,
-  useBoolean,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Card, CardBody, Circle, Heading, HStack, Spacer, Text, useBoolean, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { apiGetSubscriptionList } from "services/AccountServices";
 import { Subscription as SubscriptionModel } from "models/subscription";
-import Loading from "components/ui/Loading";
 
 const Subscription = () => {
   const [loading, setLoading] = useBoolean();
@@ -39,25 +27,23 @@ const Subscription = () => {
       <Text color={"gray.500"}>
         Manage your subscription and payment settings
       </Text>
-      <Loading loading={loading}>
-        <VStack spacing={5} alignItems={"start"} marginTop={5}>
-          {subscriptionList.map((subscription) => {
-            return (
-              <SubscriptionItem
-                key={subscription.subscriptionId}
-                subscription={subscription}
-              />
-            );
-          })}
-        </VStack>
-      </Loading>
+      <VStack spacing={5} alignItems={"start"} marginTop={5}>
+        {subscriptionList.map((subscription) => {
+          return (
+            <SubscriptionItem
+              key={subscription.subscriptionId}
+              subscription={subscription}
+            />
+          );
+        })}
+      </VStack>
     </>
   );
 };
 
 const SubscriptionItem = ({
-  subscription,
-}: {
+                            subscription,
+                          }: {
   subscription: SubscriptionModel;
 }) => {
   return (

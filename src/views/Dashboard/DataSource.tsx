@@ -1,12 +1,12 @@
-import { DataSource } from "models/data-source";
+import { DataSource } from "models";
 import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { Link } from "react-router-dom";
-import Loading from "components/ui/Loading";
 import usePagination from "hooks/usePagination";
 import SimpleTable from "components/ui/SimpleTable";
 import { Text } from "@chakra-ui/react";
 import { PageHeader } from "./Common";
-import { useGetDataSources } from "../../services";
+import { useGetDataSources } from "services";
+import dayjs from "dayjs";
 
 const columnHelper = createColumnHelper<DataSource>();
 const columns = [
@@ -34,12 +34,13 @@ const DataSourceComponent = () => {
 
   const [pagination, setPagination] = usePagination();
 
-  const { data, isLoading } = useGetDataSources({
+  const { data } = useGetDataSources({
     variables: {
-      date: new Date(),
+      date: dayjs().startOf("day").toDate(),
       page: pagination.pageIndex,
       size: pagination.pageSize,
     },
+    keepPreviousData: true,
   });
 
   const table = useReactTable({
@@ -56,10 +57,10 @@ const DataSourceComponent = () => {
   });
 
   return (
-    <Loading loading={isLoading} type="cover" className="h-full">
+    <>
       <PageHeader title={"Data Sources"} />
       <SimpleTable table={table} />
-    </Loading>
+    </>
   );
 };
 

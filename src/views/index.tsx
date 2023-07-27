@@ -5,7 +5,7 @@ import ProtectedRoute from "components/route/ProtectedRoute";
 import PublicRoute from "components/route/PublicRoute";
 import AuthorityGuard from "components/route/AuthorityGuard";
 import AppRoute from "components/route/AppRoute";
-import Loading from "components/ui/Loading";
+import { Spinner } from "@chakra-ui/react";
 
 const AllRoutes = () => {
   return (
@@ -49,7 +49,7 @@ const AllRoutes = () => {
 
 const Views = (props: Record<string, any>) => {
   return (
-    <Suspense fallback={<Loading loading={true} />}>
+    <Suspense fallback={<Spinner />}>
       <AllRoutes {...props} />
     </Suspense>
   );

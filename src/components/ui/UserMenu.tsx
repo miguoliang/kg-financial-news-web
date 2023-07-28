@@ -1,18 +1,7 @@
 import React from "react";
-import {
-  Avatar,
-  Flex,
-  HStack,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Text,
-} from "@chakra-ui/react";
+import { Avatar, Flex, HStack, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useAuth } from "hooks/useAuth";
+import { useAuth } from "hooks";
 import { HiOutlineCog, HiOutlineLogout } from "react-icons/hi";
 
 const menuList = [
@@ -23,7 +12,7 @@ const menuList = [
   },
 ];
 
-export const UserMenu = () => {
+const UserMenu = () => {
   const auth = useAuth();
 
   const UserAvatar = (

@@ -1,23 +1,11 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  HStack,
-  Icon,
-  IconButton,
-  Spacer,
-  Text,
-  Tooltip,
-  useBoolean,
-  VStack,
-} from "@chakra-ui/react";
-import { useSideNav } from "hooks/useSideNav";
-import navigationMenu, { NavigationMenuItem } from "configs/navigation";
+import { Box, Button, HStack, Icon, IconButton, Spacer, Text, Tooltip, useBoolean, VStack } from "@chakra-ui/react";
+import { navigationConfig, NavigationMenuItem } from "configs";
 import { motion } from "framer-motion";
 import { Menu, MenuItem } from "./PopoverMenu";
 import { HiChevronRight } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import useCurrentRoute from "../../hooks/useCurrentRoute";
+import { useCurrentRoute, useSideNav } from "hooks";
 
 const SideNav = () => {
   const sideNav = useSideNav();
@@ -49,7 +37,7 @@ const SideNav = () => {
         gap={2}
         mt={2}
       >
-        {navigationMenu.map((item) => (
+        {navigationConfig.map((item) => (
           <NavMenuItem key={item.key} item={item} />
         ))}
       </VStack>
@@ -57,11 +45,13 @@ const SideNav = () => {
   );
 };
 
-const NavMenuItem = ({ item }: { item: NavigationMenuItem }) => {
+const NavMenuItem = ({ item }: {
+  item: NavigationMenuItem
+}) => {
   const sideNav = useSideNav();
   const navigate = useNavigate();
   const currentRoute = useCurrentRoute();
-  console.debug("currentRoute", currentRoute.key)
+  console.debug("currentRoute", currentRoute.key);
   switch (item.type) {
     case "item":
       return sideNav.collapsed ? (
@@ -108,7 +98,9 @@ const NavMenuItem = ({ item }: { item: NavigationMenuItem }) => {
   }
 };
 
-const PopoverSubmenu = ({ item }: { item: NavigationMenuItem }) => {
+const PopoverSubmenu = ({ item }: {
+  item: NavigationMenuItem
+}) => {
   return (
     <Menu item={item}>
       {item.children?.map((subItem) => {
@@ -123,7 +115,9 @@ const PopoverSubmenu = ({ item }: { item: NavigationMenuItem }) => {
   );
 };
 
-const ExpandableSubmenu = ({ item }: { item: NavigationMenuItem }) => {
+const ExpandableSubmenu = ({ item }: {
+  item: NavigationMenuItem
+}) => {
   const sideNav = useSideNav();
   const [expanded, setExpanded] = useBoolean(
     sideNav.expandedKeys.has(item.key),

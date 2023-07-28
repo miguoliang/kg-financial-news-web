@@ -1,13 +1,13 @@
 import React, { LazyExoticComponent, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import useCurrentRoute from "hooks/useCurrentRoute";
+import { useCurrentRoute } from "hooks";
 
 type AppRouteProps = {
   component: LazyExoticComponent<(props: Record<string, any>) => JSX.Element>;
   routeKey: string;
 } & Record<string, any>;
 
-const AppRoute = ({
+export const AppRoute = ({
   component: Component,
   routeKey,
   ...props
@@ -19,5 +19,3 @@ const AppRoute = ({
   }, [location]);
   return <Component {...props} />;
 };
-
-export default AppRoute;

@@ -1,5 +1,5 @@
 import { createServer } from "miragejs";
-import appConfig from "configs/app";
+import { appConfig } from "configs";
 
 import { dataSourceApi, edgeApi, vertexApi } from "./api";
 import { DataSources, Vertices } from "./seed";

@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useRef } from "react";
-import echarts from "configs/echarts";
-import { Graph as GraphData } from "models/echarts";
+import { echarts } from "configs";
+import { Graph as GraphData } from "models";
 import { Box } from "@chakra-ui/react";
 
 interface GraphProps {

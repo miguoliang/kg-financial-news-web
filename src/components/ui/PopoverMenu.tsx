@@ -25,9 +25,9 @@ import {
 import * as React from "react";
 import noop from "lodash/noop";
 import { Box, Button, HStack, Icon, IconButton, Text } from "@chakra-ui/react";
-import { NavigationMenuItem } from "configs/navigation";
+import { NavigationMenuItem } from "configs";
 import { HiChevronRight } from "react-icons/hi";
-import { useSideNav } from "hooks/useSideNav";
+import { useSideNav } from "hooks";
 import { useNavigate } from "react-router-dom";
 
 const MenuContext = React.createContext<{
@@ -46,7 +46,7 @@ const MenuContext = React.createContext<{
   isOpen: false,
 });
 
-export const MenuComponent = React.forwardRef<
+const MenuComponent = React.forwardRef<
   HTMLButtonElement,
   {
     item: NavigationMenuItem;
@@ -229,7 +229,7 @@ export const MenuComponent = React.forwardRef<
   );
 });
 
-export const MenuItem = React.forwardRef<
+const MenuItem = React.forwardRef<
   HTMLButtonElement,
   {
     item: NavigationMenuItem;
@@ -269,7 +269,7 @@ export const MenuItem = React.forwardRef<
   );
 });
 
-export const Menu = React.forwardRef<
+const Menu = React.forwardRef<
   HTMLButtonElement,
   {
     item: NavigationMenuItem;
@@ -287,3 +287,5 @@ export const Menu = React.forwardRef<
 
   return <MenuComponent {...props} ref={ref} />;
 });
+
+export { Menu, MenuItem };

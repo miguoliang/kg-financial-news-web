@@ -1,11 +1,8 @@
 import React, { Suspense } from "react";
-import { protectedRoutes, publicRoutes } from "configs/routes";
+import { protectedRoutes, publicRoutes } from "configs";
 import { Navigate, Route, Routes } from "react-router-dom";
-import ProtectedRoute from "components/route/ProtectedRoute";
-import PublicRoute from "components/route/PublicRoute";
-import AuthorityGuard from "components/route/AuthorityGuard";
-import AppRoute from "components/route/AppRoute";
 import { Spinner } from "@chakra-ui/react";
+import { AppRoute, AuthorityGuard, ProtectedRoute, PublicRoute } from "components/route";
 
 const AllRoutes = () => {
   return (

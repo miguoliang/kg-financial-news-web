@@ -5,7 +5,7 @@ interface CurrentRouteStore {
   setKey: (key: string) => void;
 }
 
-export default create<CurrentRouteStore>((set) => ({
+export const useCurrentRoute = create<CurrentRouteStore>((set) => ({
   key: "/",
   setKey: (key) => set({ key }),
 }));

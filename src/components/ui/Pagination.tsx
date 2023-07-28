@@ -1,5 +1,4 @@
-import { Table } from "@tanstack/react-table";
-import { RowData } from "@tanstack/table-core";
+import { RowData, Table } from "@tanstack/react-table";
 import { Button, HStack, Icon, IconButton, Spacer, useBoolean } from "@chakra-ui/react";
 import Select from "react-select";
 import {

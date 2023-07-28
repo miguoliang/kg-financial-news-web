@@ -13,7 +13,6 @@ import mapValues from "lodash/mapValues";
 import { theme as twTheme } from "twin.macro";
 
 const tailwindTheme = twTheme`` as Record<string, any>;
-console.debug("tailwindTheme", tailwindTheme);
 
 function addMissingBaseField(obj?: any, value?: any) {
   return {
@@ -22,7 +21,7 @@ function addMissingBaseField(obj?: any, value?: any) {
   };
 }
 
-export const theme = extendTheme({
+export default extendTheme({
   blur: addMissingBaseField(tailwindTheme.blur),
   breakpoints: addMissingBaseField(tailwindTheme.screens, "0px"),
   colors: tailwindTheme.colors,
@@ -56,5 +55,3 @@ export const theme = extendTheme({
     Tooltip: tooltipTheme,
   },
 });
-
-console.debug("mergedChakraTheme", theme);

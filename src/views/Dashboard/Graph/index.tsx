@@ -1,4 +1,4 @@
-import GraphComponent from "components/ui/Graph";
+import { Graph as GraphComponent } from "components/ui";
 import { useSearchParams } from "react-router-dom";
 import React, { useEffect, useRef } from "react";
 import { Category, Edge, Graph as GraphModel, Link, Node, Vertex } from "models";
@@ -13,8 +13,8 @@ import { saveAs } from "file-saver";
 import { useGetEdgesByVertices, useGetVerticesByDataSource } from "services";
 import { useQueryClient } from "@tanstack/react-query";
 import { GraphContext } from "./context";
-import { findIndex } from "lodash";
-import echarts from "configs/echarts";
+import findIndex from "lodash/findIndex";
+import { echarts } from "configs";
 
 const Graph = () => {
 

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { User, UserManager } from "oidc-client-ts";
-import { SIGN_OUT_URL, userManager } from "../configs/oidc";
+import { SIGN_OUT_URL, userManager } from "configs";
 
 interface UseAuth {
   isAuthenticated: boolean;

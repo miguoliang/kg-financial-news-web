@@ -1,7 +1,6 @@
 import axios from "axios";
-import appConfig from "configs/app";
-import { useAuth } from "hooks/useAuth";
-import { toast } from "hooks/useToast";
+import { appConfig } from "configs";
+import { toast, useAuth } from "hooks";
 
 const unauthorizedCode = [401];
 

@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { Field, Formik } from "formik";
 import * as Yup from "yup";
-import { useAuth } from "hooks/useAuth";
+import { useAuth } from "hooks";
 import find from "lodash/find";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePostAccountChangePassword } from "services";

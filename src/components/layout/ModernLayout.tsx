@@ -1,8 +1,7 @@
 import React from "react";
-import UserMenu from "components/template/UserMenu";
-import SideNav from "components/template/SideNav";
+import { UserMenu, SideNav } from "components/ui";
 import View from "views";
-import { useAuth } from "hooks/useAuth";
+import { useAuth, useSideNav } from "hooks";
 import {
   Box,
   Button,
@@ -12,7 +11,6 @@ import {
   IconButton,
   Spacer,
 } from "@chakra-ui/react";
-import { useSideNav } from "../../hooks/useSideNav";
 import { HiOutlineMenu } from "react-icons/hi";
 
 export const SignInAndSignUp = () => {

@@ -1,8 +1,8 @@
 import { DataSource } from "models";
 import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { Link } from "react-router-dom";
-import usePagination from "hooks/usePagination";
-import SimpleTable from "components/ui/SimpleTable";
+import { usePagination } from "hooks";
+import { SimpleTable } from "components/ui";
 import { Text } from "@chakra-ui/react";
 import { PageHeader } from "./Common";
 import { useGetDataSources } from "services";

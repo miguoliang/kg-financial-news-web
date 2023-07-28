@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "hooks";
 import intersection from "lodash/intersection";
 import { Stack } from "@chakra-ui/react";
 
@@ -8,7 +8,7 @@ export type AuthorityGuardType = PropsWithChildren<{
   authority?: string[];
 }>;
 
-const AuthorityGuard = (props: AuthorityGuardType) => {
+export const AuthorityGuard = (props: AuthorityGuardType) => {
   const { authority = [], children } = props;
 
   const scopes = useAuth((state) => state.user?.scopes ?? []);
@@ -21,5 +21,3 @@ const AuthorityGuard = (props: AuthorityGuardType) => {
     </Stack>
   );
 };
-
-export default AuthorityGuard;

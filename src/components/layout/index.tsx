@@ -1,6 +1,6 @@
 import React, { lazy, memo, Suspense, useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { useAuth } from "hooks/useAuth";
+import { useAuth } from "hooks";
 import { Spinner } from "@chakra-ui/react";
 
 const Layout = () => {

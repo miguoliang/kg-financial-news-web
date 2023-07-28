@@ -1,34 +1,18 @@
-import { Button, Card, CardBody, Circle, Heading, HStack, Spacer, Text, useBoolean, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { apiGetSubscriptionList } from "services/AccountServices";
-import { Subscription as SubscriptionModel } from "models/subscription";
+import { Button, Card, CardBody, Circle, Heading, HStack, Spacer, Text, VStack } from "@chakra-ui/react";
+import { Subscription as SubscriptionModel } from "models";
+import { useGetAccountSubscriptions } from "services";
 
 const Subscription = () => {
-  const [loading, setLoading] = useBoolean();
-  const [subscriptionList, setSubscriptionList] = useState<SubscriptionModel[]>(
-    [],
-  );
-  useEffect(() => {
-    setLoading.on();
-    apiGetSubscriptionList()
-      .then((resp) => {
-        setSubscriptionList(resp.data);
-      })
-      .finally(() => {
-        setLoading.off();
-      });
-  }, []);
+
+  const { data: subscriptions } = useGetAccountSubscriptions();
 
   return (
     <>
-      <Heading as={"h4"} size={"md"} fontWeight={"semibold"}>
-        Subscription
-      </Heading>
       <Text color={"gray.500"}>
         Manage your subscription and payment settings
       </Text>
       <VStack spacing={5} alignItems={"start"} marginTop={5}>
-        {subscriptionList.map((subscription) => {
+        {subscriptions?.map((subscription) => {
           return (
             <SubscriptionItem
               key={subscription.subscriptionId}
@@ -41,11 +25,11 @@ const Subscription = () => {
   );
 };
 
-const SubscriptionItem = ({
-                            subscription,
-                          }: {
+interface SubscriptionItemProps {
   subscription: SubscriptionModel;
-}) => {
+}
+
+const SubscriptionItem = ({ subscription }: SubscriptionItemProps) => {
   return (
     <Card _hover={{ bg: "gray.100" }}>
       <CardBody as={HStack} gap={5} alignItems={"center"}>

@@ -17,6 +17,11 @@ const protectedRoutes: Routes = [
     path: `/dashboard/graph`,
     component: React.lazy(() => import("views/Dashboard/Graph")),
   },
+  {
+    key: "dashboard.account",
+    path: `/dashboard/account`,
+    component: React.lazy(() => import("views/Dashboard/Account")),
+  },
 ];
 
 export default protectedRoutes;

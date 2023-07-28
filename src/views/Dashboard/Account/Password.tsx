@@ -5,7 +5,6 @@ import {
   FormErrorMessage,
   FormLabel,
   GridItem,
-  Heading,
   HStack,
   Input,
   SimpleGrid,
@@ -45,9 +44,6 @@ const Password = () => {
 
   return (
     <>
-      <Heading as={"h4"} size={"md"} fontWeight={"semibold"}>
-        Password
-      </Heading>
       <Text color={"gray.500"}>
         Enter your current & new password to reset your password
       </Text>

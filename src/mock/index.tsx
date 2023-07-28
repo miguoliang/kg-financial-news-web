@@ -1,8 +1,8 @@
 import { createServer } from "miragejs";
 import { appConfig } from "configs";
 
-import { dataSourceApi, edgeApi, vertexApi } from "./api";
-import { DataSources, Vertices } from "./seed";
+import { accountApi, dataSourceApi, edgeApi, vertexApi } from "./api";
+import { DataSources, Subscriptions, Vertices } from "./seed";
 
 const { apiPrefix } = appConfig;
 
@@ -21,11 +21,13 @@ export default function mockServer({ environment = "development" }) {
       dataSourceApi(this, apiPrefix);
       edgeApi(this, apiPrefix);
       vertexApi(this, apiPrefix);
+      accountApi(this, apiPrefix);
     },
   });
   server.db.loadData({
     DataSources,
     Vertices,
+    Subscriptions,
   });
   return server;
 }

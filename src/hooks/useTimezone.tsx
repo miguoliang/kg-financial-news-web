@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import dayjs from "dayjs";
 
 interface TimezoneState {
   timezone: string;
@@ -6,6 +7,9 @@ interface TimezoneState {
 }
 
 export const useTimezone = create<TimezoneState>((set) => ({
-  timezone: "Europe/Paris",
-  setTimezone: (timezone: string) => set({ timezone }),
+  timezone: "UTC",
+  setTimezone: (timezone: string) => {
+    dayjs.tz.setDefault(timezone);
+    set({ timezone });
+  },
 }));

@@ -18,7 +18,10 @@ const columns = [
     },
   }),
   columnHelper.accessor("title", { header: "Title" }),
-  columnHelper.accessor("createdAt", { header: "Created at" }),
+  columnHelper.accessor("createdAt", {
+    header: "Created at",
+    cell: ({ row }) => dayjs(row.original.createdAt).format("YYYY-MM-DD HH:mm:ss"),
+  }),
   columnHelper.display({
     header: "Operations",
     cell: ({ row }) => <Link to={{

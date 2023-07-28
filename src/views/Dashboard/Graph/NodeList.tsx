@@ -11,6 +11,7 @@ import { GraphContext } from "./context";
 
 interface NodeListProps {
   onHover?: (vertex: Vertex) => void;
+  onLeave?: (vertex: Vertex) => void;
 }
 
 type CustomOption = {
@@ -19,7 +20,7 @@ type CustomOption = {
   payload: Vertex;
 }
 
-const NodeList = ({ onHover }: NodeListProps) => {
+const NodeList = ({ onHover, onLeave }: NodeListProps) => {
 
   const queryClient = useQueryClient();
   const { vertices, setVertices } = useContext(GraphContext)!;
@@ -72,7 +73,8 @@ const NodeList = ({ onHover }: NodeListProps) => {
                        exit={{ opacity: 0, height: 0 }}
                        initial={{ opacity: 1, height: "auto" }}
                        transition={{ duration: 0.2 }}
-                       onMouseOver={() => onHover?.(v)}>
+                       onMouseOver={() => onHover?.(v)}
+                       onMouseLeave={() => onLeave?.(v)}>
               <HStack>
                 <Text flexShrink={0} flexGrow={1}>{v.name}</Text>
                 <CloseButton size={"sm"} borderRadius={"full"} _hover={{ color: "white", bg: "red.500" }}

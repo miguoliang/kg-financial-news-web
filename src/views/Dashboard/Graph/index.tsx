@@ -13,11 +13,14 @@ import { saveAs } from "file-saver";
 import { useGetEdgesByVertices, useGetVerticesByDataSource } from "services";
 import { useQueryClient } from "@tanstack/react-query";
 import { GraphContext } from "./context";
+import { findIndex } from "lodash";
+import echarts from "configs/echarts";
 
 const Graph = () => {
 
   const nodeListRef = useRef<HTMLDivElement>(null);
   const uploadRef = useRef<HTMLInputElement>(null);
+  const graphRef = useRef<HTMLDivElement>(null);
   const [managedVertices, setManagedVertices] = React.useState<Vertex[]>([]);
   const [graph, setGraph] = React.useState<GraphModel>();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,6 +64,26 @@ const Graph = () => {
     saveAs(new Blob([JSON.stringify(managedVertices)], { type: "application/json" }), "graph.json");
   };
 
+  const handleNodeListHover = (vertex: Vertex) => {
+    const chart = graphRef.current && echarts.getInstanceByDom(graphRef.current);
+    const index = chart ? findIndex(graph?.nodes, it => it.id === vertex.id) : -1;
+    chart && chart.dispatchAction({
+      type: "highlight",
+      seriesIndex: 0,
+      dataIndex: index,
+    });
+  };
+
+  const handleNodeListLeave = (vertex: Vertex) => {
+    const chart = graphRef.current && echarts.getInstanceByDom(graphRef.current);
+    const index = chart ? findIndex(graph?.nodes, it => it.id === vertex.id) : -1;
+    chart && chart.dispatchAction({
+      type: "downplay",
+      seriesIndex: 0,
+      dataIndex: index,
+    });
+  };
+
   const handleImportGraph = () => {
     const file = uploadRef.current?.files?.[0];
     if (!file) {
@@ -73,8 +96,6 @@ const Graph = () => {
     };
     reader.readAsText(file);
   };
-
-  const isLoading = isEdgesLoading || isVerticesLoading;
 
   return (
     <Flex flexDirection={"column"} alignItems={"stretch"} h={"full"}>
@@ -95,16 +116,16 @@ const Graph = () => {
       </PageHeader>
       <Box className={"flex-grow relative"}>
         <GraphContext.Provider value={{ vertices: managedVertices, setVertices: handleManagedVerticesChange }}>
-          <GraphComponent data={graph} className={"absolute top-0 bottom-0 left-0 right-0"} />
+          <GraphComponent data={graph} ref={graphRef} className={"absolute top-0 bottom-0 left-0 right-0"} />
           <motion.div
             className={"absolute right-0 top-0 bottom-0 border border-gray-200 overflow-hidden bg-white rounded-lg shadow-md opacity-0 w-0"}
             ref={nodeListRef}
             animate={{
               opacity: isOpen ? 1 : 0,
               width: isOpen ? theme`minWidth.md` : "0%",
-              borderColor: isOpen ? theme`colors.gray.200` : theme`colors.transparent`,
+              borderColor: isOpen ? theme`colors.gray.200` : theme`colors.white`,
             }} transition={{ type: "spring", duration: 0.5, bounce: 0 }}>
-            <NodeList />
+            <NodeList onHover={handleNodeListHover} onLeave={handleNodeListLeave} />
           </motion.div>
         </GraphContext.Provider>
       </Box>

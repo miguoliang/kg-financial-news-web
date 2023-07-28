@@ -1,8 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
 import echarts from "configs/echarts";
 import { Graph as GraphData } from "models/echarts";
 import { Box } from "@chakra-ui/react";
-import { EChartsType } from "echarts/core";
 
 interface GraphProps {
   data?: GraphData;
@@ -10,29 +9,33 @@ interface GraphProps {
   style?: React.CSSProperties;
 }
 
-const GraphComponent = ({ data, className, style }: GraphProps) => {
-  const chartRef = useRef<HTMLDivElement>(null);
+const GraphComponent = forwardRef<HTMLDivElement, GraphProps>(({ data, className, style }, ref) => {
+  const chartRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    let chart: EChartsType | undefined;
-    if (chartRef.current !== null) {
-      chart = echarts.init(chartRef.current!);
-    }
+    const chart = chartRef.current && echarts.init(chartRef.current);
     if (chart && data) {
       updateGraph(chart, data);
     }
     return () => {
       chart?.dispose();
     };
-  }, [data]);
+  }, [ref, data]);
 
   return (
     <Box className={className}
          style={style}
-         ref={chartRef}>
+         ref={(node) => {
+           chartRef.current = node;
+           if (typeof ref === "function") {
+             ref(node);
+           } else if (ref) {
+             ref.current = node;
+           }
+         }}>
     </Box>
   );
-};
+});
 
 function updateGraph(chart: echarts.ECharts, graph: GraphData) {
   const option = {

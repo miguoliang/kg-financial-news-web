@@ -2,7 +2,7 @@ import { Graph as GraphComponent } from "components/ui";
 import { useSearchParams } from "react-router-dom";
 import React, { useEffect, useRef } from "react";
 import { Category, Edge, Graph as GraphModel, Link, Node, Vertex } from "models";
-import { PageHeader } from "../Common";
+import { PageHeader } from "../components";
 import { Box, Button, Flex, Icon, Input, Text, useBoolean, useDisclosure } from "@chakra-ui/react";
 import { HiOutlineChevronDoubleLeft, HiOutlineChevronDoubleRight } from "react-icons/hi";
 import NodeList from "./NodeList";

@@ -5,7 +5,7 @@ const protectedRoutes: Routes = [
   {
     key: "dashboard",
     path: `/dashboard`,
-    component: React.lazy(() => import("views/Dashboard/Dashboard")),
+    component: React.lazy(() => import("views/Dashboard")),
   },
   {
     key: "dashboard.data-source",

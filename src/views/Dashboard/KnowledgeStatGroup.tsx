@@ -1,7 +1,7 @@
 import { useGetEdgesStat, useGetPropertiesStat, useGetVerticesStat } from "../../services";
 import { useMemo } from "react";
 import first from "lodash-es/first";
-import { SkeletonText, Stat, StatArrow, StatGroup, StatHelpText, StatLabel, StatNumber } from "@chakra-ui/react";
+import { SkeletonText, Stat, StatArrow, StatHelpText, StatLabel, StatNumber } from "@chakra-ui/react";
 import numeral from "numeral";
 
 const KnowledgeStatGroup = () => {
@@ -35,7 +35,7 @@ const KnowledgeStatGroup = () => {
   const isKnowledgeStatError = verticesStatQuery.isError || edgesStatQuery.isError || propertiesStatQuery.isError;
 
   return (
-    <StatGroup gap={10}>
+    <>
       <StatCell label={"Knowledge"}
                 value={knowledgeStat?.value}
                 percentage={knowledgeStat?.percentage}
@@ -56,7 +56,7 @@ const KnowledgeStatGroup = () => {
                 percentage={propertiesStat?.percentage}
                 isLoading={propertiesStatQuery.isLoading}
                 isError={propertiesStatQuery.isError} />
-    </StatGroup>
+    </>
   );
 };
 
@@ -69,7 +69,7 @@ interface StatCellProps {
 }
 
 const StatCell = ({ label, value = 0, percentage = 0, isLoading = false, isError = false }: StatCellProps) => {
-  return <Stat>
+  return <Stat p={2}>
     <StatLabel>
       <SkeletonText isLoaded={!isLoading}>{label}</SkeletonText>
     </StatLabel>

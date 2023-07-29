@@ -1,6 +1,6 @@
 import { DataSource } from "models";
 import { faker } from "@faker-js/faker";
-import times from "lodash/times";
+import times from "lodash-es/times";
 import md5 from "md5";
 
 export const dataSources: DataSource[] = times(100, () => {

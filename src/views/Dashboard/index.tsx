@@ -1,9 +1,9 @@
+import KnowledgeStatGroup from "./KnowledgeStatGroup";
+
 const Dashboard = () => {
-  return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
-  );
+  return <>
+    <KnowledgeStatGroup />
+  </>;
 };
 
 export default Dashboard;

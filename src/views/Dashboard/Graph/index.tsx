@@ -13,7 +13,7 @@ import { saveAs } from "file-saver";
 import { useGetEdgesByVertices, useGetVerticesByDataSource } from "services";
 import { useQueryClient } from "@tanstack/react-query";
 import { GraphContext } from "./context";
-import findIndex from "lodash/findIndex";
+import findIndex from "lodash-es/findIndex";
 import { echarts } from "configs";
 
 const Graph = () => {

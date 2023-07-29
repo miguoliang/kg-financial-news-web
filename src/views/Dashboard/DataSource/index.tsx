@@ -3,10 +3,11 @@ import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/re
 import { Link } from "react-router-dom";
 import { usePagination } from "hooks";
 import { SimpleTable } from "components/ui";
-import { Text } from "@chakra-ui/react";
+import { Button, Icon, Text } from "@chakra-ui/react";
 import { PageHeader } from "../components";
 import { useGetDataSources } from "services";
 import dayjs from "dayjs";
+import { HiOutlineChevronDoubleRight } from "react-icons/hi";
 
 const columnHelper = createColumnHelper<DataSource>();
 const columns = [
@@ -24,12 +25,14 @@ const columns = [
   }),
   columnHelper.display({
     header: "Operations",
-    cell: ({ row }) => <Link to={{
-      pathname: `/dashboard/graph`,
-      search: "?dataSourceId=" + row.original.id,
-    }}>
-      Knowledge Graph
-    </Link>,
+    cell: ({ row }) =>
+      <Button size={"sm"}
+              rightIcon={<Icon as={HiOutlineChevronDoubleRight} />} as={Link} to={{
+        pathname: `/dashboard/graph`,
+        search: "?dataSourceId=" + row.original.id,
+      }}>
+        Open Graph
+      </Button>,
   }),
 ];
 
@@ -37,7 +40,7 @@ const DataSourceComponent = () => {
 
   const [pagination, setPagination] = usePagination();
 
-  const { data } = useGetDataSources({
+  const { data} = useGetDataSources({
     variables: {
       date: dayjs().startOf("day").toDate(),
       page: pagination.pageIndex,

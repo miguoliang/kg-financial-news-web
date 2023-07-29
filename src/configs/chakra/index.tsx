@@ -7,9 +7,9 @@ import { formErrorTheme } from "./form-error";
 import { cardTheme } from "./card";
 import { buttonTheme } from "./button";
 import { tooltipTheme } from "./tooltip";
-import first from "lodash/first";
-import join from "lodash/join";
-import mapValues from "lodash/mapValues";
+import first from "lodash-es/first";
+import join from "lodash-es/join";
+import mapValues from "lodash-es/mapValues";
 import { theme as twTheme } from "twin.macro";
 
 const tailwindTheme = twTheme`` as Record<string, any>;

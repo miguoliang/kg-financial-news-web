@@ -14,7 +14,7 @@ import {
 import { Field, Formik } from "formik";
 import * as Yup from "yup";
 import { useAuth } from "hooks";
-import find from "lodash/find";
+import find from "lodash-es/find";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePostAccountChangePassword } from "services";
 

@@ -1,6 +1,6 @@
 import { Server } from "miragejs/server";
-import shuffle from "lodash/shuffle";
-import first from "lodash/first";
+import shuffle from "lodash-es/shuffle";
+import first from "lodash-es/first";
 
 export default function account(server: Server, apiPrefix: string) {
   server.get(`${apiPrefix}/account/subscriptions`, (schema) => {

@@ -23,7 +23,7 @@ import {
   useTypeahead,
 } from "@floating-ui/react";
 import * as React from "react";
-import noop from "lodash/noop";
+import noop from "lodash-es/noop";
 import { Box, Button, HStack, Icon, IconButton, Text } from "@chakra-ui/react";
 import { NavigationMenuItem } from "configs";
 import { HiChevronRight } from "react-icons/hi";

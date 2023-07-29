@@ -26,7 +26,7 @@ const UserMenu = () => {
       <Avatar size="sm" src="/img/avatars/thumb-1.jpg" />
       <Flex direction={"column"} alignItems={"start"}>
         <Text fontWeight={"bold"}>{auth.user?.profile.email}</Text>
-        <Text fontSize={"sm"} color={"gray.500"}>
+        <Text fontSize={"sm"} color={"gray.500"} alignSelf={"end"}>
           {`Timezone is ${timezone.timezone}`}
         </Text>
       </Flex>
@@ -39,7 +39,7 @@ const UserMenu = () => {
       <MenuList>
         {menuList.map((item) => (
           <MenuItem as={Link} to={item.path} key={item.label}
-                    icon={item.icon && cloneElement(item.icon, { fontSize: "lg", color: "gray.500" })}>
+                    icon={cloneElement(item.icon, { fontSize: "lg", color: "gray.500" })}>
             {item.label}
           </MenuItem>
         ))}

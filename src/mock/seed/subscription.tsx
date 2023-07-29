@@ -1,7 +1,7 @@
-import times from "lodash/times";
+import times from "lodash-es/times";
 import { Subscription } from "models";
 import { faker } from "@faker-js/faker";
-import random from "lodash/random";
+import random from "lodash-es/random";
 
 export const subscriptions: Subscription[] = times(100, () => ({
   subscriptionId: faker.string.uuid(),

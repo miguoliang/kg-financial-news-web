@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { SingleValue } from "react-select";
-import some from "lodash/some";
+import some from "lodash-es/some";
 import { useGetVertices } from "services";
 import { GraphContext } from "./context";
 

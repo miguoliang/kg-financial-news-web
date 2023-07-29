@@ -1,6 +1,7 @@
 import { Subscription } from "models";
 import AxiosFetch from "./AxiosFetch";
 import { createQuery } from "react-query-kit";
+import noop from "lodash-es/noop";
 
 type PostAccountChangePasswordRequestBody = {
   previousPassword: string;
@@ -13,7 +14,7 @@ export const usePostAccountChangePassword = createQuery<any, PostAccountChangePa
     url: "/account/change-password",
     method: "post",
     data,
-  }),
+  }).then(noop),
 });
 
 export const useGetAccountSubscriptions = createQuery({

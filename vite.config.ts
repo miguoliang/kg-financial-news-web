@@ -12,7 +12,8 @@ export default defineConfig({
   ],
   build: {
     outDir: "build",
-    sourcemap: true,
+    sourcemap: process.env.NODE_ENV !== "production",
+    minify: "esbuild",
     rollupOptions: {
       output: {
         manualChunks: (id) => {
@@ -23,12 +24,14 @@ export default defineConfig({
             id.includes("node_modules/framer-motion") ||
             id.includes("node_modules/@popperjs") ||
             id.includes("node_modules/lodash.mergewith") ||
-            id.includes("node_modules/@tanstack/react-table") ||
+            id.includes("node_modules/@tanstack") ||
             id.includes("node_modules/react-select") ||
             id.includes("node_modules/react-icons")) {
             return "vendors-ui";
           } else if (id.includes("node_modules")) {
             return "vendors-misc";
+          } else if (id.includes("src/")) {
+            return "app";
           }
         },
       },
@@ -57,14 +60,6 @@ export default defineConfig({
         replacement: resolve(__dirname, "src/configs/") + "$1",
       },
       {
-        find: /^constants(\/(.+)|$)/,
-        replacement: resolve(__dirname, "src/constants/") + "$1",
-      },
-      {
-        find: /^locales(\/(.+)|$)/,
-        replacement: resolve(__dirname, "src/locales/") + "$1",
-      },
-      {
         find: /^mock(\/(.+)|$)/,
         replacement: resolve(__dirname, "src/mock/") + "$1",
       },
@@ -75,10 +70,6 @@ export default defineConfig({
       {
         find: /^hooks(\/(.+)|$)/,
         replacement: resolve(__dirname, "src/hooks/") + "$1",
-      },
-      {
-        find: /^utils(\/(.+)|$)/,
-        replacement: resolve(__dirname, "src/utils/") + "$1",
       },
       {
         find: /^views(\/(.+)|$)/,

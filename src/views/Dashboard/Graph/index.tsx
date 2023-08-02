@@ -1,4 +1,4 @@
-import { GraphD3, Link as GraphLink, Node as GraphNode } from "components/ui";
+import { GraphVis, Link as GraphLink, Node as GraphNode } from "components/ui";
 import { useSearchParams } from "react-router-dom";
 import React, { useEffect, useRef } from "react";
 import { Edge, Vertex } from "models";
@@ -14,12 +14,14 @@ import { useGetEdgesByVertices, useGetVerticesByDataSource } from "services";
 import { useQueryClient } from "@tanstack/react-query";
 import { GraphContext } from "./context";
 import { keyBy, uniqBy } from "lodash-es";
+import * as vis from "vis-network";
 
 const Graph = () => {
 
   const nodeListRef = useRef<HTMLDivElement>(null);
   const uploadRef = useRef<HTMLInputElement>(null);
   const [managedVertices, setManagedVertices] = React.useState<Vertex[]>([]);
+  const [graphInstance, setGraphInstance] = React.useState<vis.Network | null>(null);
   const [nodes, setNodes] = React.useState<GraphNode<Vertex>[]>([]);
   const [links, setLinks] = React.useState<GraphLink<Vertex>[]>([]);
   const [linkTypes, setLinkTypes] = React.useState<string[]>([]);
@@ -64,16 +66,20 @@ const Graph = () => {
     setManagedVertices(vertices);
   };
 
+  const handleGraphInstanceChange = (graph: vis.Network) => {
+    setGraphInstance(graph);
+  };
+
   const handleExportGraph = () => {
     saveAs(new Blob([JSON.stringify(managedVertices)], { type: "application/json" }), "graph.json");
   };
 
-  const handleNodeListHover = () => {
-    // TODO: highlight the node
+  const handleNodeListHover = (vertex: Vertex) => {
+    graphInstance?.selectNodes([vertex.id], false);
   };
 
   const handleNodeListLeave = () => {
-    // TODO: unhighlight the node
+    graphInstance?.selectNodes([], false);
   };
 
   const handleImportGraph = () => {
@@ -107,9 +113,15 @@ const Graph = () => {
         </Button>
       </PageHeader>
       <Box className={"flex-grow relative"}>
-        <GraphContext.Provider value={{ vertices: managedVertices, setVertices: handleManagedVerticesChange }}>
-          <GraphD3 nodes={nodes} links={links} linkTypes={linkTypes}
-                   className={"w-full h-full"} />
+        <GraphContext.Provider
+          value={{
+            vertices: managedVertices,
+            setVertices: handleManagedVerticesChange,
+            graphInstance,
+            setGraphInstance: handleGraphInstanceChange,
+          }}>
+          <GraphVis nodes={nodes} links={links} linkTypes={linkTypes}
+                    className={"w-full h-full"} />
           <motion.div
             className={"absolute right-0 top-0 bottom-0 border border-gray-200 overflow-hidden bg-white rounded-lg shadow-md opacity-0 w-0"}
             ref={nodeListRef}

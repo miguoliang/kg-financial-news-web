@@ -1,10 +1,12 @@
-import { Server } from "miragejs/server";
 import shuffle from "lodash-es/shuffle";
 import first from "lodash-es/first";
+import { rest } from "msw";
+import { appConfig } from "configs";
+import { Subscriptions } from "../seed";
 
-export default function account(server: Server, apiPrefix: string) {
-  server.get(`${apiPrefix}/account/subscriptions`, (schema) => {
-    const shuffled = shuffle(schema.db.Subscriptions);
-    return [first(shuffled)];
-  });
-}
+export default [
+  rest.get(`${appConfig.apiPrefix}/account/subscriptions`, (_req, res, ctx) => {
+    const shuffled = shuffle(Subscriptions);
+    return res(ctx.json([first(shuffled)]));
+  }),
+];

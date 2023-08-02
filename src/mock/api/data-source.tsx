@@ -1,16 +1,16 @@
-import { Server } from "miragejs/server";
 import createPaginationResponse from "../common/createPaginationResponse";
 import shuffle from "lodash-es/shuffle";
-import get from "lodash-es/get";
 import random from "lodash-es/random";
+import { appConfig } from "configs";
+import { rest } from "msw";
+import { DataSources, Vertices } from "../seed";
 
-export default function dataSource(server: Server, apiPrefix: string) {
-  server.get(`${apiPrefix}/data-sources`, (schema, request) => {
-    const page = Number(get(request.queryParams, "page", "0"));
-    const size = Number(get(request.queryParams, "size", "10"));
-    return createPaginationResponse(schema.db.DataSources, page, size);
-  });
-
-  server.get(`${apiPrefix}/data-sources/:id/vertices`, (schema) =>
-    shuffle(schema.db.Vertices).splice(0, random(10, 20)));
-}
+export default [
+  rest.get(`${appConfig.apiPrefix}/data-sources`, (req, res, context) => {
+    const page = Number(req.url.searchParams.get("page") ?? "0");
+    const size = Number(req.url.searchParams.get("size") ?? "10");
+    return res(context.json(createPaginationResponse(DataSources, page, size)));
+  }),
+  rest.get(`${appConfig.apiPrefix}/data-sources/:id/vertices`, (_req, res, context) =>
+    res(context.json(shuffle(Vertices).splice(0, random(10, 20))))),
+];

@@ -10,9 +10,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
  * If you wish to enable mock api
  */
 if (appConfig.runtime !== "production" && appConfig.enableMock) {
-  import("mock").then(({ default: mockServer }) => {
+  import("mock").then(({ worker }) => {
     console.log("mock server on, environment:", appConfig.runtime);
-    mockServer({ environment: appConfig.runtime });
+    worker.start();
   });
 }
 

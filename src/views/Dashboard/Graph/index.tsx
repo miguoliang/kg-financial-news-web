@@ -1,7 +1,7 @@
-import { Graph as GraphComponent } from "components/ui";
+import { GraphD3, Link as GraphLink, Node as GraphNode } from "components/ui";
 import { useSearchParams } from "react-router-dom";
 import React, { useEffect, useRef } from "react";
-import { Category, Edge, Graph as GraphModel, Link, Node, Vertex } from "models";
+import { Edge, Vertex } from "models";
 import { PageHeader } from "../components";
 import { Box, Button, Flex, Icon, Input, Text, useBoolean, useDisclosure } from "@chakra-ui/react";
 import { HiOutlineChevronDoubleLeft, HiOutlineChevronDoubleRight } from "react-icons/hi";
@@ -13,16 +13,16 @@ import { saveAs } from "file-saver";
 import { useGetEdgesByVertices, useGetVerticesByDataSource } from "services";
 import { useQueryClient } from "@tanstack/react-query";
 import { GraphContext } from "./context";
-import findIndex from "lodash-es/findIndex";
-import { echarts } from "configs";
+import { keyBy, uniqBy } from "lodash-es";
 
 const Graph = () => {
 
   const nodeListRef = useRef<HTMLDivElement>(null);
   const uploadRef = useRef<HTMLInputElement>(null);
-  const graphRef = useRef<HTMLDivElement>(null);
   const [managedVertices, setManagedVertices] = React.useState<Vertex[]>([]);
-  const [graph, setGraph] = React.useState<GraphModel>();
+  const [nodes, setNodes] = React.useState<GraphNode<Vertex>[]>([]);
+  const [links, setLinks] = React.useState<GraphLink<Vertex>[]>([]);
+  const [linkTypes, setLinkTypes] = React.useState<string[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
@@ -37,7 +37,7 @@ const Graph = () => {
     queryClient.fetchQuery({
       queryKey: useGetVerticesByDataSource.getKey(searchParams.get("dataSourceId")!),
       queryFn: useGetVerticesByDataSource.queryFn,
-    }).then(v => setManagedVertices(v))
+    }).then(v => setManagedVertices(uniqBy(v, "id")))
       .finally(() => setIsVerticesLoading.off());
   }, [searchParams]);
 
@@ -52,8 +52,12 @@ const Graph = () => {
     queryClient.fetchQuery({
       queryKey,
       queryFn,
-    }).then(v => setGraph(makeGraph(managedVertices, v)))
-      .finally(() => setIsEdgesLoading.off());
+    }).then(v => {
+      const { nodes, links, linkTypes } = makeGraph(managedVertices, v);
+      setNodes(nodes);
+      setLinks(links);
+      setLinkTypes(linkTypes);
+    }).finally(() => setIsEdgesLoading.off());
   }, [managedVertices]);
 
   const handleManagedVerticesChange = (vertices: Vertex[]) => {
@@ -64,24 +68,12 @@ const Graph = () => {
     saveAs(new Blob([JSON.stringify(managedVertices)], { type: "application/json" }), "graph.json");
   };
 
-  const handleNodeListHover = (vertex: Vertex) => {
-    const chart = graphRef.current && echarts.getInstanceByDom(graphRef.current);
-    const index = chart ? findIndex(graph?.nodes, it => it.id === vertex.id) : -1;
-    chart && chart.dispatchAction({
-      type: "highlight",
-      seriesIndex: 0,
-      dataIndex: index,
-    });
+  const handleNodeListHover = () => {
+    // TODO: highlight the node
   };
 
-  const handleNodeListLeave = (vertex: Vertex) => {
-    const chart = graphRef.current && echarts.getInstanceByDom(graphRef.current);
-    const index = chart ? findIndex(graph?.nodes, it => it.id === vertex.id) : -1;
-    chart && chart.dispatchAction({
-      type: "downplay",
-      seriesIndex: 0,
-      dataIndex: index,
-    });
+  const handleNodeListLeave = () => {
+    // TODO: unhighlight the node
   };
 
   const handleImportGraph = () => {
@@ -116,7 +108,8 @@ const Graph = () => {
       </PageHeader>
       <Box className={"flex-grow relative"}>
         <GraphContext.Provider value={{ vertices: managedVertices, setVertices: handleManagedVerticesChange }}>
-          <GraphComponent data={graph} ref={graphRef} className={"absolute top-0 bottom-0 left-0 right-0"} />
+          <GraphD3 nodes={nodes} links={links} linkTypes={linkTypes}
+                   className={"w-full h-full"} />
           <motion.div
             className={"absolute right-0 top-0 bottom-0 border border-gray-200 overflow-hidden bg-white rounded-lg shadow-md opacity-0 w-0"}
             ref={nodeListRef}
@@ -133,22 +126,22 @@ const Graph = () => {
   );
 };
 
+// vertices & edges should be unique by id before calling this function
 function makeGraph(vertices: Vertex[], edges: Edge[]) {
-  const nodes: Node[] = [];
-  const categories: Category[] = [];
-  vertices.forEach((vertex, index) => {
-    nodes.push({
-      id: vertex.id,
-      name: vertex.name,
-      category: index,
-    });
-    categories.push({ name: vertex.name });
-  });
-  const links: Link[] = edges.map((edge) => ({
-    source: edge.inVertexId,
-    target: edge.outVertexId,
+  const nodes: GraphNode<Vertex>[] = vertices.map(v => ({
+    id: v.id,
+    label: v.name,
+    value: v,
   }));
-  return { nodes, links, categories } as GraphModel;
+  const dict = keyBy(nodes, "id");
+  const links = edges.map(e => ({
+    source: dict[e.inVertexId],
+    target: dict[e.outVertexId],
+    type: "normal",
+    label: e.name,
+  } as GraphLink<Vertex>));
+  const linkTypes = uniqBy(edges, "name").map(e => e.name);
+  return { nodes, links, linkTypes };
 }
 
 

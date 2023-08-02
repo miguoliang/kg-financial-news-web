@@ -1,34 +1,12 @@
-import { createServer } from "miragejs";
-import { appConfig } from "configs";
-
 import { accountApi, dataSourceApi, edgeApi, propertyApi, vertexApi } from "./api";
-import { DataSources, Subscriptions, Vertices } from "./seed";
+import { setupWorker } from "msw";
 
-const { apiPrefix } = appConfig;
+const handlers = [
+  ...accountApi,
+  ...dataSourceApi,
+  ...edgeApi,
+  ...propertyApi,
+  ...vertexApi,
+];
 
-export default function mockServer({ environment = "development" }) {
-  const server = createServer({
-    environment,
-    routes() {
-      this.urlPrefix = window.location.origin;
-      this.namespace = apiPrefix;
-      this.passthrough((request) => request.url.startsWith("https://"));
-      this.passthrough((request) =>
-        request.url.startsWith(
-          new URL(import.meta.env.VITE_OIDC_AUTHORITY).origin,
-        ),
-      );
-      dataSourceApi(this, apiPrefix);
-      edgeApi(this, apiPrefix);
-      vertexApi(this, apiPrefix);
-      accountApi(this, apiPrefix);
-      propertyApi(this, apiPrefix);
-    },
-  });
-  server.db.loadData({
-    DataSources,
-    Vertices,
-    Subscriptions,
-  });
-  return server;
-}
+export const worker = setupWorker(...handlers);

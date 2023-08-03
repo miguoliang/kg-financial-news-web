@@ -62,7 +62,7 @@ const NodeList = () => {
                      }} />
       </HStack>
       <Divider my={4} color={"gray.400"} />
-      <List overflowY={"auto"} flexGrow={1}>
+      <List overflowY={"scroll"} flexGrow={1}>
         <AnimatePresence>
           {vertices.map((v) => (
             <motion.li key={v.id} className={"leading-10 px-2 rounded-lg hover:bg-gray-100"}
@@ -70,8 +70,8 @@ const NodeList = () => {
                        initial={{ opacity: 1, height: "auto" }}
                        transition={{ duration: 0.2 }}
                        style={{ backgroundColor: v.id === hoverNode ? theme`colors.gray.100` : "transparent" }}
-                       onMouseOver={() => setHoverNode(v.id)}
-                       onMouseLeave={() => setHoverNode(null)}>
+                       onMouseOver={() => setHoverNode(v.id, "list")}
+                       onMouseLeave={() => setHoverNode(null, "list")}>
               <HStack>
                 <Text flexShrink={0} flexGrow={1}>{v.name}</Text>
                 <CloseButton size={"sm"} borderRadius={"full"} _hover={{ color: "white", bg: "red.500" }}

@@ -7,7 +7,8 @@ interface GraphContextProps {
   graphInstance: any;
   setGraphInstance: (instance: any) => void;
   hoverNode: string | number | null;
-  setHoverNode: (node: string | number | null) => void;
+  setHoverNode: (node: string | number | null, host: "graph" | "list") => void;
+  hoverHost: "graph" | "list";
 }
 
 export const GraphContext = React.createContext<GraphContextProps | null>(null);

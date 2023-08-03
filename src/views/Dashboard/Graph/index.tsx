@@ -26,6 +26,7 @@ const Graph = () => {
   const [nodes, setNodes] = React.useState<GraphNode<Vertex>[]>([]);
   const [links, setLinks] = React.useState<GraphLink<Vertex>[]>([]);
   const [hoverNode, setHoverNode] = React.useState<string | number | null>(null);
+  const [hoverHost, setHoverHost] = React.useState<"graph" | "list">("graph");
   const [linkTypes, setLinkTypes] = React.useState<string[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchParams] = useSearchParams();
@@ -76,9 +77,10 @@ const Graph = () => {
     saveAs(new Blob([JSON.stringify(managedVertices)], { type: "application/json" }), "graph.json");
   };
 
-  const handleNodeHover = (node: string | number | null) => {
+  const handleNodeHover = (node: string | number | null, host: "graph" | "list") => {
     setHoverNode(node);
-    if (!graphInstance || !graphRef.current) {
+    setHoverHost(host);
+    if (host === "graph" || !graphInstance || !graphRef.current) {
       return;
     }
     const canvas = graphRef.current.getElementsByTagName("canvas")[0];
@@ -145,6 +147,7 @@ const Graph = () => {
             setGraphInstance: handleGraphInstanceChange,
             hoverNode,
             setHoverNode: handleNodeHover,
+            hoverHost,
           }}>
           <GraphVis nodes={nodes} links={links}
                     ref={graphRef} className={"w-full h-full"} />

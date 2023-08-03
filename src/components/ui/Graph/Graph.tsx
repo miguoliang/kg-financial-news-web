@@ -7,11 +7,14 @@ import { GraphContext } from "views/Dashboard/Graph/context";
 interface GraphProps<T = any> {
   nodes: Node<T>[];
   links: Link<T>[];
-  linkTypes: string[];
   className?: string;
 }
 
-export const GraphComponent = forwardRef<HTMLDivElement, GraphProps>(({ nodes, links, linkTypes, className }, ref) => {
+export const GraphComponent = forwardRef<HTMLDivElement, GraphProps>(({
+                                                                        nodes,
+                                                                        links,
+                                                                        className,
+                                                                      }, ref) => {
   const context = useContext(GraphContext);
   const elementRef = useRef<HTMLDivElement | null>(null);
 
@@ -51,6 +54,10 @@ export const GraphComponent = forwardRef<HTMLDivElement, GraphProps>(({ nodes, l
         hover: true,
       },
     });
+
+    networkInstance.on("hoverNode", (event) => context?.setHoverNode(event.node));
+    networkInstance.on("blurNode", () => context?.setHoverNode(null));
+
     context?.setGraphInstance(networkInstance);
   }, [elementRef, nodes, links]);
   return <Box ref={(node) => {

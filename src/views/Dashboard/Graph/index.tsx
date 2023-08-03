@@ -25,6 +25,7 @@ const Graph = () => {
   const [graphInstance, setGraphInstance] = React.useState<vis.Network | null>(null);
   const [nodes, setNodes] = React.useState<GraphNode<Vertex>[]>([]);
   const [links, setLinks] = React.useState<GraphLink<Vertex>[]>([]);
+  const [hoverNode, setHoverNode] = React.useState<string | number | null>(null);
   const [linkTypes, setLinkTypes] = React.useState<string[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchParams] = useSearchParams();
@@ -75,13 +76,22 @@ const Graph = () => {
     saveAs(new Blob([JSON.stringify(managedVertices)], { type: "application/json" }), "graph.json");
   };
 
-  const handleNodeListHover = (vertex: Vertex) => {
+  const handleNodeHover = (node: string | number | null) => {
+    setHoverNode(node);
     if (!graphInstance || !graphRef.current) {
       return;
     }
-    const position = graphInstance.getPosition(vertex.id);
-    const coords = graphInstance.canvasToDOM(position);
     const canvas = graphRef.current.getElementsByTagName("canvas")[0];
+    if (!node) {
+      canvas.dispatchEvent(new MouseEvent("mouseout", {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+      }));
+      return;
+    }
+    const position = graphInstance.getPosition(node);
+    const coords = graphInstance.canvasToDOM(position);
     const canvasClientRect = canvas.getBoundingClientRect();
     const clientPosition = {
       clientX: coords.x + canvasClientRect.left,
@@ -133,8 +143,10 @@ const Graph = () => {
             setVertices: handleManagedVerticesChange,
             graphInstance,
             setGraphInstance: handleGraphInstanceChange,
+            hoverNode,
+            setHoverNode: handleNodeHover,
           }}>
-          <GraphVis nodes={nodes} links={links} linkTypes={linkTypes}
+          <GraphVis nodes={nodes} links={links}
                     ref={graphRef} className={"w-full h-full"} />
           <motion.div
             className={"absolute right-0 top-0 bottom-0 border border-gray-200 overflow-hidden bg-white rounded-lg shadow-md opacity-0 w-0"}
@@ -144,7 +156,7 @@ const Graph = () => {
               width: isOpen ? theme`minWidth.md` : "0%",
               borderColor: isOpen ? theme`colors.gray.200` : theme`colors.white`,
             }} transition={{ type: "spring", duration: 0.5, bounce: 0 }}>
-            <NodeList onHover={handleNodeListHover} />
+            <NodeList />
           </motion.div>
         </GraphContext.Provider>
       </Box>

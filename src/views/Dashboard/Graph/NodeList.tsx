@@ -8,11 +8,7 @@ import { SingleValue } from "react-select";
 import some from "lodash-es/some";
 import { useGetVertices } from "services";
 import { GraphContext } from "./context";
-
-interface NodeListProps {
-  onHover?: (vertex: Vertex) => void;
-  onLeave?: (vertex: Vertex) => void;
-}
+import { theme } from "twin.macro";
 
 type CustomOption = {
   value: string;
@@ -20,10 +16,10 @@ type CustomOption = {
   payload: Vertex;
 }
 
-const NodeList = ({ onHover, onLeave }: NodeListProps) => {
+const NodeList = () => {
 
   const queryClient = useQueryClient();
-  const { vertices, setVertices } = useContext(GraphContext)!;
+  const { vertices, setVertices, hoverNode, setHoverNode } = useContext(GraphContext)!;
   const loadOptions = async (inputValue: string) => {
     if (!inputValue) {
       return Promise.resolve([]);
@@ -73,8 +69,9 @@ const NodeList = ({ onHover, onLeave }: NodeListProps) => {
                        exit={{ opacity: 0, height: 0 }}
                        initial={{ opacity: 1, height: "auto" }}
                        transition={{ duration: 0.2 }}
-                       onMouseOver={() => onHover?.(v)}
-                       onMouseLeave={() => onLeave?.(v)}>
+                       style={{ backgroundColor: v.id === hoverNode ? theme`colors.gray.100` : "transparent" }}
+                       onMouseOver={() => setHoverNode(v.id)}
+                       onMouseLeave={() => setHoverNode(null)}>
               <HStack>
                 <Text flexShrink={0} flexGrow={1}>{v.name}</Text>
                 <CloseButton size={"sm"} borderRadius={"full"} _hover={{ color: "white", bg: "red.500" }}

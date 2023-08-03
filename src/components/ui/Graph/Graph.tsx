@@ -1,5 +1,5 @@
 import { Link, Node } from "./types";
-import { useContext, useEffect, useRef } from "react";
+import { forwardRef, useContext, useEffect, useRef } from "react";
 import { Box } from "@chakra-ui/react";
 import * as vis from "vis-network";
 import { GraphContext } from "views/Dashboard/Graph/context";
@@ -11,18 +11,19 @@ interface GraphProps<T = any> {
   className?: string;
 }
 
-export function GraphComponent<T>({ nodes, links, linkTypes, className }: GraphProps<T>) {
-  const ref = useRef<HTMLDivElement>(null);
+export const GraphComponent = forwardRef<HTMLDivElement, GraphProps>(({ nodes, links, linkTypes, className }, ref) => {
   const context = useContext(GraphContext);
+  const elementRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!ref.current) {
+    if (!elementRef.current) {
       return;
     }
 
     const networkNodes = nodes.map((n) => ({
       id: n.id,
       label: n.label,
+      hover: true,
     }));
 
     const networkLinks = links.map((l) => ({
@@ -39,8 +40,7 @@ export function GraphComponent<T>({ nodes, links, linkTypes, className }: GraphP
       });
       return;
     }
-
-    const networkInstance = new vis.Network(ref.current, {
+    const networkInstance = new vis.Network(elementRef.current, {
       nodes: networkNodes,
       edges: networkLinks,
     }, {
@@ -52,7 +52,13 @@ export function GraphComponent<T>({ nodes, links, linkTypes, className }: GraphP
       },
     });
     context?.setGraphInstance(networkInstance);
-
-  }, [ref, nodes, links]);
-  return <Box ref={ref} className={className}></Box>;
-}
+  }, [elementRef, nodes, links]);
+  return <Box ref={(node) => {
+    elementRef.current = node;
+    if (ref && typeof ref === "function") {
+      ref(node);
+    } else if (ref && typeof ref === "object") {
+      ref.current = node;
+    }
+  }} className={className}></Box>;
+});

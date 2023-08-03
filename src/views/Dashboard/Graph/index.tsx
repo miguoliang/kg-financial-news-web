@@ -19,6 +19,7 @@ import * as vis from "vis-network";
 const Graph = () => {
 
   const nodeListRef = useRef<HTMLDivElement>(null);
+  const graphRef = useRef<HTMLDivElement>(null);
   const uploadRef = useRef<HTMLInputElement>(null);
   const [managedVertices, setManagedVertices] = React.useState<Vertex[]>([]);
   const [graphInstance, setGraphInstance] = React.useState<vis.Network | null>(null);
@@ -75,11 +76,24 @@ const Graph = () => {
   };
 
   const handleNodeListHover = (vertex: Vertex) => {
-    graphInstance?.selectNodes([vertex.id], false);
-  };
-
-  const handleNodeListLeave = () => {
-    graphInstance?.selectNodes([], false);
+    if (!graphInstance || !graphRef.current) {
+      return;
+    }
+    const position = graphInstance.getPosition(vertex.id);
+    const coords = graphInstance.canvasToDOM(position);
+    const canvas = graphRef.current.getElementsByTagName("canvas")[0];
+    const canvasClientRect = canvas.getBoundingClientRect();
+    const clientPosition = {
+      clientX: coords.x + canvasClientRect.left,
+      clientY: coords.y + canvasClientRect.top,
+    };
+    canvas.dispatchEvent(new MouseEvent("mousemove", {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+      clientX: clientPosition.clientX,
+      clientY: clientPosition.clientY,
+    }));
   };
 
   const handleImportGraph = () => {
@@ -121,7 +135,7 @@ const Graph = () => {
             setGraphInstance: handleGraphInstanceChange,
           }}>
           <GraphVis nodes={nodes} links={links} linkTypes={linkTypes}
-                    className={"w-full h-full"} />
+                    ref={graphRef} className={"w-full h-full"} />
           <motion.div
             className={"absolute right-0 top-0 bottom-0 border border-gray-200 overflow-hidden bg-white rounded-lg shadow-md opacity-0 w-0"}
             ref={nodeListRef}
@@ -130,7 +144,7 @@ const Graph = () => {
               width: isOpen ? theme`minWidth.md` : "0%",
               borderColor: isOpen ? theme`colors.gray.200` : theme`colors.white`,
             }} transition={{ type: "spring", duration: 0.5, bounce: 0 }}>
-            <NodeList onHover={handleNodeListHover} onLeave={handleNodeListLeave} />
+            <NodeList onHover={handleNodeListHover} />
           </motion.div>
         </GraphContext.Provider>
       </Box>

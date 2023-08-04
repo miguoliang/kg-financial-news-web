@@ -12,25 +12,30 @@ import { HiOutlineArrowDownTray, HiOutlineArrowUpTray } from "react-icons/hi2";
 import { saveAs } from "file-saver";
 import { useGetEdgesByVertices, useGetVerticesByDataSource } from "services";
 import { useQueryClient } from "@tanstack/react-query";
-import { GraphContext } from "./context";
-import { keyBy, uniqBy } from "lodash-es";
+import { GraphContext, useGraphContext } from "./context";
+import uniqBy from "lodash-es/uniqBy";
 import * as vis from "vis-network";
+import first from "lodash-es/first";
 
 const Graph = () => {
 
   const nodeListRef = useRef<HTMLDivElement>(null);
   const graphRef = useRef<HTMLDivElement>(null);
   const uploadRef = useRef<HTMLInputElement>(null);
-  const [managedVertices, setManagedVertices] = React.useState<Vertex[]>([]);
   const [graphInstance, setGraphInstance] = React.useState<vis.Network | null>(null);
-  const [nodes, setNodes] = React.useState<GraphNode<Vertex>[]>([]);
-  const [links, setLinks] = React.useState<GraphLink<Vertex>[]>([]);
-  const [hoverNode, setHoverNode] = React.useState<string | number | null>(null);
-  const [hoverHost, setHoverHost] = React.useState<"graph" | "list">("graph");
-  const [linkTypes, setLinkTypes] = React.useState<string[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
+  const [linkTypes, setLinkTypes] = React.useState<string[]>([]);
+  const {
+    nodes,
+    setNodes,
+    links,
+    setLinks,
+    hoverNode,
+    setHoverNode,
+    hoverHost,
+  } = useGraphContext();
   const [isEdgesLoading, setIsEdgesLoading] = useBoolean(false);
   const [isVerticesLoading, setIsVerticesLoading] = useBoolean(false);
 
@@ -42,48 +47,43 @@ const Graph = () => {
     queryClient.fetchQuery({
       queryKey: useGetVerticesByDataSource.getKey(searchParams.get("dataSourceId")!),
       queryFn: useGetVerticesByDataSource.queryFn,
-    }).then(v => setManagedVertices(uniqBy(v, "id")))
+    }).then(v => setNodes(vertices2nodes(v)))
       .finally(() => setIsVerticesLoading.off());
   }, [searchParams]);
 
   useEffect(() => {
-    if (!managedVertices.length) {
+    if (!nodes.length) {
       return;
     }
     setIsEdgesLoading.on();
-    const vertexIds = managedVertices.map(v => v.id);
-    const queryKey = useGetEdgesByVertices.getKey(vertexIds);
+    const vertexIds = nodes.map(v => v.id);
+    const queryKey = useGetEdgesByVertices.getKey(vertexIds as string[]);
     const queryFn = useGetEdgesByVertices.queryFn;
     queryClient.fetchQuery({
       queryKey,
       queryFn,
     }).then(v => {
-      const { nodes, links, linkTypes } = makeGraph(managedVertices, v);
+      const linkTypes = uniqBy(v, "type").map(v => v.name);
+      const links = edges2links(v);
       setNodes(nodes);
       setLinks(links);
       setLinkTypes(linkTypes);
     }).finally(() => setIsEdgesLoading.off());
-  }, [managedVertices]);
-
-  const handleManagedVerticesChange = (vertices: Vertex[]) => {
-    setManagedVertices(vertices);
-  };
-
-  const handleGraphInstanceChange = (graph: vis.Network) => {
-    setGraphInstance(graph);
-  };
+  }, [nodes]);
 
   const handleExportGraph = () => {
-    saveAs(new Blob([JSON.stringify(managedVertices)], { type: "application/json" }), "graph.json");
+    saveAs(new Blob([JSON.stringify(nodes)], { type: "application/json" }), "graph.json");
   };
 
   const handleNodeHover = (node: string | number | null, host: "graph" | "list") => {
-    setHoverNode(node);
-    setHoverHost(host);
+    setHoverNode(node, host);
     if (host === "graph" || !graphInstance || !graphRef.current) {
       return;
     }
-    const canvas = graphRef.current.getElementsByTagName("canvas")[0];
+    const canvas = first(graphRef.current.getElementsByTagName("canvas"));
+    if (!canvas) {
+      return;
+    }
     if (!node) {
       canvas.dispatchEvent(new MouseEvent("mouseout", {
         view: window,
@@ -116,7 +116,7 @@ const Graph = () => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const vertices = JSON.parse(e.target?.result as string) as Vertex[];
-      setManagedVertices(vertices);
+      setNodes(vertices2nodes(vertices));
     };
     reader.readAsText(file);
   };
@@ -141,16 +141,17 @@ const Graph = () => {
       <Box className={"flex-grow relative"}>
         <GraphContext.Provider
           value={{
-            vertices: managedVertices,
-            setVertices: handleManagedVerticesChange,
+            nodes,
+            links,
+            setNodes,
+            setLinks,
             graphInstance,
-            setGraphInstance: handleGraphInstanceChange,
+            setGraphInstance,
             hoverNode,
-            setHoverNode: handleNodeHover,
             hoverHost,
+            setHoverNode: handleNodeHover,
           }}>
-          <GraphVis nodes={nodes} links={links}
-                    ref={graphRef} className={"w-full h-full"} />
+          <GraphVis ref={graphRef} className={"w-full h-full"} />
           <motion.div
             className={"absolute right-0 top-0 bottom-0 border border-gray-200 overflow-hidden bg-white rounded-lg shadow-md opacity-0 w-0"}
             ref={nodeListRef}
@@ -167,23 +168,20 @@ const Graph = () => {
   );
 };
 
-// vertices & edges should be unique by id before calling this function
-function makeGraph(vertices: Vertex[], edges: Edge[]) {
-  const nodes: GraphNode<Vertex>[] = vertices.map(v => ({
+function vertices2nodes(vertices: Vertex[]): GraphNode[] {
+  return vertices.map(v => ({
     id: v.id,
     label: v.name,
-    value: v,
   }));
-  const dict = keyBy(nodes, "id");
-  const links = edges.map(e => ({
-    source: dict[e.inVertexId],
-    target: dict[e.outVertexId],
-    type: "normal",
-    label: e.name,
-  } as GraphLink<Vertex>));
-  const linkTypes = uniqBy(edges, "name").map(e => e.name);
-  return { nodes, links, linkTypes };
 }
 
+function edges2links(edges: Edge[]): GraphLink[] {
+  return edges.map(e => ({
+    from: e.inVertexId,
+    to: e.outVertexId,
+    id: `${e.inVertexId}-${e.name}-${e.outVertexId}`,
+    smooth: false,
+  } as GraphLink));
+}
 
 export default Graph;

@@ -1,16 +1,13 @@
-export type Node<VALUE = any> = {
-  id: string | number;
+import { IdType } from "vis-network";
+
+export type Node = {
+  id: IdType;
   label: string;
-  value?: VALUE;
 } & Record<string, any>;
 
-type MarkerType = "none" | "normal" | "reverse" | "bidirectional";
-
-export type Link<VALUE = any> = {
-  source: Node<VALUE>;
-  target: Node<VALUE>;
-  marker?: MarkerType;
-  type: string;
+export type Link = {
+  from: IdType;
+  to: IdType;
+  label?: string;
+  smooth?: boolean;
 } & Record<string, any>;
-
-export type Graph<VALUE = any> = Link<VALUE>[];

@@ -1,20 +1,9 @@
-import { Link, Node } from "./types";
 import { forwardRef, useContext, useEffect, useRef } from "react";
 import { Box } from "@chakra-ui/react";
 import * as vis from "vis-network";
 import { GraphContext } from "views/Dashboard/Graph/context";
 
-interface GraphProps<T = any> {
-  nodes: Node<T>[];
-  links: Link<T>[];
-  className?: string;
-}
-
-export const GraphComponent = forwardRef<HTMLDivElement, GraphProps>(({
-                                                                        nodes,
-                                                                        links,
-                                                                        className,
-                                                                      }, ref) => {
+export const GraphComponent = forwardRef<HTMLDivElement, { className?: string }>(({ className }, ref) => {
   const context = useContext(GraphContext);
   const elementRef = useRef<HTMLDivElement | null>(null);
 
@@ -23,29 +12,14 @@ export const GraphComponent = forwardRef<HTMLDivElement, GraphProps>(({
       return;
     }
 
-    const networkNodes = nodes.map((n) => ({
-      id: n.id,
-      label: n.label,
-      hover: true,
-    }));
-
-    const networkLinks = links.map((l) => ({
-      from: l.source.id,
-      to: l.target.id,
-      id: `${l.source.id}-${l.target.id}`,
-      smooth: false,
-    }));
-
     if (context?.graphInstance) {
-      context.graphInstance.setData({
-        nodes: networkNodes,
-        edges: networkLinks,
-      });
+      context.graphInstance.setData({ nodes: context.nodes, edges: context.links });
       return;
     }
+
     const networkInstance = new vis.Network(elementRef.current, {
-      nodes: networkNodes,
-      edges: networkLinks,
+      nodes: context?.nodes ?? [],
+      edges: context?.links ?? [],
     }, {
       physics: {
         enabled: false,
@@ -56,6 +30,7 @@ export const GraphComponent = forwardRef<HTMLDivElement, GraphProps>(({
     });
 
     networkInstance.on("hoverNode", (event) => {
+      console.log("context?.hoverHost", context?.hoverHost);
       if (context?.hoverHost === "list") {
         context.setHoverNode(event.node, "graph");
       }
@@ -67,7 +42,7 @@ export const GraphComponent = forwardRef<HTMLDivElement, GraphProps>(({
     });
 
     context?.setGraphInstance(networkInstance);
-  }, [elementRef, nodes, links]);
+  }, [elementRef, context?.nodes, context?.links]);
   return <Box ref={(node) => {
     elementRef.current = node;
     if (ref && typeof ref === "function") {

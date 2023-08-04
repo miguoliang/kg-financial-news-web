@@ -1,4 +1,3 @@
-import { Vertex } from "models";
 import { CloseButton, Divider, Heading, HStack, List, Text, VStack } from "@chakra-ui/react";
 import AsyncSelect from "react-select/async";
 import { useQueryClient } from "@tanstack/react-query";
@@ -9,17 +8,17 @@ import some from "lodash-es/some";
 import { useGetVertices } from "services";
 import { GraphContext } from "./context";
 import { theme } from "twin.macro";
+import { Node } from "components/ui/Graph";
 
 type CustomOption = {
   value: string;
   label: string;
-  payload: Vertex;
 }
 
 const NodeList = () => {
 
   const queryClient = useQueryClient();
-  const { vertices, setVertices, hoverNode, setHoverNode } = useContext(GraphContext)!;
+  const { nodes, setNodes, hoverNode, setHoverNode } = useContext(GraphContext)!;
   const loadOptions = async (inputValue: string) => {
     if (!inputValue) {
       return Promise.resolve([]);
@@ -33,19 +32,18 @@ const NodeList = () => {
     return res.content.map(v => ({
       value: v.id,
       label: v.name,
-      payload: v,
     }));
   };
 
-  const handleRemoveVertex = (vertex: Vertex) => {
-    setVertices(vertices.filter(v => v !== vertex));
+  const handleRemoveVertex = (node: Node) => {
+    setNodes(nodes.filter(v => v.id !== node.id));
   };
 
   const handleOptionSelected = (option: SingleValue<CustomOption>) => {
-    if (!option || some(vertices, it => it.id === option.payload.id)) {
+    if (!option || some(nodes, it => it.id === option.value)) {
       return;
     }
-    setVertices([...vertices, option.payload]);
+    setNodes([...nodes, { id: option.value, label: option.label }]);
   };
 
   return (
@@ -64,7 +62,7 @@ const NodeList = () => {
       <Divider my={4} color={"gray.400"} />
       <List overflowY={"scroll"} flexGrow={1}>
         <AnimatePresence>
-          {vertices.map((v) => (
+          {nodes.map((v) => (
             <motion.li key={v.id} className={"leading-10 px-2 rounded-lg hover:bg-gray-100"}
                        exit={{ opacity: 0, height: 0 }}
                        initial={{ opacity: 1, height: "auto" }}
@@ -73,7 +71,7 @@ const NodeList = () => {
                        onMouseOver={() => setHoverNode(v.id, "list")}
                        onMouseLeave={() => setHoverNode(null, "list")}>
               <HStack>
-                <Text flexShrink={0} flexGrow={1}>{v.name}</Text>
+                <Text flexShrink={0} flexGrow={1}>{v.label}</Text>
                 <CloseButton size={"sm"} borderRadius={"full"} _hover={{ color: "white", bg: "red.500" }}
                              onClick={() => handleRemoveVertex(v)} />
               </HStack>

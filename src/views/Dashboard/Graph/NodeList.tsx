@@ -68,8 +68,8 @@ const NodeList = () => {
                        initial={{ opacity: 1, height: "auto" }}
                        transition={{ duration: 0.2 }}
                        style={{ backgroundColor: v.id === hoverNode ? theme`colors.gray.100` : "transparent" }}
-                       onMouseOver={() => setHoverNode(v.id, "list")}
-                       onMouseLeave={() => setHoverNode(null, "list")}>
+                       onMouseOver={() => setHoverNode(v.id)}
+                       onMouseLeave={() => setHoverNode(null)}>
               <HStack>
                 <Text flexShrink={0} flexGrow={1}>{v.label}</Text>
                 <CloseButton size={"sm"} borderRadius={"full"} _hover={{ color: "white", bg: "red.500" }}

@@ -11,7 +11,7 @@ interface GraphContextProps {
   setGraphInstance: (instance: vis.Network) => void;
   hoverNode: string | number | null;
   hoverHost: "graph" | "list";
-  setHoverNode: (node: string | number | null, host: "graph" | "list") => void;
+  setHoverNode: (node: string | number | null) => void;
 }
 
 export const GraphContext = React.createContext<GraphContextProps | null>(null);
@@ -21,13 +21,7 @@ export const useGraphContext = () => {
   const [links, setLinks] = React.useState<Link[]>([]);
   const [graphInstance, setGraphInstance] = React.useState<vis.Network | null>(null);
   const [hoverNode, setHoverNode] = React.useState<string | number | null>(null);
-  const [hoverHost, setHoverHost] = React.useState<"graph" | "list">("list");
-
-  const handleSetHoverNode = (node: string | number | null, host: "graph" | "list") => {
-    console.log("host", host, "node", node);
-    setHoverNode(node);
-    setHoverHost(host);
-  };
+  const [hoverHost, setHoverHost] = React.useState<"graph" | "list">("graph");
 
   return {
     nodes,
@@ -38,6 +32,6 @@ export const useGraphContext = () => {
     setGraphInstance,
     hoverNode,
     hoverHost,
-    setHoverNode: handleSetHoverNode,
+    setHoverNode,
   };
 };

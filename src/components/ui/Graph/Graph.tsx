@@ -30,15 +30,10 @@ export const GraphComponent = forwardRef<HTMLDivElement, { className?: string }>
     });
 
     networkInstance.on("hoverNode", (event) => {
-      console.log("context?.hoverHost", context?.hoverHost);
-      if (context?.hoverHost === "list") {
-        context.setHoverNode(event.node, "graph");
-      }
+      context?.setHoverNode(event.node);
     });
     networkInstance.on("blurNode", () => {
-      if (context?.hoverHost === "list") {
-        context.setHoverNode(null, "graph");
-      }
+      context?.setHoverNode(null);
     });
 
     context?.setGraphInstance(networkInstance);

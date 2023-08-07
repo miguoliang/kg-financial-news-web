@@ -75,9 +75,9 @@ const Graph = () => {
     saveAs(new Blob([JSON.stringify(nodes)], { type: "application/json" }), "graph.json");
   };
 
-  const handleNodeHover = (node: string | number | null, host: "graph" | "list") => {
-    setHoverNode(node, host);
-    if (host === "graph" || !graphInstance || !graphRef.current) {
+  const handleNodeHover = (node: string | number | null) => {
+    setHoverNode(node);
+    if (!graphInstance || !graphRef.current) {
       return;
     }
     const canvas = first(graphRef.current.getElementsByTagName("canvas"));

@@ -34,7 +34,8 @@ const Graph = () => {
     setLinks,
     hoverNode,
     setHoverNode,
-    hoverHost,
+    selectedNode,
+    setSelectedNode,
   } = useGraphContext();
   const [isEdgesLoading, setIsEdgesLoading] = useBoolean(false);
   const [isVerticesLoading, setIsVerticesLoading] = useBoolean(false);
@@ -148,8 +149,9 @@ const Graph = () => {
             graphInstance,
             setGraphInstance,
             hoverNode,
-            hoverHost,
             setHoverNode: handleNodeHover,
+            selectedNode,
+            setSelectedNode,
           }}>
           <GraphVis ref={graphRef} className={"w-full h-full"} />
           <motion.div

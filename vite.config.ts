@@ -28,6 +28,10 @@ export default defineConfig({
             id.includes("node_modules/react-select") ||
             id.includes("node_modules/react-icons")) {
             return "vendors-ui";
+          } else if (id.includes("node_modules/vis-network")) {
+            return "vendors-vis-network";
+          } else if (id.includes("node_modules/vis-data")) {
+            return "vendors-vis-data";
           } else if (id.includes("node_modules")) {
             return "vendors-misc";
           } else if (id.includes("src/")) {

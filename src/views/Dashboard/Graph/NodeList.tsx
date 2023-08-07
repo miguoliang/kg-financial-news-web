@@ -18,7 +18,7 @@ type CustomOption = {
 const NodeList = () => {
 
   const queryClient = useQueryClient();
-  const { nodes, setNodes, hoverNode, setHoverNode } = useContext(GraphContext)!;
+  const { nodes, setNodes, hoverNode, setHoverNode, selectedNode, setSelectedNode } = useContext(GraphContext)!;
   const loadOptions = async (inputValue: string) => {
     if (!inputValue) {
       return Promise.resolve([]);
@@ -63,13 +63,14 @@ const NodeList = () => {
       <List overflowY={"scroll"} flexGrow={1}>
         <AnimatePresence>
           {nodes.map((v) => (
-            <motion.li key={v.id} className={"leading-10 px-2 rounded-lg hover:bg-gray-100"}
+            <motion.li key={v.id} className={"leading-10 px-2 rounded-lg hover:bg-gray-100 cursor-pointer"}
                        exit={{ opacity: 0, height: 0 }}
                        initial={{ opacity: 1, height: "auto" }}
                        transition={{ duration: 0.2 }}
-                       style={{ backgroundColor: v.id === hoverNode ? theme`colors.gray.100` : "transparent" }}
+                       style={{ backgroundColor: v.id === hoverNode || v.id === selectedNode ? theme`colors.gray.100` : "transparent" }}
                        onMouseOver={() => setHoverNode(v.id)}
-                       onMouseLeave={() => setHoverNode(null)}>
+                       onMouseLeave={() => setHoverNode(null)}
+                       onClick={() => setSelectedNode(v.id === selectedNode ? null : v.id)}>
               <HStack>
                 <Text flexShrink={0} flexGrow={1}>{v.label}</Text>
                 <CloseButton size={"sm"} borderRadius={"full"} _hover={{ color: "white", bg: "red.500" }}

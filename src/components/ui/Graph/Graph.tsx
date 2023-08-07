@@ -3,7 +3,9 @@ import { Box } from "@chakra-ui/react";
 import * as vis from "vis-network";
 import { GraphContext } from "views/Dashboard/Graph/context";
 
-export const GraphComponent = forwardRef<HTMLDivElement, { className?: string }>(({ className }, ref) => {
+export const GraphComponent = forwardRef<HTMLDivElement, {
+  className?: string
+}>(({ className }, ref) => {
   const context = useContext(GraphContext);
   const elementRef = useRef<HTMLDivElement | null>(null);
 
@@ -34,6 +36,12 @@ export const GraphComponent = forwardRef<HTMLDivElement, { className?: string }>
     });
     networkInstance.on("blurNode", () => {
       context?.setHoverNode(null);
+    });
+    networkInstance.on("selectNode", (event) => {
+      context?.setSelectedNode(event.nodes[0]);
+    });
+    networkInstance.on("deselectNode", (event) => {
+      context?.setSelectedNode(null);
     });
 
     context?.setGraphInstance(networkInstance);

@@ -15,7 +15,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { GraphContext, useGraphContext } from "./context";
 import uniqBy from "lodash-es/uniqBy";
 import * as vis from "vis-network";
-import first from "lodash-es/first";
 
 const Graph = () => {
 
@@ -76,37 +75,14 @@ const Graph = () => {
     saveAs(new Blob([JSON.stringify(nodes)], { type: "application/json" }), "graph.json");
   };
 
-  const handleNodeHover = (node: string | number | null) => {
-    setHoverNode(node);
+  const handleNodeHover = (nodeId: string | number | null) => {
+    setHoverNode(nodeId);
     if (!graphInstance || !graphRef.current) {
       return;
     }
-    const canvas = first(graphRef.current.getElementsByTagName("canvas"));
-    if (!canvas) {
-      return;
-    }
-    if (!node) {
-      canvas.dispatchEvent(new MouseEvent("mouseout", {
-        view: window,
-        bubbles: true,
-        cancelable: true,
-      }));
-      return;
-    }
-    const position = graphInstance.getPosition(node);
-    const coords = graphInstance.canvasToDOM(position);
-    const canvasClientRect = canvas.getBoundingClientRect();
-    const clientPosition = {
-      clientX: coords.x + canvasClientRect.left,
-      clientY: coords.y + canvasClientRect.top,
-    };
-    canvas.dispatchEvent(new MouseEvent("mousemove", {
-      view: window,
-      bubbles: true,
-      cancelable: true,
-      clientX: clientPosition.clientX,
-      clientY: clientPosition.clientY,
-    }));
+    const instance = graphInstance as any;
+    const selectionHandler = instance.selectionHandler;
+    selectionHandlerHoverObject(selectionHandler, nodeId);
   };
 
   const handleImportGraph = () => {
@@ -184,6 +160,68 @@ function edges2links(edges: Edge[]): GraphLink[] {
     id: `${e.inVertexId}-${e.name}-${e.outVertexId}`,
     smooth: false,
   } as GraphLink));
+}
+
+function selectionHandlerHoverObject(thisArg: any, nodeId: string | number | null) {
+
+  let object = nodeId && thisArg.body.nodes[nodeId];
+  if (!object) {
+    object = nodeId && thisArg.body.edges[nodeId];
+  }
+
+  let hoverChanged = false;
+  // remove all node hover highlights
+  for (const nodeId in thisArg.hoverObj.nodes) {
+    if (Object.prototype.hasOwnProperty.call(thisArg.hoverObj.nodes, nodeId)) {
+      thisArg.emitBlurEvent(event, { x: 0, y: 0 }, thisArg.hoverObj.nodes[nodeId]);
+      delete thisArg.hoverObj.nodes[nodeId];
+      hoverChanged = true;
+    }
+  }
+
+  // removing all edge hover highlights
+  for (const edgeId in thisArg.hoverObj.edges) {
+    if (Object.prototype.hasOwnProperty.call(thisArg.hoverObj.edges, edgeId)) {
+      // if the hover has been changed here it means that the node has been hovered over or off
+      // we then do not use the emitBlurEvent method here.
+      if (hoverChanged) {
+        thisArg.hoverObj.edges[edgeId].hover = false;
+        delete thisArg.hoverObj.edges[edgeId];
+      } else {
+        // if the blur remains the same and the object is undefined (mouse off) or another
+        // edge has been hovered, or another node has been hovered we blur the edge.
+        thisArg.emitBlurEvent(event, { x: 0, y: 0 }, thisArg.hoverObj.edges[edgeId]);
+        delete thisArg.hoverObj.edges[edgeId];
+        hoverChanged = true;
+      }
+    }
+  }
+
+  if (object) {
+    const hoveredEdgesCount = Object.keys(thisArg.hoverObj.edges).length;
+    const hoveredNodesCount = Object.keys(thisArg.hoverObj.nodes).length;
+    const newOnlyHoveredEdge =
+      hoveredEdgesCount === 0 &&
+      hoveredNodesCount === 0;
+    const newOnlyHoveredNode =
+      hoveredEdgesCount === 0 &&
+      hoveredNodesCount === 0;
+
+    if (hoverChanged || newOnlyHoveredEdge || newOnlyHoveredNode) {
+      if (!Object.hasOwn(object, "hover")) {
+        object.hover = false;
+      }
+      hoverChanged = thisArg.emitHoverEvent(event, { x: 0, y: 0 }, object);
+    }
+
+    if (object && thisArg.options.hoverConnectedEdges === true) {
+      thisArg._hoverConnectedEdges(object);
+    }
+  }
+
+  if (hoverChanged) {
+    thisArg.body.emitter.emit("_requestRedraw");
+  }
 }
 
 export default Graph;

@@ -85,6 +85,14 @@ const Graph = () => {
     selectionHandlerHoverObject(selectionHandler, nodeId);
   };
 
+  const handleNodeSelect = (nodeId: string | number | null) => {
+    setSelectedNode(nodeId);
+    if (!graphInstance || !graphRef.current) {
+      return;
+    }
+    nodeId ? graphInstance.selectNodes([nodeId]) : graphInstance.selectNodes([]);
+  }
+
   const handleImportGraph = () => {
     const file = uploadRef.current?.files?.[0];
     if (!file) {
@@ -127,7 +135,7 @@ const Graph = () => {
             hoverNode,
             setHoverNode: handleNodeHover,
             selectedNode,
-            setSelectedNode,
+            setSelectedNode: handleNodeSelect,
           }}>
           <GraphVis ref={graphRef} className={"w-full h-full"} />
           <motion.div

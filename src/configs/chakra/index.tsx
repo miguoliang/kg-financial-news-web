@@ -11,6 +11,7 @@ import first from "lodash-es/first";
 import join from "lodash-es/join";
 import mapValues from "lodash-es/mapValues";
 import { theme as twTheme } from "twin.macro";
+import { tabsTheme } from "./tabs";
 
 const tailwindTheme = twTheme`` as Record<string, any>;
 
@@ -53,5 +54,6 @@ export default extendTheme({
     Card: cardTheme,
     Button: buttonTheme,
     Tooltip: tooltipTheme,
+    Tabs: tabsTheme,
   },
 });

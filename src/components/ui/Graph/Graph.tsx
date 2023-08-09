@@ -40,7 +40,7 @@ export const GraphComponent = forwardRef<HTMLDivElement, {
     networkInstance.on("selectNode", (event) => {
       context?.setSelectedNode(event.nodes[0]);
     });
-    networkInstance.on("deselectNode", (event) => {
+    networkInstance.on("deselectNode", () => {
       context?.setSelectedNode(null);
     });
 

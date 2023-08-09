@@ -1,24 +1,22 @@
 import * as echarts from "echarts/core";
 import { ComposeOption } from "echarts/core";
-import { GraphChart, GraphSeriesOption, TreemapChart, TreemapSeriesOption } from "echarts/charts";
-import { LegendComponent, LegendComponentOption } from "echarts/components";
+import { GridComponent, GridComponentOption, LegendComponent, LegendComponentOption } from "echarts/components";
 import { CanvasRenderer } from "echarts/renderers";
+import { BarChart, BarSeriesOption, LineChart, LineSeriesOption } from "echarts/charts";
 
 echarts.use([
-  GraphChart,
-  TreemapChart,
+  LineChart,
+  BarChart,
   LegendComponent,
   CanvasRenderer,
+  GridComponent,
 ]);
 
-export type ECGraphOption = ComposeOption<
+export type ECLineOption = ComposeOption<
+  | LineSeriesOption
+  | BarSeriesOption
   | LegendComponentOption
-  | GraphSeriesOption
->
-
-export type ECTreemapOption = ComposeOption<
-  | TreemapSeriesOption
->
-
+  | GridComponentOption
+>;
 
 export default echarts;

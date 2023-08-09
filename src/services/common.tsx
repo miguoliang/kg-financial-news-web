@@ -15,6 +15,11 @@ export type StatResult = {
   percentage: number;
 }[];
 
+export type TimeSeries<T = number> = {
+  date: string;
+  value: T;
+}[];
+
 export function statResponseToResult(statResponse: StatResponse): StatResult {
   return statResponse.map(({ label, value }, index) => {
     const changed = index === 0 ? 0 : value - statResponse[index - 1].value;

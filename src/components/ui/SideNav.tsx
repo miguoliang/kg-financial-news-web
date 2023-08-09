@@ -163,7 +163,7 @@ const ExpandableSubmenu = ({ item }: {
       </Button>
       <VStack pl={5} pt={1} gap={1} alignItems={"stretch"}>
         {item.children?.map((subItem) => (
-          <NavMenuItem key={item.key} item={subItem} />
+          <NavMenuItem key={subItem.key} item={subItem} />
         ))}
       </VStack>
     </motion.div>

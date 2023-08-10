@@ -16,15 +16,15 @@ export default [
 function randomStorageStatData(months: number = 30) {
   const database = times(months, (i) => ({
     date: dayjs().subtract(i, "month").format("YYYY-MM"),
-    value: faker.number.int({ min: 10, max: 500 }),
+    value: faker.number.int({ min: 500, max: 50000 }),
   }));
   const file = times(months, (i) => ({
     date: dayjs().subtract(i, "month").format("YYYY-MM"),
-    value: faker.number.int({ min: 100, max: 1000 }),
+    value: faker.number.int({ min: 500, max: 50000 }),
   }));
   const usage = times(months, (i) => ({
     date: dayjs().subtract(i, "month").format("YYYY-MM"),
-    value: faker.number.float({ min: 10, max: 100 }),
+    value: faker.number.float({ min: 0, max: 1 }),
   }));
   return { database, file, usage };
 }
@@ -42,9 +42,5 @@ function randomKnowledgeStatData(days: number = 30) {
     date: dayjs().subtract(i, "day").format("YYYY-MM-DD"),
     value: faker.number.int({ min: 1000, max: 10000 }),
   }));
-  const knowledge = times(days, (i) => ({
-    date: dayjs().subtract(i, "day").format("YYYY-MM-DD"),
-    value: vertices[i].value + edges[i].value + properties[i].value,
-  }));
-  return { vertices, edges, properties, knowledge };
+  return { vertices, edges, properties };
 }

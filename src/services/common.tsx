@@ -20,6 +20,10 @@ export type TimeSeries<T = number> = {
   value: T;
 }[];
 
+export type CountResponse = {
+  count: number;
+}
+
 export function statResponseToResult(statResponse: StatResponse): StatResult {
   return statResponse.map(({ label, value }, index) => {
     const changed = index === 0 ? 0 : value - statResponse[index - 1].value;

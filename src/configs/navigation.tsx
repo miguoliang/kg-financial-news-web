@@ -25,8 +25,8 @@ const navigation: NavigationMenuItem[] = [
   },
   {
     key: "dashboard",
-    path: "/dashboard",
-    title: "Dashboard",
+    path: "/dashboard/overview",
+    title: "Overview",
     icon: <Icon as={HiOutlineComputerDesktop} />,
     type: "item",
     authority: [USER_SCOPE],

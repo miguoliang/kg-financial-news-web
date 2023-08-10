@@ -3,9 +3,9 @@ import { Routes } from "./types";
 
 const protectedRoutes: Routes = [
   {
-    key: "dashboard",
-    path: `/dashboard`,
-    component: React.lazy(() => import("views/Dashboard")),
+    key: "dashboard.overview",
+    path: `/dashboard/overview`,
+    component: React.lazy(() => import("views/Dashboard/Overview")),
   },
   {
     key: "dashboard.data-source",

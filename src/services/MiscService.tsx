@@ -7,7 +7,6 @@ interface KnowledgeHistoryParams {
 }
 
 interface KnowledgeHistoryResponse {
-  knowledge: TimeSeries;
   vertices: TimeSeries;
   edges: TimeSeries;
   properties: TimeSeries;

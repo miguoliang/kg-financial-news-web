@@ -1,9 +1,18 @@
-import { Button, Card, CardBody, Circle, Heading, HStack, Spacer, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Circle,
+  Heading,
+  HStack,
+  Spacer,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { Subscription as SubscriptionModel } from "models";
 import { useGetAccountSubscriptions } from "services";
 
 const Subscription = () => {
-
   const { data: subscriptions } = useGetAccountSubscriptions();
 
   return (

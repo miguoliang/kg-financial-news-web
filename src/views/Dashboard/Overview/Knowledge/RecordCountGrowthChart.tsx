@@ -4,12 +4,14 @@ import { useGetKnowledgeHistory } from "services/MiscService";
 import { echarts, ECLineOption } from "configs";
 import numeral from "numeral";
 
-
 interface RecordCountGrowthChartProps extends HTMLChakraProps<"div"> {
   days?: number;
 }
 
-const RecordCountGrowthChart = ({ days = 20, ...props }: RecordCountGrowthChartProps) => {
+const RecordCountGrowthChart = ({
+  days = 12,
+  ...props
+}: RecordCountGrowthChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
   const getKnowledgeHistory = useGetKnowledgeHistory({
     variables: { days },
@@ -18,7 +20,9 @@ const RecordCountGrowthChart = ({ days = 20, ...props }: RecordCountGrowthChartP
     if (chartRef.current === null || getKnowledgeHistory.data === undefined) {
       return;
     }
-    const chart = echarts.getInstanceByDom(chartRef.current) || echarts.init(chartRef.current);
+    const chart =
+      echarts.getInstanceByDom(chartRef.current) ||
+      echarts.init(chartRef.current);
     const options: ECLineOption = {
       tooltip: {
         trigger: "axis",
@@ -28,7 +32,7 @@ const RecordCountGrowthChart = ({ days = 20, ...props }: RecordCountGrowthChartP
       },
       legend: {
         top: 20,
-        data: ["Vertices", "Edges", "Properties"],
+        data: ["Entity", "Relationship", "Property"],
       },
       xAxis: {
         type: "category",
@@ -49,19 +53,19 @@ const RecordCountGrowthChart = ({ days = 20, ...props }: RecordCountGrowthChartP
       },
       series: [
         {
-          name: "Vertices",
+          name: "Entity",
           type: "bar",
           stack: "Knowledge",
           data: getKnowledgeHistory.data.vertices.map((item) => item.value),
         },
         {
-          name: "Edges",
+          name: "Relationship",
           type: "bar",
           stack: "Knowledge",
           data: getKnowledgeHistory.data.edges.map((item) => item.value),
         },
         {
-          name: "Properties",
+          name: "Property",
           type: "bar",
           stack: "Knowledge",
           data: getKnowledgeHistory.data.properties.map((item) => item.value),
@@ -70,9 +74,7 @@ const RecordCountGrowthChart = ({ days = 20, ...props }: RecordCountGrowthChartP
     };
     chart.setOption(options);
   }, [chartRef, getKnowledgeHistory.data]);
-  return (
-    <Box ref={chartRef} {...props}></Box>
-  );
+  return <Box ref={chartRef} {...props}></Box>;
 };
 
 export default RecordCountGrowthChart;

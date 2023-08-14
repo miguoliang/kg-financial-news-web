@@ -1,26 +1,24 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import React from "react";
-import RecordCountGrowthChart from "./RecordCountGrowthChart";
-import DataSourceCountGrowthChart from "./DataSourceCountGrowthChart";
 
-const KnowledgeCharts = () => {
+const CostCharts = () => {
   return (
     <Box borderRadius={"xl"} borderWidth={1} w={"full"} h={"full"}>
       <Tabs isLazy display={"flex"} flexDirection={"column"} h={"full"}>
         <TabList>
           <Tab py={3} fontSize={"sm"} fontWeight={"semibold"}>
-            Knowledge
+            Cost Explorer
           </Tab>
           <Tab py={3} fontSize={"sm"} fontWeight={"semibold"}>
-            Data Source
+            Billings
           </Tab>
         </TabList>
         <TabPanels position={"relative"} flexGrow={1}>
           <TabPanel p={0} h={"full"}>
-            <RecordCountGrowthChart w={"full"} h={"full"} />
+            lalala
           </TabPanel>
           <TabPanel p={0} h={"full"}>
-            <DataSourceCountGrowthChart />
+            dddd
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -28,4 +26,4 @@ const KnowledgeCharts = () => {
   );
 };
 
-export default KnowledgeCharts;
+export default CostCharts;

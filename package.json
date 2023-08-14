@@ -48,13 +48,14 @@
     "serve": "vite preview",
     "analyze": "source-map-explorer 'build/assets/*.js'",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "eslint ./src --ext js,jsx,mjs,ts,tsx",
-    "test": "vitest",
+    "lint": "eslint ./src --ext js,jsx,mjs,ts,tsx --fix",
+    "test": "npm run lint && npm run format && vitest",
     "coverage": "vitest --coverage",
     "e2e": "cypress open",
     "build:css": "cross-env TAILWIND_MODE=build NODE_ENV=production postcss src/assets/styles/app.css -o src/index.css",
     "watch:css": "cross-env TAILWIND_MODE=watch NODE_ENV=development postcss src/assets/styles/app.css -o src/index.css --watch",
-    "bundle-report": "cross-env npx vite-bundle-visualizer"
+    "bundle-report": "cross-env npx vite-bundle-visualizer",
+    "prepare": "husky install"
   },
   "babelMacros": {
     "twin": {
@@ -96,7 +97,9 @@
     "cypress": "~12.13.0",
     "delay-cli": "^1.1.0",
     "eslint": "^8.35.0",
+    "husky": "^8.0.0",
     "identity-obj-proxy": "^3.0.0",
+    "jsdom": "^22.1.0",
     "mathjs": "^11.9.1",
     "msw": "^1.2.3",
     "npm-run-all": "^4.1.5",

@@ -3,9 +3,12 @@ import { Box } from "@chakra-ui/react";
 import * as vis from "vis-network";
 import { GraphContext } from "views/Dashboard/Graph/context";
 
-export const GraphComponent = forwardRef<HTMLDivElement, {
-  className?: string
-}>(({ className }, ref) => {
+export const GraphComponent = forwardRef<
+  HTMLDivElement,
+  {
+    className?: string;
+  }
+>(({ className }, ref) => {
   const context = useContext(GraphContext);
   const elementRef = useRef<HTMLDivElement | null>(null);
 
@@ -15,21 +18,28 @@ export const GraphComponent = forwardRef<HTMLDivElement, {
     }
 
     if (context?.graphInstance) {
-      context.graphInstance.setData({ nodes: context.nodes, edges: context.links });
+      context.graphInstance.setData({
+        nodes: context.nodes,
+        edges: context.links,
+      });
       return;
     }
 
-    const networkInstance = new vis.Network(elementRef.current, {
-      nodes: context?.nodes ?? [],
-      edges: context?.links ?? [],
-    }, {
-      physics: {
-        enabled: false,
+    const networkInstance = new vis.Network(
+      elementRef.current,
+      {
+        nodes: context?.nodes ?? [],
+        edges: context?.links ?? [],
       },
-      interaction: {
-        hover: true,
+      {
+        physics: {
+          enabled: false,
+        },
+        interaction: {
+          hover: true,
+        },
       },
-    });
+    );
 
     networkInstance.on("hoverNode", (event) => {
       context?.setHoverNode(event.node);
@@ -46,12 +56,17 @@ export const GraphComponent = forwardRef<HTMLDivElement, {
 
     context?.setGraphInstance(networkInstance);
   }, [elementRef, context?.nodes, context?.links]);
-  return <Box ref={(node) => {
-    elementRef.current = node;
-    if (ref && typeof ref === "function") {
-      ref(node);
-    } else if (ref && typeof ref === "object") {
-      ref.current = node;
-    }
-  }} className={className}></Box>;
+  return (
+    <Box
+      ref={(node) => {
+        elementRef.current = node;
+        if (ref && typeof ref === "function") {
+          ref(node);
+        } else if (ref && typeof ref === "object") {
+          ref.current = node;
+        }
+      }}
+      className={className}
+    ></Box>
+  );
 });

@@ -1,4 +1,9 @@
-import { DataSource, PaginationRequest, PaginationResponse, Vertex } from "../models";
+import {
+  DataSource,
+  PaginationRequest,
+  PaginationResponse,
+  Vertex,
+} from "../models";
 import { createQuery } from "react-query-kit";
 import AxiosFetch from "./AxiosFetch";
 import dayjs from "dayjs";
@@ -10,7 +15,10 @@ type GetDataSourcesParams = {
 
 type GetDataSourcesResponse = PaginationResponse<DataSource>;
 
-export const useGetDataSources = createQuery<GetDataSourcesResponse, GetDataSourcesParams>({
+export const useGetDataSources = createQuery<
+  GetDataSourcesResponse,
+  GetDataSourcesParams
+>({
   primaryKey: "get.data-sources",
   queryFn: ({ queryKey: [, { date, ...rest }] }) =>
     AxiosFetch({
@@ -34,5 +42,8 @@ export const useGetVerticesByDataSource = createQuery<Vertex[], string>({
 
 export const useGetDataSourceCount = createQuery<CountResponse>({
   primaryKey: "get.data-sources.count",
-  queryFn: () => AxiosFetch({ url: "/data-sources/count", method: "get" }).then((resp) => resp.data),
+  queryFn: () =>
+    AxiosFetch({ url: "/data-sources/count", method: "get" }).then(
+      (resp) => resp.data,
+    ),
 });

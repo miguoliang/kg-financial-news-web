@@ -8,7 +8,10 @@ interface StorageGrowthChartProps extends HTMLChakraProps<"div"> {
   months?: number;
 }
 
-const StorageGrowthChart = ({ months = 12, ...props }: StorageGrowthChartProps) => {
+const StorageGrowthChart = ({
+  months = 12,
+  ...props
+}: StorageGrowthChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
   const getStorageHistory = useGetStorageHistory({
     variables: { months },
@@ -17,7 +20,9 @@ const StorageGrowthChart = ({ months = 12, ...props }: StorageGrowthChartProps) 
     if (chartRef.current === null || getStorageHistory.data === undefined) {
       return;
     }
-    const chart = echarts.getInstanceByDom(chartRef.current) || echarts.init(chartRef.current);
+    const chart =
+      echarts.getInstanceByDom(chartRef.current) ||
+      echarts.init(chartRef.current);
     const options: ECLineOption = {
       tooltip: {
         trigger: "axis",
@@ -94,9 +99,7 @@ const StorageGrowthChart = ({ months = 12, ...props }: StorageGrowthChartProps) 
     };
     chart.setOption(options);
   }, [chartRef, getStorageHistory.data]);
-  return (
-    <Box ref={chartRef} {...props}></Box>
-  );
+  return <Box ref={chartRef} {...props}></Box>;
 };
 
 export default StorageGrowthChart;

@@ -11,9 +11,12 @@ const settingsMenu = [
 ];
 
 const Settings = () => {
-
-  return (<>
-      <PageHeader title={"Account"} description={"Manage your account settings"} />
+  return (
+    <>
+      <PageHeader
+        title={"Account"}
+        description={"Manage your account settings"}
+      />
       <Tabs variant={"enclosed"}>
         <TabList>
           {settingsMenu.map((it, index) => (

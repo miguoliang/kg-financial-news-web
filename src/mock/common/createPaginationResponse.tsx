@@ -1,6 +1,10 @@
 import { PaginationResponse } from "models";
 
-function createPaginationResponse<T>(data: T[], page: number = 0, size: number = 10): PaginationResponse<T> {
+function createPaginationResponse<T>(
+  data: T[],
+  page: number = 0,
+  size: number = 10,
+): PaginationResponse<T> {
   const content = data.slice(page * size, (page + 1) * size);
   return {
     content,

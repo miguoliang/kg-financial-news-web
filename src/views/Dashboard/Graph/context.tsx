@@ -20,9 +20,15 @@ export const GraphContext = React.createContext<GraphContextProps | null>(null);
 export const useGraphContext = () => {
   const [nodes, setNodes] = React.useState<Node[]>([]);
   const [links, setLinks] = React.useState<Link[]>([]);
-  const [graphInstance, setGraphInstance] = React.useState<vis.Network | null>(null);
-  const [hoverNode, setHoverNode] = React.useState<string | number | null>(null);
-  const [selectedNode, setSelectedNode] = React.useState<string | number | null>(null);
+  const [graphInstance, setGraphInstance] = React.useState<vis.Network | null>(
+    null,
+  );
+  const [hoverNode, setHoverNode] = React.useState<string | number | null>(
+    null,
+  );
+  const [selectedNode, setSelectedNode] = React.useState<
+    string | number | null
+  >(null);
 
   return {
     nodes,

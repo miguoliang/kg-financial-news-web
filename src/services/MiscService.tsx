@@ -12,13 +12,17 @@ interface KnowledgeHistoryResponse {
   properties: TimeSeries;
 }
 
-export const useGetKnowledgeHistory = createQuery<KnowledgeHistoryResponse, KnowledgeHistoryParams>({
+export const useGetKnowledgeHistory = createQuery<
+  KnowledgeHistoryResponse,
+  KnowledgeHistoryParams
+>({
   primaryKey: "get.knowledge.history",
-  queryFn: ({ queryKey: [, params] }) => AxiosFetch<KnowledgeHistoryResponse>({
-    url: "/knowledge/history",
-    method: "get",
-    params,
-  }).then(res => res.data),
+  queryFn: ({ queryKey: [, params] }) =>
+    AxiosFetch<KnowledgeHistoryResponse>({
+      url: "/knowledge/history",
+      method: "get",
+      params,
+    }).then((res) => res.data),
 });
 
 interface StorageHistoryParams {
@@ -31,11 +35,58 @@ interface StorageHistoryResponse {
   usage: TimeSeries;
 }
 
-export const useGetStorageHistory = createQuery<StorageHistoryResponse, StorageHistoryParams>({
+export const useGetStorageHistory = createQuery<
+  StorageHistoryResponse,
+  StorageHistoryParams
+>({
   primaryKey: "get.storage.history",
-  queryFn: ({ queryKey: [, params] }) => AxiosFetch<StorageHistoryResponse>({
-    url: "/storage/history",
-    method: "get",
-    params,
-  }).then(res => res.data),
+  queryFn: ({ queryKey: [, params] }) =>
+    AxiosFetch<StorageHistoryResponse>({
+      url: "/storage/history",
+      method: "get",
+      params,
+    }).then((res) => res.data),
+});
+
+interface NetworkHistoryParams {
+  months?: number;
+}
+
+interface NetworkHistoryResponse {
+  read: TimeSeries;
+  write: TimeSeries;
+}
+
+export const useGetNetworkHistory = createQuery<
+  NetworkHistoryResponse,
+  NetworkHistoryParams
+>({
+  primaryKey: "get.network.history",
+  queryFn: ({ queryKey: [, params] }) =>
+    AxiosFetch<NetworkHistoryResponse>({
+      url: "/network/history",
+      method: "get",
+      params,
+    }).then((res) => res.data),
+});
+
+interface ComputeHistoryParams {
+  months?: number;
+}
+
+interface ComputeHistoryResponse {
+  hours: TimeSeries;
+}
+
+export const useGetComputeHistory = createQuery<
+  ComputeHistoryResponse,
+  ComputeHistoryParams
+>({
+  primaryKey: "get.compute.history",
+  queryFn: ({ queryKey: [, params] }) =>
+    AxiosFetch<ComputeHistoryResponse>({
+      url: "/compute/history",
+      method: "get",
+      params,
+    }).then((res) => res.data),
 });

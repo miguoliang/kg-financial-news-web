@@ -13,4 +13,3 @@ export { default as navigationConfig } from "./navigation";
 export type { NavigationMenuItem } from "./navigation";
 export * from "./oidc";
 export * from "./routes";
-

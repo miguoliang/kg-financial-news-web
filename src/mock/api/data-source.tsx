@@ -14,6 +14,9 @@ export default [
   rest.get(`${appConfig.apiPrefix}/data-sources/count`, (req, res, context) => {
     return res(context.json({ count: DataSources.length }));
   }),
-  rest.get(`${appConfig.apiPrefix}/data-sources/:id/vertices`, (_req, res, context) =>
-    res(context.json(shuffle(Vertices).splice(0, random(10, 20))))),
+  rest.get(
+    `${appConfig.apiPrefix}/data-sources/:id/vertices`,
+    (_req, res, context) =>
+      res(context.json(shuffle(Vertices).splice(0, random(10, 20)))),
+  ),
 ];

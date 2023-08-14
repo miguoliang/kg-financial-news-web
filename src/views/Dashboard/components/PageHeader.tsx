@@ -7,17 +7,25 @@ interface PageHeaderProps {
   children?: React.ReactNode;
 }
 
-const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(({ title, description, children }, ref) => {
-  return (
-    <HStack pb={4} ref={ref}>
-      <VStack flexShrink={0} alignItems={"left"}>
-        <Heading fontWeight={"bold"} fontSize={"xl"} fontFamily={"sans-serif"}>{title}</Heading>
-        {description && <Text color={"gray.500"}>{description}</Text>}
-      </VStack>
-      <Spacer />
-      {children}
-    </HStack>
-  );
-});
+const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
+  ({ title, description, children }, ref) => {
+    return (
+      <HStack pb={4} ref={ref}>
+        <VStack flexShrink={0} alignItems={"left"}>
+          <Heading
+            fontWeight={"bold"}
+            fontSize={"xl"}
+            fontFamily={"sans-serif"}
+          >
+            {title}
+          </Heading>
+          {description && <Text color={"gray.500"}>{description}</Text>}
+        </VStack>
+        <Spacer />
+        {children}
+      </HStack>
+    );
+  },
+);
 
 export default PageHeader;

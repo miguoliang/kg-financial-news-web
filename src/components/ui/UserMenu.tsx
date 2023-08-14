@@ -1,5 +1,16 @@
 import React, { cloneElement } from "react";
-import { Avatar, Flex, HStack, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Flex,
+  HStack,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useAuth, useTimezone } from "hooks";
 import { HiOutlineCog, HiOutlineLogout } from "react-icons/hi";
@@ -38,14 +49,23 @@ const UserMenu = () => {
       <MenuButton>{UserAvatar}</MenuButton>
       <MenuList>
         {menuList.map((item) => (
-          <MenuItem as={Link} to={item.path} key={item.label}
-                    icon={cloneElement(item.icon, { fontSize: "lg", color: "gray.500" })}>
+          <MenuItem
+            as={Link}
+            to={item.path}
+            key={item.label}
+            icon={cloneElement(item.icon, {
+              fontSize: "lg",
+              color: "gray.500",
+            })}
+          >
             {item.label}
           </MenuItem>
         ))}
         <MenuDivider />
         <MenuItem
-          icon={<Icon as={HiOutlineLogout} fontSize={"lg"} color={"gray.500"} />}
+          icon={
+            <Icon as={HiOutlineLogout} fontSize={"lg"} color={"gray.500"} />
+          }
           onClick={() => auth.signOut()}
         >
           Sign Out

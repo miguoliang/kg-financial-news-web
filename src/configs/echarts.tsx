@@ -8,7 +8,12 @@ import {
   TooltipComponent,
 } from "echarts/components";
 import { CanvasRenderer } from "echarts/renderers";
-import { BarChart, BarSeriesOption, LineChart, LineSeriesOption } from "echarts/charts";
+import {
+  BarChart,
+  BarSeriesOption,
+  LineChart,
+  LineSeriesOption,
+} from "echarts/charts";
 
 echarts.use([
   LineChart,

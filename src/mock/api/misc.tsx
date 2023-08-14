@@ -6,12 +6,54 @@ import { faker } from "@faker-js/faker";
 
 export default [
   rest.get(`${appConfig.apiPrefix}/knowledge/history`, (req, res, context) => {
-    return res(context.json(randomKnowledgeStatData(Number(req.url.searchParams.get("days")))));
+    return res(
+      context.json(
+        randomKnowledgeStatData(Number(req.url.searchParams.get("days"))),
+      ),
+    );
   }),
   rest.get(`${appConfig.apiPrefix}/storage/history`, (req, res, context) => {
-    return res(context.json(randomStorageStatData(Number(req.url.searchParams.get("months")))));
+    return res(
+      context.json(
+        randomStorageStatData(Number(req.url.searchParams.get("months"))),
+      ),
+    );
+  }),
+  rest.get(`${appConfig.apiPrefix}/network/history`, (req, res, context) => {
+    return res(
+      context.json(
+        randomNetworkStatData(Number(req.url.searchParams.get("months"))),
+      ),
+    );
+  }),
+  rest.get(`${appConfig.apiPrefix}/compute/history`, (req, res, context) => {
+    return res(
+      context.json(
+        randomComputeStatData(Number(req.url.searchParams.get("months"))),
+      ),
+    );
   }),
 ];
+
+function randomComputeStatData(months: number = 30) {
+  const hours = times(months, (i) => ({
+    date: dayjs().subtract(i, "month").format("YYYY-MM"),
+    value: faker.number.int({ min: 500, max: 50000 }),
+  }));
+  return { hours };
+}
+
+function randomNetworkStatData(months: number = 30) {
+  const read = times(months, (i) => ({
+    date: dayjs().subtract(i, "month").format("YYYY-MM"),
+    value: faker.number.int({ min: 500, max: 50000 }),
+  }));
+  const write = times(months, (i) => ({
+    date: dayjs().subtract(i, "month").format("YYYY-MM"),
+    value: faker.number.int({ min: 500, max: 50000 }),
+  }));
+  return { read, write };
+}
 
 function randomStorageStatData(months: number = 30) {
   const database = times(months, (i) => ({

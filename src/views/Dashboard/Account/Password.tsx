@@ -54,13 +54,15 @@ const Password = () => {
           confirmNewPassword: "",
         }}
         validationSchema={ChangePasswordSchema}
-        onSubmit={async (values) => await queryClient.fetchQuery({
-          queryKey: usePostAccountChangePassword.getKey({
-            previousPassword: values.currentPassword,
-            proposedPassword: values.newPassword,
-          }),
-          queryFn: usePostAccountChangePassword.queryFn,
-        })}
+        onSubmit={async (values) =>
+          await queryClient.fetchQuery({
+            queryKey: usePostAccountChangePassword.getKey({
+              previousPassword: values.currentPassword,
+              proposedPassword: values.newPassword,
+            }),
+            queryFn: usePostAccountChangePassword.queryFn,
+          })
+        }
       >
         {({ handleSubmit, handleReset, errors, touched }) => (
           <form onSubmit={handleSubmit} onReset={handleReset}>

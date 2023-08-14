@@ -4,12 +4,14 @@ import { useGetKnowledgeHistory } from "services/MiscService";
 import { echarts, ECLineOption } from "configs";
 import numeral from "numeral";
 
-
 interface DataSourceCountGrowthChartProps extends HTMLChakraProps<"div"> {
   days?: number;
 }
 
-const DataSourceCountGrowthChart = ({ days = 20, ...props }: DataSourceCountGrowthChartProps) => {
+const DataSourceCountGrowthChart = ({
+  days = 20,
+  ...props
+}: DataSourceCountGrowthChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
   const getKnowledgeHistory = useGetKnowledgeHistory({
     variables: { days },
@@ -18,7 +20,9 @@ const DataSourceCountGrowthChart = ({ days = 20, ...props }: DataSourceCountGrow
     if (chartRef.current === null || getKnowledgeHistory.data === undefined) {
       return;
     }
-    const chart = echarts.getInstanceByDom(chartRef.current) || echarts.init(chartRef.current);
+    const chart =
+      echarts.getInstanceByDom(chartRef.current) ||
+      echarts.init(chartRef.current);
     const options: ECLineOption = {
       tooltip: {
         trigger: "axis",
@@ -70,9 +74,7 @@ const DataSourceCountGrowthChart = ({ days = 20, ...props }: DataSourceCountGrow
     };
     chart.setOption(options);
   }, [chartRef, getKnowledgeHistory.data]);
-  return (
-    <Box ref={chartRef} {...props}></Box>
-  );
+  return <Box ref={chartRef} {...props}></Box>;
 };
 
 export default DataSourceCountGrowthChart;

@@ -2,7 +2,6 @@ import { formErrorAnatomy as parts } from "@chakra-ui/anatomy";
 import {
   createMultiStyleConfigHelpers,
   defineStyle,
-  cssVar,
 } from "@chakra-ui/styled-system";
 
 const { definePartsStyle, defineMultiStyleConfig } =

@@ -10,6 +10,7 @@ const variantLine = definePartsStyle({
     borderColor: "gray.100",
   },
   tab: {
+    color: "gray.400",
     _selected: {
       color: "blue.500",
       borderBottomColor: "blue.500",
@@ -18,4 +19,6 @@ const variantLine = definePartsStyle({
 });
 
 // export the component theme
-export const tabsTheme = defineMultiStyleConfig({ variants: { line: variantLine } });
+export const tabsTheme = defineMultiStyleConfig({
+  variants: { line: variantLine },
+});

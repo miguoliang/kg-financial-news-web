@@ -1,5 +1,16 @@
 import React from "react";
-import { Box, Button, HStack, Icon, IconButton, Spacer, Text, Tooltip, useBoolean, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Icon,
+  IconButton,
+  Spacer,
+  Text,
+  Tooltip,
+  useBoolean,
+  VStack,
+} from "@chakra-ui/react";
 import { navigationConfig, NavigationMenuItem } from "configs";
 import { motion } from "framer-motion";
 import { Menu, MenuItem } from "./PopoverMenu";
@@ -45,9 +56,7 @@ const SideNav = () => {
   );
 };
 
-const NavMenuItem = ({ item }: {
-  item: NavigationMenuItem
-}) => {
+const NavMenuItem = ({ item }: { item: NavigationMenuItem }) => {
   const sideNav = useSideNav();
   const navigate = useNavigate();
   const currentRoute = useCurrentRoute();
@@ -98,9 +107,7 @@ const NavMenuItem = ({ item }: {
   }
 };
 
-const PopoverSubmenu = ({ item }: {
-  item: NavigationMenuItem
-}) => {
+const PopoverSubmenu = ({ item }: { item: NavigationMenuItem }) => {
   return (
     <Menu item={item}>
       {item.children?.map((subItem) => {
@@ -115,9 +122,7 @@ const PopoverSubmenu = ({ item }: {
   );
 };
 
-const ExpandableSubmenu = ({ item }: {
-  item: NavigationMenuItem
-}) => {
+const ExpandableSubmenu = ({ item }: { item: NavigationMenuItem }) => {
   const sideNav = useSideNav();
   const [expanded, setExpanded] = useBoolean(
     sideNav.expandedKeys.has(item.key),

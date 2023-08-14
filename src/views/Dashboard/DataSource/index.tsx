@@ -1,5 +1,9 @@
 import { DataSource } from "models";
-import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  createColumnHelper,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { Link } from "react-router-dom";
 import { usePagination } from "hooks";
 import { SimpleTable } from "components/ui";
@@ -21,26 +25,31 @@ const columns = [
   columnHelper.accessor("title", { header: "Title" }),
   columnHelper.accessor("createdAt", {
     header: "Created at",
-    cell: ({ row }) => dayjs(row.original.createdAt).format("YYYY-MM-DD HH:mm:ss"),
+    cell: ({ row }) =>
+      dayjs(row.original.createdAt).format("YYYY-MM-DD HH:mm:ss"),
   }),
   columnHelper.display({
     header: "Operations",
-    cell: ({ row }) =>
-      <Button size={"sm"}
-              rightIcon={<Icon as={HiOutlineChevronDoubleRight} />} as={Link} to={{
-        pathname: `/dashboard/graph`,
-        search: "?dataSourceId=" + row.original.id,
-      }}>
+    cell: ({ row }) => (
+      <Button
+        size={"sm"}
+        rightIcon={<Icon as={HiOutlineChevronDoubleRight} />}
+        as={Link}
+        to={{
+          pathname: `/dashboard/graph`,
+          search: "?dataSourceId=" + row.original.id,
+        }}
+      >
         Open Graph
-      </Button>,
+      </Button>
+    ),
   }),
 ];
 
 const DataSourceComponent = () => {
-
   const [pagination, setPagination] = usePagination();
 
-  const { data} = useGetDataSources({
+  const { data } = useGetDataSources({
     variables: {
       date: dayjs().startOf("day").toDate(),
       page: pagination.pageIndex,

@@ -78,6 +78,7 @@ export const GraphComponent = () => {
           g.children?.map((c) => ({
             id: c.id,
             position: { x: c.x, y: c.y },
+            data: { label: c.labels?.[0].text },
           })) || [];
         setNodes(nodes as Node[]);
       });
@@ -115,6 +116,7 @@ function reactFlowNodesToElkNodes(nodes: Node[]): ElkNode[] {
     width: 150,
     // height of the node in px.
     height: 75,
+    labels: [{ text: node.data.label }],
   }));
 }
 

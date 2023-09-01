@@ -61,7 +61,6 @@ export const GraphComponent = () => {
   useEffect(() => {
     const reactFlowNodes = vertices2nodes(vertices);
     const reactFlowEdges = edges2links(edges);
-    setNodes(reactFlowNodes);
     setEdges(reactFlowEdges);
     const elkNodes = reactFlowNodesToElkNodes(reactFlowNodes);
     const elkEdges = reactFlowEdgesToElkEdges(reactFlowEdges);

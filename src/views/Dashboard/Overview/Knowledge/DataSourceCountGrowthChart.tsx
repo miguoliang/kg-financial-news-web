@@ -9,9 +9,9 @@ interface DataSourceCountGrowthChartProps extends HTMLChakraProps<"div"> {
 }
 
 const DataSourceCountGrowthChart = ({
-                                      months = 20,
-                                      ...props
-                                    }: DataSourceCountGrowthChartProps) => {
+  months = 20,
+  ...props
+}: DataSourceCountGrowthChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
   const getDataSourceHistory = useGetDataSourceHistory({
     variables: { months },

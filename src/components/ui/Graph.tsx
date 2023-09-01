@@ -30,9 +30,12 @@ export const GraphContext = React.createContext<GraphContextProps>({
 type UseGraphContextProps = {
   initialVertices?: VertexModel[];
   initialEdges?: EdgeModel[];
-}
+};
 
-export const useGraphContext = ({ initialVertices = [], initialEdges = [] }: UseGraphContextProps): GraphContextProps => {
+export const useGraphContext = ({
+  initialVertices = [],
+  initialEdges = [],
+}: UseGraphContextProps): GraphContextProps => {
   const [vertices, setVertices] = useState(initialVertices);
   const [edges, setEdges] = useState(initialEdges);
   return {
@@ -54,19 +57,22 @@ export const GraphComponent = () => {
     setEdges(reactFlowEdges);
     const elkNodes = reactFlowNodesToElkNodes(reactFlowNodes);
     const elkEdges = reactFlowEdgesToElkEdges(reactFlowEdges);
-    elk.layout({
-      id: "root",
-      layoutOptions: defaultOptions,
-      children: elkNodes,
-      edges: elkEdges,
-    }).then((g) => {
-      console.log(g.children)
-      const nodes = g.children?.map((c) => ({
-        id: c.id,
-        position: { x: c.x, y: c.y },
-      })) || [];
-      setNodes(nodes as Node[]);
-    });
+    elk
+      .layout({
+        id: "root",
+        layoutOptions: defaultOptions,
+        children: elkNodes,
+        edges: elkEdges,
+      })
+      .then((g) => {
+        console.log(g.children);
+        const nodes =
+          g.children?.map((c) => ({
+            id: c.id,
+            position: { x: c.x, y: c.y },
+          })) || [];
+        setNodes(nodes as Node[]);
+      });
   }, [vertices, edges]);
 
   return <ReactFlow defaultNodes={[]} defaultEdges={[]} />;

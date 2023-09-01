@@ -1,4 +1,12 @@
-import { CloseButton, Divider, Heading, HStack, List, Text, VStack } from "@chakra-ui/react";
+import {
+  CloseButton,
+  Divider,
+  Heading,
+  HStack,
+  List,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import AsyncSelect from "react-select/async";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -44,7 +52,14 @@ const NodeList = () => {
     if (!option || some(nodes, (it) => it.id === option.value)) {
       return;
     }
-    setNodes([...nodes, { id: option.value, data: { label: option.label }, position: { x: 0, y: 0 } }]);
+    setNodes([
+      ...nodes,
+      {
+        id: option.value,
+        data: { label: option.label },
+        position: { x: 0, y: 0 },
+      },
+    ]);
   };
 
   return (

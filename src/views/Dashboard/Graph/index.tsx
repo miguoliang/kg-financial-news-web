@@ -4,8 +4,19 @@ import { useSearchParams } from "react-router-dom";
 import React, { useContext, useEffect, useRef } from "react";
 import { Vertex as VertexModel } from "models";
 import { PageHeader } from "../components";
-import { Box, Button, Flex, Icon, Input, Text, useDisclosure } from "@chakra-ui/react";
-import { HiOutlineChevronDoubleLeft, HiOutlineChevronDoubleRight } from "react-icons/hi";
+import {
+  Box,
+  Button,
+  Flex,
+  Icon,
+  Input,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import {
+  HiOutlineChevronDoubleLeft,
+  HiOutlineChevronDoubleRight,
+} from "react-icons/hi";
 import NodeList from "./NodeList";
 import { motion } from "framer-motion";
 import { theme } from "twin.macro";
@@ -14,7 +25,10 @@ import { saveAs } from "file-saver";
 import { useGetEdgesByVertices, useGetVerticesByDataSource } from "services";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
 
-async function queryNodesAndEdgesByDataSourceId(queryClient: QueryClient, dataSourceId: string) {
+async function queryNodesAndEdgesByDataSourceId(
+  queryClient: QueryClient,
+  dataSourceId: string,
+) {
   const vertices = await queryClient.fetchQuery({
     queryKey: useGetVerticesByDataSource.getKey(dataSourceId),
     queryFn: useGetVerticesByDataSource.queryFn,
@@ -24,7 +38,10 @@ async function queryNodesAndEdgesByDataSourceId(queryClient: QueryClient, dataSo
   return { vertices, edges };
 }
 
-async function queryEdgesByVertices(queryClient: QueryClient, vertexIds: string[]) {
+async function queryEdgesByVertices(
+  queryClient: QueryClient,
+  vertexIds: string[],
+) {
   return await queryClient.fetchQuery({
     queryKey: useGetEdgesByVertices.getKey(vertexIds),
     queryFn: useGetEdgesByVertices.queryFn,
@@ -99,7 +116,9 @@ const Graph = () => {
         </Button>
       </PageHeader>
       <Box className={"flex-grow relative"}>
-        <GraphContext.Provider value={{ vertices, edges, setVertices, setEdges }}>
+        <GraphContext.Provider
+          value={{ vertices, edges, setVertices, setEdges }}
+        >
           <GraphCanvas />
           <motion.div
             className={
@@ -124,23 +143,26 @@ const Graph = () => {
 };
 
 const GraphCanvas = () => {
-
   const [searchParams] = useSearchParams();
   const { setVertices, setEdges } = useContext(GraphContext);
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    searchParams.has("dataSourceId") && queryNodesAndEdgesByDataSourceId(queryClient, searchParams.get("dataSourceId")!)
-      .then(({ vertices, edges }) => {
+    searchParams.has("dataSourceId") &&
+      queryNodesAndEdgesByDataSourceId(
+        queryClient,
+        searchParams.get("dataSourceId")!,
+      ).then(({ vertices, edges }) => {
         setVertices(vertices);
         setEdges(edges);
       });
   }, [searchParams]);
 
-  return <ReactFlowProvider>
-    <GraphComponent />
-  </ReactFlowProvider>;
+  return (
+    <ReactFlowProvider>
+      <GraphComponent />
+    </ReactFlowProvider>
+  );
 };
-
 
 export default Graph;

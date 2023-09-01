@@ -33,13 +33,16 @@ export default [
       ),
     );
   }),
-  rest.get(`${appConfig.apiPrefix}/data-source/history`, (req, res, context) => {
-    return res(
-      context.json(
-        randomDataSourceStatData(Number(req.url.searchParams.get("months"))),
-      ),
-    );
-  }),
+  rest.get(
+    `${appConfig.apiPrefix}/data-source/history`,
+    (req, res, context) => {
+      return res(
+        context.json(
+          randomDataSourceStatData(Number(req.url.searchParams.get("months"))),
+        ),
+      );
+    },
+  ),
 ];
 
 function randomDataSourceStatData(months: number = 30) {

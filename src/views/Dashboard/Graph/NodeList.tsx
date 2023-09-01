@@ -1,22 +1,12 @@
-import {
-  CloseButton,
-  Divider,
-  Heading,
-  HStack,
-  List,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { CloseButton, Divider, Heading, HStack, List, Text, VStack } from "@chakra-ui/react";
 import AsyncSelect from "react-select/async";
 import { useQueryClient } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { SingleValue } from "react-select";
 import some from "lodash-es/some";
 import { useGetVertices } from "services";
-import { GraphContext } from "./context";
-import { theme } from "twin.macro";
-import { Node } from "components/ui/Graph";
+import { Node } from "reactflow";
 
 type CustomOption = {
   value: string;
@@ -25,14 +15,7 @@ type CustomOption = {
 
 const NodeList = () => {
   const queryClient = useQueryClient();
-  const {
-    nodes,
-    setNodes,
-    hoverNode,
-    setHoverNode,
-    selectedNode,
-    setSelectedNode,
-  } = useContext(GraphContext)!;
+  const [nodes, setNodes] = useState<Node[]>([]);
   const loadOptions = async (inputValue: string) => {
     if (!inputValue) {
       return Promise.resolve([]);
@@ -61,7 +44,7 @@ const NodeList = () => {
     if (!option || some(nodes, (it) => it.id === option.value)) {
       return;
     }
-    setNodes([...nodes, { id: option.value, label: option.label }]);
+    setNodes([...nodes, { id: option.value, data: { label: option.label }, position: { x: 0, y: 0 } }]);
   };
 
   return (
@@ -92,21 +75,10 @@ const NodeList = () => {
               exit={{ opacity: 0, height: 0 }}
               initial={{ opacity: 1, height: "auto" }}
               transition={{ duration: 0.2 }}
-              style={{
-                backgroundColor:
-                  v.id === hoverNode || v.id === selectedNode
-                    ? theme`colors.gray.100`
-                    : "transparent",
-              }}
-              onMouseOver={() => setHoverNode(v.id)}
-              onMouseLeave={() => setHoverNode(null)}
-              onClick={() =>
-                setSelectedNode(v.id === selectedNode ? null : v.id)
-              }
             >
               <HStack>
                 <Text flexShrink={0} flexGrow={1}>
-                  {v.label}
+                  {v.data.label}
                 </Text>
                 <CloseButton
                   size={"sm"}

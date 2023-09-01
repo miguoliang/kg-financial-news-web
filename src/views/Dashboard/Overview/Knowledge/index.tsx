@@ -20,7 +20,7 @@ const KnowledgeCharts = () => {
             <RecordCountGrowthChart w={"full"} h={"full"} />
           </TabPanel>
           <TabPanel p={0} h={"full"}>
-            <DataSourceCountGrowthChart />
+            <DataSourceCountGrowthChart w={"full"} h={"full"} />
           </TabPanel>
         </TabPanels>
       </Tabs>

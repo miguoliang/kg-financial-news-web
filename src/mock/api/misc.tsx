@@ -33,7 +33,30 @@ export default [
       ),
     );
   }),
+  rest.get(`${appConfig.apiPrefix}/data-source/history`, (req, res, context) => {
+    return res(
+      context.json(
+        randomDataSourceStatData(Number(req.url.searchParams.get("months"))),
+      ),
+    );
+  }),
 ];
+
+function randomDataSourceStatData(months: number = 30) {
+  const file = times(months, (i) => ({
+    date: dayjs().subtract(i, "month").format("YYYY-MM"),
+    value: faker.number.int({ min: 500, max: 50000 }),
+  }));
+  const website = times(months, (i) => ({
+    date: dayjs().subtract(i, "month").format("YYYY-MM"),
+    value: faker.number.int({ min: 500, max: 50000 }),
+  }));
+  const database = times(months, (i) => ({
+    date: dayjs().subtract(i, "month").format("YYYY-MM"),
+    value: faker.number.int({ min: 500, max: 50000 }),
+  }));
+  return { file, website, database };
+}
 
 function randomComputeStatData(months: number = 30) {
   const hours = times(months, (i) => ({

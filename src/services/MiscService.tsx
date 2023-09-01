@@ -90,3 +90,26 @@ export const useGetComputeHistory = createQuery<
       params,
     }).then((res) => res.data),
 });
+
+interface DataSourceHistoryParams {
+  months?: number;
+}
+
+interface DataSourceHistoryResponse {
+  database: TimeSeries;
+  file: TimeSeries;
+  website: TimeSeries;
+}
+
+export const useGetDataSourceHistory = createQuery<
+  DataSourceHistoryResponse,
+  DataSourceHistoryParams
+>({
+  primaryKey: "get.data-source.history",
+  queryFn: ({ queryKey: [, params] }) =>
+    AxiosFetch<DataSourceHistoryResponse>({
+      url: "/data-source/history",
+      method: "get",
+      params,
+    }).then((res) => res.data),
+});

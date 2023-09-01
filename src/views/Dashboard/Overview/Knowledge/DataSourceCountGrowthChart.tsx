@@ -1,23 +1,23 @@
 import { Box, HTMLChakraProps } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { useGetKnowledgeHistory } from "services/MiscService";
+import { useGetDataSourceHistory } from "services/MiscService";
 import { echarts, ECLineOption } from "configs";
 import numeral from "numeral";
 
 interface DataSourceCountGrowthChartProps extends HTMLChakraProps<"div"> {
-  days?: number;
+  months?: number;
 }
 
 const DataSourceCountGrowthChart = ({
-  days = 20,
-  ...props
-}: DataSourceCountGrowthChartProps) => {
+                                      months = 20,
+                                      ...props
+                                    }: DataSourceCountGrowthChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
-  const getKnowledgeHistory = useGetKnowledgeHistory({
-    variables: { days },
+  const getDataSourceHistory = useGetDataSourceHistory({
+    variables: { months },
   });
   useEffect(() => {
-    if (chartRef.current === null || getKnowledgeHistory.data === undefined) {
+    if (chartRef.current === null || getDataSourceHistory.data === undefined) {
       return;
     }
     const chart =
@@ -32,11 +32,11 @@ const DataSourceCountGrowthChart = ({
       },
       legend: {
         top: 20,
-        data: ["Vertices", "Edges", "Properties"],
+        data: ["File", "Website", "Database"],
       },
       xAxis: {
         type: "category",
-        data: getKnowledgeHistory.data.vertices.map((item) => item.date),
+        data: getDataSourceHistory.data.file.map((item) => item.date),
       },
       yAxis: {
         type: "value",
@@ -53,27 +53,27 @@ const DataSourceCountGrowthChart = ({
       },
       series: [
         {
-          name: "Vertices",
+          name: "File",
           type: "bar",
           stack: "Knowledge",
-          data: getKnowledgeHistory.data.vertices.map((item) => item.value),
+          data: getDataSourceHistory.data.file.map((item) => item.value),
         },
         {
-          name: "Edges",
+          name: "Website",
           type: "bar",
           stack: "Knowledge",
-          data: getKnowledgeHistory.data.edges.map((item) => item.value),
+          data: getDataSourceHistory.data.website.map((item) => item.value),
         },
         {
-          name: "Properties",
+          name: "Database",
           type: "bar",
           stack: "Knowledge",
-          data: getKnowledgeHistory.data.properties.map((item) => item.value),
+          data: getDataSourceHistory.data.database.map((item) => item.value),
         },
       ],
     };
     chart.setOption(options);
-  }, [chartRef, getKnowledgeHistory.data]);
+  }, [chartRef, getDataSourceHistory.data]);
   return <Box ref={chartRef} {...props}></Box>;
 };
 

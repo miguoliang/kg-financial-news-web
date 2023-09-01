@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Edge, Node, ReactFlow, useReactFlow } from "reactflow";
+import {
+  Background,
+  Controls,
+  Edge,
+  MiniMap,
+  Node,
+  ReactFlow,
+  useReactFlow,
+} from "reactflow";
 import noop from "lodash-es/noop";
 import { Edge as EdgeModel, Vertex as VertexModel } from "models";
 import ELK, { ElkExtendedEdge, ElkNode } from "elkjs/lib/elk.bundled";
@@ -75,7 +83,13 @@ export const GraphComponent = () => {
       });
   }, [vertices, edges]);
 
-  return <ReactFlow defaultNodes={[]} defaultEdges={[]} />;
+  return (
+    <ReactFlow defaultNodes={[]} defaultEdges={[]}>
+      <Background />
+      <Controls />
+      <MiniMap />
+    </ReactFlow>
+  );
 };
 
 function vertices2nodes(vertices: VertexModel[]): Node[] {

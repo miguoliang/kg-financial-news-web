@@ -13,11 +13,14 @@ import {
   BarSeriesOption,
   LineChart,
   LineSeriesOption,
+  PieChart,
+  PieSeriesOption,
 } from "echarts/charts";
 
 echarts.use([
   LineChart,
   BarChart,
+  PieChart,
   LegendComponent,
   CanvasRenderer,
   GridComponent,
@@ -27,6 +30,7 @@ echarts.use([
 export type ECLineOption = ComposeOption<
   | LineSeriesOption
   | BarSeriesOption
+  | PieSeriesOption
   | LegendComponentOption
   | GridComponentOption
 >;

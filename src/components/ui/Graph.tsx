@@ -72,7 +72,6 @@ export const GraphComponent = () => {
         edges: elkEdges,
       })
       .then((g) => {
-        console.log(g.children);
         const nodes =
           g.children?.map((c) => ({
             id: c.id,

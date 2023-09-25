@@ -5,6 +5,9 @@ import React, { useContext, useEffect, useRef } from "react";
 import { Vertex as VertexModel } from "models";
 import { PageHeader } from "../components";
 import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogFooter,
   Box,
   Button,
   Flex,
@@ -51,8 +54,11 @@ async function queryEdgesByVertices(
 const Graph = () => {
   const nodeListRef = useRef<HTMLDivElement>(null);
   const uploadRef = useRef<HTMLInputElement>(null);
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isAlertDialogOpen, onClose: onAlertDialogClose } =
+    useDisclosure();
   const { vertices, setVertices, edges, setEdges } = useGraphContext({});
 
   const handleExportGraph = () => {
@@ -76,69 +82,88 @@ const Graph = () => {
   };
 
   return (
-    <Flex flexDirection={"column"} alignItems={"stretch"} h={"full"}>
-      <PageHeader title={"Graph"} description={"Knowledge graph"}>
-        <Button
-          variant={"outline"}
-          bg={isOpen ? "gray.100" : "white"}
-          leftIcon={
-            <Icon
-              as={
-                isOpen
-                  ? HiOutlineChevronDoubleRight
-                  : HiOutlineChevronDoubleLeft
-              }
-            />
-          }
-          onClick={isOpen ? onClose : onOpen}
-        >
-          Node List
-        </Button>
-        <Button
-          variant={"outline"}
-          leftIcon={<Icon as={HiOutlineArrowUpTray} />}
-          onClick={handleExportGraph}
-        >
-          Export
-        </Button>
-        <Button
-          variant={"outline"}
-          leftIcon={<Icon as={HiOutlineArrowDownTray} />}
-          onClick={() => uploadRef.current?.click()}
-        >
-          <Text>Import</Text>
-          <Input
-            type={"file"}
-            display={"none"}
-            ref={uploadRef}
-            onChange={handleImportGraph}
-          />
-        </Button>
-      </PageHeader>
-      <Box className={"flex-grow relative"}>
-        <GraphContext.Provider
-          value={{ vertices, edges, setVertices, setEdges }}
-        >
-          <GraphCanvas />
-          <motion.div
-            className={
-              "absolute right-0 top-0 bottom-0 border border-gray-200 overflow-hidden bg-white rounded-lg shadow-md opacity-0 w-0"
+    <>
+      <Flex flexDirection={"column"} alignItems={"stretch"} h={"full"}>
+        <PageHeader title={"Graph"} description={"Knowledge graph"}>
+          <Button
+            variant={"outline"}
+            bg={isOpen ? "gray.100" : "white"}
+            leftIcon={
+              <Icon
+                as={
+                  isOpen
+                    ? HiOutlineChevronDoubleRight
+                    : HiOutlineChevronDoubleLeft
+                }
+              />
             }
-            ref={nodeListRef}
-            animate={{
-              opacity: isOpen ? 1 : 0,
-              width: isOpen ? theme`minWidth.md` : "0%",
-              borderColor: isOpen
-                ? theme`colors.gray.200`
-                : theme`colors.white`,
-            }}
-            transition={{ type: "spring", duration: 0.5, bounce: 0 }}
+            onClick={isOpen ? onClose : onOpen}
           >
-            <NodeList />
-          </motion.div>
-        </GraphContext.Provider>
-      </Box>
-    </Flex>
+            Node List
+          </Button>
+          <Button
+            variant={"outline"}
+            leftIcon={<Icon as={HiOutlineArrowUpTray} />}
+            onClick={handleExportGraph}
+          >
+            Export
+          </Button>
+          <Button
+            variant={"outline"}
+            leftIcon={<Icon as={HiOutlineArrowDownTray} />}
+            onClick={() => uploadRef.current?.click()}
+          >
+            <Text>Import</Text>
+            <Input
+              type={"file"}
+              display={"none"}
+              ref={uploadRef}
+              onChange={handleImportGraph}
+            />
+          </Button>
+        </PageHeader>
+        <Box className={"flex-grow relative"}>
+          <GraphContext.Provider
+            value={{ vertices, edges, setVertices, setEdges }}
+          >
+            <GraphCanvas />
+            <motion.div
+              className={
+                "absolute right-0 top-0 bottom-0 border border-gray-200 overflow-hidden bg-white rounded-lg shadow-md opacity-0 w-0"
+              }
+              ref={nodeListRef}
+              animate={{
+                opacity: isOpen ? 1 : 0,
+                width: isOpen ? theme`minWidth.md` : "0%",
+                borderColor: isOpen
+                  ? theme`colors.gray.200`
+                  : theme`colors.white`,
+              }}
+              transition={{ type: "spring", duration: 0.5, bounce: 0 }}
+            >
+              <NodeList />
+            </motion.div>
+          </GraphContext.Provider>
+        </Box>
+      </Flex>
+      <AlertDialog
+        leastDestructiveRef={cancelRef}
+        isOpen={isAlertDialogOpen}
+        onClose={onAlertDialogClose}
+      >
+        <AlertDialogContent>
+          <Text>Are you sure to remove "{}" from the current graph?</Text>
+        </AlertDialogContent>
+        <AlertDialogFooter>
+          <Button ref={cancelRef} onClick={onAlertDialogClose}>
+            Cancel
+          </Button>
+          <Button colorScheme={"red"} onClick={onAlertDialogClose} ml={3}>
+            Remove
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialog>
+    </>
   );
 };
 

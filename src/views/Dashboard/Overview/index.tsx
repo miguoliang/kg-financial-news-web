@@ -22,7 +22,7 @@ const Overview = () => {
         <GridItem colSpan={2} h={"450px"} position={"relative"}>
           <ResourceCharts />
         </GridItem>
-        <GridItem colSpan={4} position={"relative"}>
+        <GridItem colSpan={4} h={"450px"} position={"relative"}>
           <CostCharts />
         </GridItem>
       </SimpleGrid>

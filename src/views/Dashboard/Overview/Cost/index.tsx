@@ -1,5 +1,6 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import React from "react";
+import CostExplorer from "./CostExplorer";
 
 const CostCharts = () => {
   return (
@@ -15,7 +16,7 @@ const CostCharts = () => {
         </TabList>
         <TabPanels position={"relative"} flexGrow={1}>
           <TabPanel p={0} h={"full"}>
-            lalala
+            <CostExplorer w={"full"} h={"full"} />
           </TabPanel>
           <TabPanel p={0} h={"full"}>
             dddd

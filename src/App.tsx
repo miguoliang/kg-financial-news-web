@@ -1,9 +1,9 @@
-import { BrowserRouter } from "react-router-dom";
-import Layout from "components/layout";
-import { appConfig, chakraTheme } from "configs";
 import { ChakraBaseProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Layout from "components/layout";
+import { appConfig, chakraTheme } from "configs";
+import { BrowserRouter } from "react-router-dom";
 
 /**
  * Set enableMock(Default false) to true at configs/app.config.js
@@ -14,6 +14,7 @@ if (appConfig.runtime !== "production" && appConfig.enableMock) {
     console.log("mock server on, environment:", appConfig.runtime);
     worker.start();
   });
+  const a = 2;
 }
 
 const queryClient = new QueryClient({

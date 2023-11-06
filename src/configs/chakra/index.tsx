@@ -13,7 +13,7 @@ import mapValues from "lodash-es/mapValues";
 import { theme as twTheme } from "twin.macro";
 import { tabsTheme } from "./tabs";
 
-const tailwindTheme = twTheme`` as Record<string, any>;
+const tailwindTheme = twTheme`` ;
 
 function addMissingBaseField(obj?: any, value?: any) {
   return {

@@ -14,7 +14,6 @@ if (appConfig.runtime !== "production" && appConfig.enableMock) {
     console.log("mock server on, environment:", appConfig.runtime);
     worker.start();
   });
-  const a = 2;
 }
 
 const queryClient = new QueryClient({

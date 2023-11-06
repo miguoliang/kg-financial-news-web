@@ -3,13 +3,19 @@ module.exports = {
   root: true,
   ignorePatterns: ["node_modules", "dist"],
   parser: "@typescript-eslint/parser",
-  rules: {
-    // "@typescript-eslint/no-unused-vars": "error",
-    // "@typescript-eslint/no-empty-function": "error",
+  parserOptions: {
+    project: "./tsconfig.eslint.json",
   },
   extends: [
-    "plugin:@typescript-eslint/eslint-recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@tanstack/eslint-plugin-query/recommended",
   ],
   plugins: ["@typescript-eslint", "@tanstack/query", "prettier"],
+  overrides: [
+    {
+      files: ["*.js"],
+      extends: ["plugin:@typescript-eslint/disable-type-checked"],
+    },
+  ],
 };

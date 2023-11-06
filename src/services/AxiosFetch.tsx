@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { appConfig } from "configs";
 import { toast, useAuth } from "hooks";
 
@@ -31,7 +31,7 @@ AxiosFetch.interceptors.request.use(
 
 AxiosFetch.interceptors.response.use(
   (response) => response,
-  (error) => {
+  (error: AxiosError) => {
     const { response } = error;
     if (response && unauthorizedCode.includes(response.status)) {
       toastAndRedirectToLogin();
@@ -50,9 +50,7 @@ const toastAndRedirectToLogin = () => {
   toast({
     status: "error",
     title: "Please login to continue",
-    onCloseComplete: async () => {
-      await userManager.signinRedirect();
-    },
+    onCloseComplete: () => void userManager.signinRedirect(),
   });
 };
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { UserMenu, SideNav } from "components/ui";
 import View from "views";
 import { useAuth, useSideNav } from "hooks";
@@ -7,6 +6,7 @@ import {
   Button,
   Flex,
   HStack,
+  HTMLChakraProps,
   Icon,
   IconButton,
   Spacer,
@@ -24,7 +24,7 @@ export const SignInAndSignUp = () => {
         borderColor={"white"}
         bg={"white"}
         _hover={{ bg: "gray.100", borderColor: "gray.100" }}
-        onClick={() => auth.userManager.signinRedirect()}
+        onClick={() => void auth.userManager.signinRedirect()}
       >
         sign in
       </Button>
@@ -67,7 +67,7 @@ const HeaderActionsEnd = () => {
   );
 };
 
-const ModernLayout = (props: Record<string, any>) => {
+const ModernLayout = (props: HTMLChakraProps<"div">) => {
   return (
     <Flex>
       <SideNav />

@@ -4,8 +4,7 @@ import {
   defineStyle,
 } from "@chakra-ui/styled-system";
 
-const { definePartsStyle, defineMultiStyleConfig } =
-  createMultiStyleConfigHelpers(parts.keys);
+const helpers = createMultiStyleConfigHelpers(parts.keys);
 
 const baseStyleText = defineStyle({
   position: "absolute",
@@ -19,11 +18,11 @@ const baseStyleIcon = defineStyle({
   bottom: "-21px",
 });
 
-const baseStyle = definePartsStyle({
+const baseStyle = helpers.definePartsStyle({
   text: baseStyleText,
   icon: baseStyleIcon,
 });
 
-export const formErrorTheme = defineMultiStyleConfig({
+export const formErrorTheme = helpers.defineMultiStyleConfig({
   baseStyle,
 });

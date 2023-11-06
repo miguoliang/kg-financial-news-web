@@ -1,11 +1,10 @@
 import { menuAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 
-const { definePartsStyle, defineMultiStyleConfig } =
-  createMultiStyleConfigHelpers(menuAnatomy.keys);
+const helpers = createMultiStyleConfigHelpers(menuAnatomy.keys);
 
 // define the base component styles
-const baseStyle = definePartsStyle({
+const baseStyle = helpers.definePartsStyle({
   // define the part you're going to style
   list: {
     // this will style the MenuList component
@@ -21,4 +20,4 @@ const baseStyle = definePartsStyle({
   },
 });
 // export the base styles in the component theme
-export const menuTheme = defineMultiStyleConfig({ baseStyle });
+export const menuTheme = helpers.defineMultiStyleConfig({ baseStyle });

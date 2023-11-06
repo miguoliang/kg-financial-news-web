@@ -1,11 +1,10 @@
 import { tabsAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 
-const { definePartsStyle, defineMultiStyleConfig } =
-  createMultiStyleConfigHelpers(tabsAnatomy.keys);
+const helpers = createMultiStyleConfigHelpers(tabsAnatomy.keys);
 
 // define the base component styles
-const variantLine = definePartsStyle({
+const variantLine = helpers.definePartsStyle({
   tablist: {
     borderColor: "gray.100",
   },
@@ -19,6 +18,6 @@ const variantLine = definePartsStyle({
 });
 
 // export the component theme
-export const tabsTheme = defineMultiStyleConfig({
+export const tabsTheme = helpers.defineMultiStyleConfig({
   variants: { line: variantLine },
 });

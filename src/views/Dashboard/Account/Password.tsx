@@ -18,6 +18,15 @@ import find from "lodash-es/find";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePostAccountChangePassword } from "services";
 
+interface AwsCognitoIdentity {
+  userId: string;
+  providerName: "Google" | "Facebook" | "LoginWithAmazon" | "Apple" | "OIDC";
+  providerType: "Google" | "Facebook" | "LoginWithAmazon" | "Apple" | "OIDC";
+  issuer: string | null;
+  primary: "true" | "false";
+  dateCreated: string;
+}
+
 const ChangePasswordSchema = Yup.object().shape({
   currentPassword: Yup.string().required("Required"),
   newPassword: Yup.string().required("Required"),
@@ -31,7 +40,7 @@ const Password = () => {
   const queryClient = useQueryClient();
   const user = useAuth((state) => state.user);
   const userPrimaryIdentity = find(
-    user?.profile.identities as Array<any>,
+    user?.profile.identities as Array<AwsCognitoIdentity>,
     (value) => value.primary === "true",
   );
   if (userPrimaryIdentity?.providerType === "Google") {
@@ -54,8 +63,8 @@ const Password = () => {
           confirmNewPassword: "",
         }}
         validationSchema={ChangePasswordSchema}
-        onSubmit={async (values) =>
-          await queryClient.fetchQuery({
+        onSubmit={(values) =>
+          queryClient.fetchQuery({
             queryKey: usePostAccountChangePassword.getKey({
               previousPassword: values.currentPassword,
               proposedPassword: values.newPassword,

@@ -11,7 +11,7 @@ import {
 export const useGetEdgesByVertices = createQuery<Edge[], string[]>({
   primaryKey: "get.edges-by-vertices",
   queryFn: ({ queryKey: [, data] }) =>
-    AxiosFetch({
+    AxiosFetch<Edge[]>({
       url: "/edges-by-vertices",
       method: "post",
       data,

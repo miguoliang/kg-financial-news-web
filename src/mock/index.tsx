@@ -6,7 +6,7 @@ import {
   propertyApi,
   vertexApi,
 } from "./api";
-import { setupWorker } from "msw";
+import { setupWorker } from "msw/browser";
 
 const handlers = [
   ...accountApi,

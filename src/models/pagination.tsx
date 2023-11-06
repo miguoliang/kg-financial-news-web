@@ -4,7 +4,7 @@ export type PaginationRequest = {
   sort?: string;
 };
 
-export type PaginationResponse<T = any> = {
+export type PaginationResponse<T = unknown> = {
   content: T[];
   empty: boolean;
   first: boolean;

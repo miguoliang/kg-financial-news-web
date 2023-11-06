@@ -1,11 +1,14 @@
 import React, { LazyExoticComponent, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useCurrentRoute } from "hooks";
+import { HTMLChakraProps } from "@chakra-ui/react";
 
 type AppRouteProps = {
-  component: LazyExoticComponent<(props: Record<string, any>) => JSX.Element>;
+  component: LazyExoticComponent<
+    (props: HTMLChakraProps<"div">) => JSX.Element
+  >;
   routeKey: string;
-} & Record<string, any>;
+} & HTMLChakraProps<"div">;
 
 export const AppRoute = ({
   component: Component,

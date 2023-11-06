@@ -21,7 +21,7 @@ export const useGetDataSources = createQuery<
 >({
   primaryKey: "get.data-sources",
   queryFn: ({ queryKey: [, { date, ...rest }] }) =>
-    AxiosFetch({
+    AxiosFetch<GetDataSourcesResponse>({
       url: "/data-sources",
       method: "get",
       params: {
@@ -34,16 +34,17 @@ export const useGetDataSources = createQuery<
 export const useGetVerticesByDataSource = createQuery<Vertex[], string>({
   primaryKey: "get.data-sources.vertices",
   queryFn: ({ queryKey: [, id] }) =>
-    AxiosFetch({
+    AxiosFetch<Vertex[]>({
       url: `/data-sources/${id}/vertices`,
       method: "get",
     }).then((resp) => resp.data),
 });
 
-export const useGetDataSourceCount = createQuery<CountResponse>({
+export const useGetDataSourceCount = createQuery({
   primaryKey: "get.data-sources.count",
   queryFn: () =>
-    AxiosFetch({ url: "/data-sources/count", method: "get" }).then(
-      (resp) => resp.data,
-    ),
+    AxiosFetch<CountResponse>({
+      url: "/data-sources/count",
+      method: "get",
+    }).then((resp) => resp.data),
 });

@@ -10,7 +10,7 @@ type PostAccountChangePasswordRequestBody = {
 };
 
 export const usePostAccountChangePassword = createQuery<
-  any,
+  unknown,
   PostAccountChangePasswordRequestBody
 >({
   primaryKey: "post.account.change-password",

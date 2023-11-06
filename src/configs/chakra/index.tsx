@@ -10,12 +10,17 @@ import { tooltipTheme } from "./tooltip";
 import first from "lodash-es/first";
 import join from "lodash-es/join";
 import mapValues from "lodash-es/mapValues";
-import { theme as twTheme } from "twin.macro";
 import { tabsTheme } from "./tabs";
 
-const tailwindTheme = twTheme`` ;
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "../../../tailwind.config";
 
-function addMissingBaseField(obj?: any, value?: any) {
+const tailwindTheme = resolveConfig(tailwindConfig).theme;
+
+function addMissingBaseField(
+  obj?: { DEFAULT?: unknown; [key: string]: unknown },
+  value?: unknown,
+): unknown {
   return {
     base: value ?? obj?.DEFAULT,
     ...obj,

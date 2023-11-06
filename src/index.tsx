@@ -1,18 +1,31 @@
+import { appConfig } from "configs";
 import { ToastContainer } from "hooks";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById("root")!);
-root.render(
-  <>
-    <App />
-    <ToastContainer />
-  </>,
-);
+/**
+ * Set enableMock(Default false) to true at configs/app.config.js
+ * If you wish to enable mock api
+ */
+async function deferRender() {
+  if (appConfig.runtime !== "production" && appConfig.enableMock) {
+    return;
+  }
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  const { worker } = await import("mock");
+
+  // `worker.start()` returns a Promise that resolves
+  // once the Service Worker is up and ready to intercept requests.
+  return worker.start();
+}
+
+void deferRender().then(() => {
+  const root = ReactDOM.createRoot(document.getElementById("root")!);
+  root.render(
+    <>
+      <App />
+      <ToastContainer />
+    </>,
+  );
+});

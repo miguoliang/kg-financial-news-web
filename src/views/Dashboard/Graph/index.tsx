@@ -1,7 +1,7 @@
 import { GraphComponent, GraphContext, useGraphContext } from "components/ui";
 import { ReactFlowProvider } from "reactflow";
 import { useSearchParams } from "react-router-dom";
-import React, { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Vertex as VertexModel } from "models";
 import { PageHeader } from "../components";
 import {
@@ -134,7 +134,7 @@ const Graph = () => {
               ref={nodeListRef}
               animate={{
                 opacity: isOpen ? 1 : 0,
-                width: isOpen ? theme`minWidth.md` : "0%",
+                width: isOpen ? theme`minWidth.full` : "0%",
                 borderColor: isOpen
                   ? theme`colors.gray.200`
                   : theme`colors.white`,
@@ -177,10 +177,12 @@ const GraphCanvas = () => {
       queryNodesAndEdgesByDataSourceId(
         queryClient,
         searchParams.get("dataSourceId")!,
-      ).then(({ vertices, edges }) => {
-        setVertices(vertices);
-        setEdges(edges);
-      });
+      )
+        .then(({ vertices, edges }) => {
+          setVertices(vertices);
+          setEdges(edges);
+        })
+        .catch(console.error);
   }, [searchParams]);
 
   return (

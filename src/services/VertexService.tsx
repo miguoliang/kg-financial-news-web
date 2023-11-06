@@ -20,7 +20,7 @@ export const useGetVertices = createQuery<
 >({
   primaryKey: "get.vertices",
   queryFn: ({ queryKey: [, params] }) =>
-    AxiosFetch({
+    AxiosFetch<GetVerticesResponse>({
       url: "/vertices",
       method: "get",
       params,

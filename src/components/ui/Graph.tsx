@@ -13,6 +13,10 @@ import { Edge as EdgeModel, Vertex as VertexModel } from "models";
 import ELK, { ElkExtendedEdge, ElkNode } from "elkjs/lib/elk.bundled";
 import { LayoutOptions } from "elkjs/lib/elk-api";
 
+type NodeDataType = {
+  label: string;
+};
+
 const elk = new ELK();
 
 const defaultOptions: LayoutOptions = {
@@ -78,8 +82,9 @@ export const GraphComponent = () => {
             position: { x: c.x, y: c.y },
             data: { label: c.labels?.[0].text },
           })) || [];
-        setNodes(nodes as Node[]);
-      });
+        setNodes(nodes as Node<NodeDataType>[]);
+      })
+      .catch(console.error);
   }, [vertices, edges]);
 
   return (
@@ -91,7 +96,7 @@ export const GraphComponent = () => {
   );
 };
 
-function vertices2nodes(vertices: VertexModel[]): Node[] {
+function vertices2nodes(vertices: VertexModel[]): Node<NodeDataType>[] {
   return vertices.map((v) => ({
     id: v.id,
     position: { x: 0, y: 0 },
@@ -107,7 +112,7 @@ function edges2links(edges: EdgeModel[]): Edge[] {
   }));
 }
 
-function reactFlowNodesToElkNodes(nodes: Node[]): ElkNode[] {
+function reactFlowNodesToElkNodes(nodes: Node<NodeDataType>[]): ElkNode[] {
   return nodes.map((node) => ({
     id: node.id,
     // width of the node in px.

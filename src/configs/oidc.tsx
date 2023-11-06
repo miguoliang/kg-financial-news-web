@@ -1,6 +1,6 @@
 import { Log, UserManager, WebStorageStateStore } from "oidc-client-ts";
 
-export const USER_SCOPE: string = "openid";
+export const USER_SCOPE = "openid";
 
 export const SCOPES = import.meta.env.VITE_OIDC_SOCPES ?? "openid";
 // Create cognito sign-up & sign-out url

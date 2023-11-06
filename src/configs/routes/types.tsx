@@ -1,12 +1,15 @@
-import { ComponentProps, LazyExoticComponent } from "react";
+import { HTMLChakraProps } from "@chakra-ui/react";
+import { LazyExoticComponent } from "react";
 
 export type Route = {
   path: string;
   key: string;
-  component: LazyExoticComponent<(props: ComponentProps<any>) => JSX.Element>;
+  component: LazyExoticComponent<
+    (props: HTMLChakraProps<"div">) => JSX.Element
+  >;
   authority?: string[];
   label?: string;
-  meta?: Record<string, any>;
+  meta?: object;
 };
 
 export type Routes = Route[];

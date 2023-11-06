@@ -20,7 +20,7 @@ export const useAuth = create<UseAuth>((set) => ({
     if (SIGN_OUT_URL) {
       window.location.replace(SIGN_OUT_URL);
     } else {
-      userManager.signoutRedirect();
+      void userManager.signoutRedirect();
     }
   },
 }));

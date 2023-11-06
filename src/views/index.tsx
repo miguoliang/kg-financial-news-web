@@ -1,7 +1,7 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { protectedRoutes, publicRoutes } from "configs";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Spinner } from "@chakra-ui/react";
+import { HTMLChakraProps, Spinner } from "@chakra-ui/react";
 import {
   AppRoute,
   AuthorityGuard,
@@ -49,7 +49,7 @@ const AllRoutes = () => {
   );
 };
 
-const Views = (props: Record<string, any>) => {
+const Views = (props: HTMLChakraProps<"div">) => {
   return (
     <Suspense fallback={<Spinner />}>
       <AllRoutes {...props} />

@@ -1,11 +1,10 @@
 import { cardAnatomy as parts } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/styled-system";
 
-const { definePartsStyle, defineMultiStyleConfig } =
-  createMultiStyleConfigHelpers(parts.keys);
+const helpers = createMultiStyleConfigHelpers(parts.keys);
 
 const variants = {
-  elevated: definePartsStyle({
+  elevated: helpers.definePartsStyle({
     container: {
       shadow: "none",
       borderWidth: "1px",
@@ -14,6 +13,6 @@ const variants = {
   }),
 };
 
-export const cardTheme = defineMultiStyleConfig({
+export const cardTheme = helpers.defineMultiStyleConfig({
   variants,
 });

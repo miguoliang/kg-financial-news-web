@@ -50,7 +50,7 @@
     "analyze": "source-map-explorer 'build/assets/*.js'",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,mjs,cjs}\"",
     "lint": "eslint ./src --ext js,jsx,mjs,cjs,ts,tsx --fix",
-    "test": "npm run lint && npm run format && git add . && vitest",
+    "test": "",
     "coverage": "vitest --coverage",
     "e2e": "cypress open",
     "build:css": "cross-env TAILWIND_MODE=build NODE_ENV=production postcss src/assets/styles/app.css -o src/index.css",

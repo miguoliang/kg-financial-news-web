@@ -9,7 +9,7 @@ import "./index.css";
  * If you wish to enable mock api
  */
 async function deferRender() {
-  if (appConfig.runtime !== "production" && appConfig.enableMock) {
+  if (appConfig.runtime === "production" || !appConfig.enableMock) {
     return;
   }
 
@@ -17,6 +17,7 @@ async function deferRender() {
 
   // `worker.start()` returns a Promise that resolves
   // once the Service Worker is up and ready to intercept requests.
+  console.log("Mocking enabled");
   return worker.start();
 }
 

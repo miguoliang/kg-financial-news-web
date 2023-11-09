@@ -1,4 +1,3 @@
-import React from "react";
 import { UserMenu } from "components/ui";
 import View from "views";
 import { SignInAndSignUp } from "./ModernLayout";
@@ -41,6 +40,7 @@ const SimpleLayout = ({
         position={"sticky"}
         top={0}
         bg={"white"}
+        px={4}
       >
         <Flex maxW={maxW} maxWidth={maxWidth} mx={"auto"}>
           <HeaderActionsStart />
